@@ -21,6 +21,8 @@ import textwrap
 # Lists for vectors and markers
 vectors = []
 markers = []
+# plot radius (required scaling factor for shortening vector stems)
+plot_radius = 0
 
 def orthogonal_proj(zfront, zback):
     a = (zfront+zback)/(zfront-zback)
@@ -32,7 +34,7 @@ def orthogonal_proj(zfront, zback):
                      [0,0,a,b],
                      [0,0,-0.0001,zback]])
 
-def set_axes_equal(ax):
+def set_axes_equal():
     '''Make axes of 3D plot have equal scale so that spheres appear as spheres,
     cubes as cubes, etc..  This is one possible solution to Matplotlib's
     ax.set_aspect('equal') and ax.axis('equal') not working for 3D.
@@ -42,24 +44,23 @@ def set_axes_equal(ax):
     Input
       ax: a matplotlib axis, e.g., as output from plt.gca().
     '''
-
+    # get current Axes instance
+    ax = plt.gca()
     x_limits = ax.get_xlim3d()
     y_limits = ax.get_ylim3d()
     z_limits = ax.get_zlim3d()
-
+    #
     x_range = abs(x_limits[1] - x_limits[0])
     x_middle = np.mean(x_limits)
     y_range = abs(y_limits[1] - y_limits[0])
     y_middle = np.mean(y_limits)
     z_range = abs(z_limits[1] - z_limits[0])
     z_middle = np.mean(z_limits)
-
+    #
     # The plot bounding box is a sphere in the sense of the infinity
     # norm, hence I call half the max range the plot radius.
     plot_radius = 0.5*max([x_range, y_range, z_range])
-    
-    print('plot_radius=' + str(plot_radius))
-
+    #
     ax.set_xlim3d([x_middle - plot_radius, x_middle + plot_radius])
     ax.set_ylim3d([y_middle - plot_radius, y_middle + plot_radius])
     ax.set_zlim3d([z_middle - plot_radius, z_middle + plot_radius])
@@ -94,6 +95,8 @@ class Vector:
     Opacity (alpha) is implemented on the level of the line path (not marker path) and is inherited to the marker.
     '''
     def __init__(self, p=[0, 0, 0], v=[1, 1, 1], id=None, shape='Arrow1Mend', zorder=0, color='k', alpha=1):
+        #
+        print('plot_radius=' + str(plot_radius))
         # get current Axes instance
         ax = plt.gca()
         # base point coordinates
@@ -144,8 +147,8 @@ class Marker:
         'Arrow1Lend' : ';stroke-width:1pt;opacity:1;" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z" transform="scale(0.8) rotate(180) translate(10,0)'
     }
     deltas = { 
-        'Arrow1Mend' : 0.02,
-        'Arrow1Lend' : 0.04
+        'Arrow1Mend' : 0.02*0.6,
+        'Arrow1Lend' : 0.04*0.6
     }
        
     def __init__(self, shape=None, color='k', style='overflow:visible', refX=0, refY=0, orient='auto'):

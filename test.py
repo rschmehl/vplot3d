@@ -36,11 +36,11 @@ for s, e in combinations(np.array(list(product(r, r, r))), 2):
 v1 = Vector(np.array((0, 0, 0)),np.array((1, 1, 1)),shape='Arrow1Mend',color='k', alpha=0.5)
 v2 = Vector(np.array((0, 0, 0)),np.array((1, 1, 0)),shape='Arrow1Lend',color='r', alpha=0.2)
 v3 = Vector(np.array((0, 0, 0)),np.array((0, 0, 0.2)),color='b')
-v4 = Vector(np.array((0.5, 0.5, 0)),np.array((0, 0, 1)),color='r')
+v4 = Vector(np.array((0.5, 0.5, 0)),np.array((0, 0, 4)),zorder=10,color='r')
 
 ax.scatter(1, 1, 1.2, zorder=20, s=100, linewidth=1.2, edgecolor='b', facecolor='b')
 
 ax.set_box_aspect([1,1,1]) # requires matplotlib 3.3.0
-set_axes_equal(ax)
+set_axes_equal()
 ax.set_axis_off()
 save_svg('test.svg')
