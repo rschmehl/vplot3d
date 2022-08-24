@@ -21,8 +21,6 @@ import textwrap
 # Lists for vectors and markers
 vectors = []
 markers = []
-# plot radius (required scaling factor for shortening vector stems)
-plot_radius = 0
 
 def orthogonal_proj(zfront, zback):
     a = (zfront+zback)/(zfront-zback)
@@ -34,7 +32,7 @@ def orthogonal_proj(zfront, zback):
                      [0,0,a,b],
                      [0,0,-0.0001,zback]])
 
-def set_axes_equal():
+def set_axes_equal(ax):
     '''Make axes of 3D plot have equal scale so that spheres appear as spheres,
     cubes as cubes, etc..  This is one possible solution to Matplotlib's
     ax.set_aspect('equal') and ax.axis('equal') not working for 3D.
@@ -45,7 +43,6 @@ def set_axes_equal():
       ax: a matplotlib axis, e.g., as output from plt.gca().
     '''
     # get current Axes instance
-    ax = plt.gca()
     x_limits = ax.get_xlim3d()
     y_limits = ax.get_ylim3d()
     z_limits = ax.get_zlim3d()
@@ -64,6 +61,8 @@ def set_axes_equal():
     ax.set_xlim3d([x_middle - plot_radius, x_middle + plot_radius])
     ax.set_ylim3d([y_middle - plot_radius, y_middle + plot_radius])
     ax.set_zlim3d([z_middle - plot_radius, z_middle + plot_radius])
+    #
+    return plot_radius
     
 def projected_length(beta_deg, phi_deg, vec):
     '''Project a vector from 3D data space into the viewing plane and 
@@ -96,7 +95,6 @@ class Vector:
     '''
     def __init__(self, p=[0, 0, 0], v=[1, 1, 1], id=None, shape='Arrow1Mend', zorder=0, color='k', alpha=1):
         #
-        print('plot_radius=' + str(plot_radius))
         # get current Axes instance
         ax = plt.gca()
         # base point coordinates
@@ -122,16 +120,16 @@ class Vector:
         # add it to the list of markers if it is not yet included
         if marker_id not in [m.id for m in markers]:
             markers.append(Marker(shape, color))
-        # shorten the vectoor such that the marker tip coincides with the arrow end point
-        e = v/np.sqrt(v.dot(v))
-        delta = Marker.deltas[shape]
-        l = projected_length(ax.elev, ax.azim, e)
-        q = p + v - e*delta/l
+                # set unique gid
+        self.gid = 'vector_' + str(len(vectors)+1)
+#>       
+        # calculate vector end point
+        q = p + v
         # plot the shortened line
         line, = ax.plot([p[0], q[0]], [p[1], q[1]], [p[2], q[2]], zorder=self.zorder, linewidth=3, solid_capstyle='butt', color=self.color, alpha=self.alpha)
-        # set unique gid
-        self.gid = 'vector_' + str(len(vectors)+1)
         line.set_gid(self.gid)
+        self.line = line
+#>        
         # add new vector to the list of vectors
         vectors.append(self)
         
@@ -146,9 +144,10 @@ class Marker:
         'Arrow1Mend' : ';stroke-width:1pt;opacity:1;" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z" transform="scale(0.4) rotate(180) translate(10,0)',
         'Arrow1Lend' : ';stroke-width:1pt;opacity:1;" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z" transform="scale(0.8) rotate(180) translate(10,0)'
     }
+    # These offset values need to be determined empirically for each marker path 
     deltas = { 
-        'Arrow1Mend' : 0.02*0.6,
-        'Arrow1Lend' : 0.04*0.6
+        'Arrow1Mend' : 0.019,
+        'Arrow1Lend' : 0.038
     }
        
     def __init__(self, shape=None, color='k', style='overflow:visible', refX=0, refY=0, orient='auto'):
@@ -179,8 +178,32 @@ def save_svg(file='unnamed.svg'):
     '''Function for modifying the generated SVG code.
     
     Inspired by https://matplotlib.org/stable/gallery/misc/svg_filter_line.html and other sources.
+    
+    Before saving the drawing, vector lines are shortened. See also https://stackoverflow.com/a/50797203
 
     '''
+    #
+    # get current Axes instance and prepare axes for plotting
+    ax = plt.gca()
+    plot_radius = set_axes_equal(ax)
+    ax.set_box_aspect([1,1,1]) # requires matplotlib 3.3.0
+    
+    # Shorten all vectors lines such that the marker tip coincides with the actual vector end point
+    for vec in vectors:
+        v = vec.v
+        p = vec.p
+        # unit vector along original vector
+        e = v/np.sqrt(v.dot(v))
+        # offset for the used marker 
+        delta = Marker.deltas[vec.shape]
+        # length of unit vector projected into display 
+        l = projected_length(ax.elev, ax.azim, e)
+        # corrected endpoint
+        print('plot_radius=' + str(plot_radius))      
+        q = p + v - e*2*plot_radius*delta/l
+        # reset vector endpoint
+        vec.line.set_data_3d([p[0], q[0]], [p[1], q[1]], [p[2], q[2]])
+ 
     
     # save the figure as a byte string in SVG format
     f = io.BytesIO()
