@@ -12,7 +12,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 from itertools import product, combinations
-from vplot3d import orthogonal_proj, set_axes_equal, Vector, save_svg
+from vplot3d import orthogonal_proj, Vector, Point, save_svg
 
 # Figure size
 mpl.rcParams['figure.figsize'] = 10, 10
@@ -38,7 +38,9 @@ v2 = Vector(np.array((0, 0, 0)),np.array((1, 1, 0)),shape='Arrow1Lend',zorder=12
 v3 = Vector(np.array((0, 0, 0)),np.array((0, 0, 0.2)),zorder=13,color='b')
 v4 = Vector(np.array((0.5, 0.5, 0)),np.array((0, 0, 4)),zorder=10,color='r')
 
-ax.scatter(1, 1, 1.2, zorder=20, s=100, linewidth=1.2, edgecolor='b', facecolor='b')
+p1 = Point(np.array((0, 0, 0)),shape='Point1M',zorder=30)
+
+#ax.scatter(1, 1, 1.2, zorder=20, s=100, linewidth=1.2, edgecolor='b', facecolor='b')
 
 ax.set_axis_off()
 save_svg('test.svg')

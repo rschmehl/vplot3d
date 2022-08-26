@@ -18,8 +18,9 @@ import io
 import xml.etree.ElementTree as ET
 import textwrap
 
-# Lists for vectors and markers
+# Lists for vectors, vectors and markers
 vectors = []
+points  = []
 markers = []
 
 def orthogonal_proj(zfront, zback):
@@ -110,21 +111,20 @@ class Vector:
         # arrow transparency
         self.alpha = alpha
         # arrow head style
-        self.style = shape + '_' + color
+        self.style = shape + '-' + color
         # group id assigned when plotting the line
         self.gid = None
         # depth ordering
         self.zorder = zorder
-        # marker id composed of path + color
-        marker_id = shape + '-' + color
         # add it to the list of markers if it is not yet included
-        if marker_id not in [m.id for m in markers]:
-            markers.append(Marker(shape, color))
+        if self.style not in [m.id for m in markers]:
+            # For arrowheads we use the same stroke and fill color (i.e. edge and face color)
+            markers.append(Marker(shape, self.style, color, color))
                 # set unique gid
         self.gid = 'vector_' + str(len(vectors)+1)   
         # calculate vector end point
         q = p + v
-        # plot the shortened line
+        # plot the line
         line, = ax.plot([p[0], q[0]], [p[1], q[1]], [p[2], q[2]], zorder=self.zorder, linewidth=3, solid_capstyle='butt', color=self.color, alpha=self.alpha)
         line.set_gid(self.gid)
         self.line = line     
@@ -148,6 +148,44 @@ class Vector:
         # reset vector endpoint
         self.line.set_data_3d([p[0], q[0]], [p[1], q[1]], [p[2], q[2]])
         
+class Point:
+    '''Class for point objects.
+    Opacity (alpha) is implemented on the level of the line path (not marker path) and is inherited to the marker.
+    '''
+    def __init__(self, p=[0, 0, 0], id=None, shape='Point1M', zorder=0, facecolor='w', edgecolor='k', alpha=1):
+        #
+        # get current Axes instance
+        ax = plt.gca()
+        # point coordinates
+        self.p = p
+        # name identifier
+        self.id = id
+        # point shape
+        self.shape = shape
+        # point facecolor (fillcolor)
+        self.facecolor = facecolor
+        # point edgecolor (strokecolor)
+        self.edgecolor = edgecolor
+        # point transparency
+        self.alpha = alpha
+        # arrow head style
+        self.style = shape + '-' + facecolor + '+' + edgecolor
+        # group id assigned when plotting the line
+        self.gid = None
+        # depth ordering
+        self.zorder = zorder
+        # add it to the list of markers if it is not yet included
+        if self.style not in [m.id for m in markers]:
+            # For arrowheads we use the same stroke and fill color (i.e. edge and face color)
+            markers.append(Marker(shape, self.style, facecolor, edgecolor))
+                # set unique gid
+        self.gid = 'point_' + str(len(points)+1)   
+        # plot a point where the marker is placed later
+        line, = ax.plot([p[0], p[0]], [p[1], p[1]], [p[2], p[2]], zorder=self.zorder, linewidth=3, solid_capstyle='butt', color=self.edgecolor, alpha=self.alpha)
+        line.set_gid(self.gid)
+        self.line = line     
+        # add new point to the list of points
+        points.append(self)
         
 class Marker:
     '''Class for marker objects. 
@@ -157,33 +195,37 @@ class Marker:
     
     # Dictionary of marker paths, follows Inkscape default markers
     paths = {
-        'Arrow1Mend' : ';stroke-width:1pt;opacity:1;" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z" transform="scale(0.4) rotate(180) translate(10,0)',
-        'Arrow1Lend' : ';stroke-width:1pt;opacity:1;" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z" transform="scale(0.8) rotate(180) translate(10,0)'
+        'Arrow1Mend' : ';stroke-width:1pt;opacity:1;stroke-linejoin:miter" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z" transform="scale(0.4) rotate(180) translate(10,0)',
+        'Arrow1Lend' : ';stroke-width:1pt;opacity:1;stroke-linejoin:miter" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z" transform="scale(0.8) rotate(180) translate(10,0)',
+        'Point1M'    : ';stroke-width:3;opacity:1;f" d="M -2.5,-1.0 C -2.5,1.7600000 -4.7400000,4.0 -7.5,4.0 C -10.260000,4.0 -12.5,1.7600000 -12.5,-1.0 C -12.5,-3.7600000 -10.260000,-6.0 -7.5,-6.0 C -4.7400000,-6.0 -2.5,-3.7600000 -2.5,-1.0 z" transform="scale(0.25) translate(7.4, 1)'
     }
     # These offset values need to be determined empirically for each marker path 
     deltas = { 
         'Arrow1Mend' : 0.019,
-        'Arrow1Lend' : 0.038
+        'Arrow1Lend' : 0.038,
+        'Point1M'    : 0
     }
        
-    def __init__(self, shape=None, color='k', style='overflow:visible', refX=0, refY=0, orient='auto'):
+    def __init__(self, shape=None, style=None, facecolor='k', edgecolor='k', css_style='overflow:visible', refX=0, refY=0, orient='auto'):
         # shape
         self.shape = shape
-        # color
-        self.color = color
+        # colors
+        self.facecolor = facecolor
+        self.edgecolor = edgecolor
         # marker id composed of path + color
-        self.id = shape + '-' + color
-        # marker style
-        self.style = style
+        self.id = style
+        # marker css style
+        self.css_style = css_style
         # refX and refY
         self.refX = str(refX)
         self.refY = str(refY)
         # orientation
         self.orient = orient
         # svg code
-        hexcolor = mpl.colors.to_hex(color)
-        marker_start = '<marker id="' + self.id + '" style="' + self.style + '" refX="' + self.refX + '" refY="' + self.refY + '" orient="' + self.orient + '">'
-        marker_path  = '   <path style="stroke:' + hexcolor + ';fill:' + hexcolor + Marker.paths[shape] + '"/>'
+        hexfacecolor = mpl.colors.to_hex(facecolor)
+        hexedgecolor = mpl.colors.to_hex(edgecolor)
+        marker_start = '<marker id="' + self.id + '" style="' + self.css_style + '" refX="' + self.refX + '" refY="' + self.refY + '" orient="' + self.orient + '">'
+        marker_path  = '   <path style="stroke:' + hexedgecolor + ';fill:' + hexfacecolor + Marker.paths[shape] + '"/>'
         marker_end   = '</marker>'
         self.svg = marker_start + '\n' + marker_path + '\n' + marker_end
 
@@ -219,9 +261,9 @@ def save_svg(file='unnamed.svg'):
     tree, xmlid = ET.XMLID(f.getvalue())
 
     # remove the defs element with matplotlib's default css style
-    for defs in tree.findall('{'+ns+'}defs'):
-        if defs.findall('{'+ns+'}style'):
-            tree.remove(defs)
+#    for defs in tree.findall('{'+ns+'}defs'):
+#        if defs.findall('{'+ns+'}style'):
+#            tree.remove(defs)
 
     # create the defs section with previously generated marker elements
     defs = '<defs>' + '\n'
@@ -235,13 +277,16 @@ def save_svg(file='unnamed.svg'):
     # process all vectors
     for v in vectors:
         velement  = xmlid[v.gid]
-        marker_id = v.shape + '-' + v.color
-        velement.set('marker-end', 'url(#' + marker_id + ')')
-        # Convert "stroke-opacity" to just "opacity" to also get a transparent marker
+        velement.set('marker-end', 'url(#' + v.style + ')')
         style = velement.find('.//{'+ns+'}path').attrib['style'].replace('stroke-opacity', 'opacity')
         velement.find('.//{'+ns+'}path').attrib['style'] = style
 
     # process all points
+    for p in points:
+        pelement  = xmlid[p.gid]
+        pelement.set('marker-start', 'url(#' + p.style + ')')
+        style = pelement.find('.//{'+ns+'}path').attrib['style'].replace('stroke-opacity', 'opacity')
+        pelement.find('.//{'+ns+'}path').attrib['style'] = style
     
     print(f"Saving '{file}'")
     ET.ElementTree(tree).write(file, encoding="utf-8")
