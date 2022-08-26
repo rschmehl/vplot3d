@@ -121,17 +121,33 @@ class Vector:
         if marker_id not in [m.id for m in markers]:
             markers.append(Marker(shape, color))
                 # set unique gid
-        self.gid = 'vector_' + str(len(vectors)+1)
-#>       
+        self.gid = 'vector_' + str(len(vectors)+1)   
         # calculate vector end point
         q = p + v
         # plot the shortened line
         line, = ax.plot([p[0], q[0]], [p[1], q[1]], [p[2], q[2]], zorder=self.zorder, linewidth=3, solid_capstyle='butt', color=self.color, alpha=self.alpha)
         line.set_gid(self.gid)
-        self.line = line
-#>        
+        self.line = line     
         # add new vector to the list of vectors
         vectors.append(self)
+        
+    def adjust_length(self, plot_radius, elev, azim):
+        '''
+        Shorten the vector line such that the marker tip coincides with the actual vector end point
+        '''
+        v = self.v
+        p = self.p
+        # unit vector along original vector
+        e = v/np.sqrt(v.dot(v))
+        # offset for the used marker 
+        delta = Marker.deltas[self.shape]
+        # length of unit vector projected into display 
+        l = projected_length(elev, azim, e)
+        # corrected endpoint  
+        q = p + v - e*2*plot_radius*delta/l
+        # reset vector endpoint
+        self.line.set_data_3d([p[0], q[0]], [p[1], q[1]], [p[2], q[2]])
+        
         
 class Marker:
     '''Class for marker objects. 
@@ -186,24 +202,12 @@ def save_svg(file='unnamed.svg'):
     # get current Axes instance and prepare axes for plotting
     ax = plt.gca()
     plot_radius = set_axes_equal(ax)
+    print('plot_radius=' + str(plot_radius))    
     ax.set_box_aspect([1,1,1]) # requires matplotlib 3.3.0
     
     # Shorten all vectors lines such that the marker tip coincides with the actual vector end point
     for vec in vectors:
-        v = vec.v
-        p = vec.p
-        # unit vector along original vector
-        e = v/np.sqrt(v.dot(v))
-        # offset for the used marker 
-        delta = Marker.deltas[vec.shape]
-        # length of unit vector projected into display 
-        l = projected_length(ax.elev, ax.azim, e)
-        # corrected endpoint
-        print('plot_radius=' + str(plot_radius))      
-        q = p + v - e*2*plot_radius*delta/l
-        # reset vector endpoint
-        vec.line.set_data_3d([p[0], q[0]], [p[1], q[1]], [p[2], q[2]])
- 
+        vec.adjust_length(plot_radius, ax.elev, ax.azim) 
     
     # save the figure as a byte string in SVG format
     f = io.BytesIO()
