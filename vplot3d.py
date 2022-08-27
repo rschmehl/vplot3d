@@ -119,7 +119,7 @@ class Vector:
         # add it to the list of markers if it is not yet included
         if self.style not in [m.id for m in markers]:
             # For arrowheads we use the same stroke and fill color (i.e. edge and face color)
-            markers.append(Marker(shape, self.style, color, color))
+            markers.append(Marker(shape, self.style, facecolor=color, edgecolor=color))
                 # set unique gid
         self.gid = 'vector_' + str(len(vectors)+1)   
         # calculate vector end point
@@ -152,7 +152,7 @@ class Point:
     '''Class for point objects.
     Opacity (alpha) is implemented on the level of the line path (not marker path) and is inherited to the marker.
     '''
-    def __init__(self, p=[0, 0, 0], id=None, shape='Point1M', zorder=0, facecolor='w', edgecolor='k', alpha=1):
+    def __init__(self, p=[0, 0, 0], id=None, shape='Point1M', zorder=0, color='k', alpha=1):
         #
         # get current Axes instance
         ax = plt.gca()
@@ -162,14 +162,12 @@ class Point:
         self.id = id
         # point shape
         self.shape = shape
-        # point facecolor (fillcolor)
-        self.facecolor = facecolor
-        # point edgecolor (strokecolor)
-        self.edgecolor = edgecolor
+        # point color
+        self.color = color
         # point transparency
         self.alpha = alpha
-        # arrow head style
-        self.style = shape + '-' + facecolor + '+' + edgecolor
+        # point style
+        self.style = shape + '-' + color
         # group id assigned when plotting the line
         self.gid = None
         # depth ordering
@@ -177,11 +175,11 @@ class Point:
         # add it to the list of markers if it is not yet included
         if self.style not in [m.id for m in markers]:
             # For arrowheads we use the same stroke and fill color (i.e. edge and face color)
-            markers.append(Marker(shape, self.style, facecolor, edgecolor))
+            markers.append(Marker(shape, self.style, facecolor='w', edgecolor=color))
                 # set unique gid
         self.gid = 'point_' + str(len(points)+1)   
         # plot a point where the marker is placed later
-        line, = ax.plot([p[0], p[0]], [p[1], p[1]], [p[2], p[2]], zorder=self.zorder, linewidth=3, solid_capstyle='butt', color=self.edgecolor, alpha=self.alpha)
+        line, = ax.plot([p[0], p[0]], [p[1], p[1]], [p[2], p[2]], zorder=self.zorder, linewidth=3, solid_capstyle='butt', color=self.color, alpha=self.alpha)
         line.set_gid(self.gid)
         self.line = line     
         # add new point to the list of points
@@ -199,11 +197,10 @@ class Marker:
         'Arrow1Lend' : ';stroke-width:1pt;opacity:1;stroke-linejoin:miter" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z" transform="scale(0.8) rotate(180) translate(10,0)',
         'Point1M'    : ';stroke-width:3;opacity:1;f" d="M -2.5,-1.0 C -2.5,1.7600000 -4.7400000,4.0 -7.5,4.0 C -10.260000,4.0 -12.5,1.7600000 -12.5,-1.0 C -12.5,-3.7600000 -10.260000,-6.0 -7.5,-6.0 C -4.7400000,-6.0 -2.5,-3.7600000 -2.5,-1.0 z" transform="scale(0.25) translate(7.4, 1)'
     }
-    # These offset values need to be determined empirically for each marker path 
+    # These offset values need to be determined empirically for each vector marker path 
     deltas = { 
         'Arrow1Mend' : 0.019,
-        'Arrow1Lend' : 0.038,
-        'Point1M'    : 0
+        'Arrow1Lend' : 0.038
     }
        
     def __init__(self, shape=None, style=None, facecolor='k', edgecolor='k', css_style='overflow:visible', refX=0, refY=0, orient='auto'):
@@ -244,7 +241,6 @@ def save_svg(file='unnamed.svg'):
     # get current Axes instance and prepare axes for plotting
     ax = plt.gca()
     plot_radius = set_axes_equal(ax)
-    print('plot_radius=' + str(plot_radius))    
     ax.set_box_aspect([1,1,1]) # requires matplotlib 3.3.0
     
     # Shorten all vectors lines such that the marker tip coincides with the actual vector end point

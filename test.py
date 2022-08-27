@@ -36,9 +36,10 @@ for s, e in combinations(np.array(list(product(r, r, r))), 2):
 v1 = Vector(np.array((0, 0, 0)),np.array((1, 1, 1)),shape='Arrow1Mend',zorder=11,color='k')
 v2 = Vector(np.array((0, 0, 0)),np.array((1, 1, 0)),shape='Arrow1Lend',zorder=12,color='r', alpha=0.2)
 v3 = Vector(np.array((0, 0, 0)),np.array((0, 0, 0.2)),zorder=13,color='b')
-v4 = Vector(np.array((0.5, 0.5, 0)),np.array((0, 0, 4)),zorder=10,color='r')
+v4 = Vector(np.array((0.5, 0.5, 0)),np.array((0, 0, 1.2)),zorder=10,color='r')
 
-p1 = Point(np.array((0, 0, 0)),shape='Point1M',zorder=30)
+p1 = Point(np.array((0, 0, 0)),shape='Point1M',zorder=30,color='b')
+p2 = Point(np.array((0.5, 0.5, 0)),shape='Point1M',zorder=30,color='r')
 
 #ax.scatter(1, 1, 1.2, zorder=20, s=100, linewidth=1.2, edgecolor='b', facecolor='b')
 
