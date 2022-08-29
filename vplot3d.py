@@ -20,8 +20,9 @@ import xml.etree.ElementTree as ET
 import textwrap
 
 # Default values
-ORIGIN = np.array([0, 0, 0])
-P_ONE  = np.array([1, 1, 1])
+ORIGIN    = np.array([0, 0, 0])
+P_ONE     = np.array([1, 1, 1])
+LINEWIDTH = 3
 
 # Lists for vectors, points and markers
 vectors = []
@@ -99,7 +100,7 @@ class Object3D(ABC):
     '''Abstract class for 3D objects.
     '''
     @abstractmethod
-    def __init__(self, p=ORIGIN, id=None, zorder=0, color='k', alpha=1):
+    def __init__(self, p=ORIGIN, id=None, linewidth=LINEWIDTH, zorder=0, color='k', alpha=1):
         #
         # get current Axes instance
         self.ax = plt.gca()
@@ -107,6 +108,8 @@ class Object3D(ABC):
         self.p = p
         # name identifier
         self.id = id
+        # linewidth
+        self.linewidth=linewidth
         # object color
         self.color = color
         # object transparency
@@ -120,9 +123,9 @@ class Vector(Object3D):
     '''Class for vector objects.
     Opacity (alpha) is implemented on the level of the line path (not marker path) and is inherited to the marker.
     '''
-    def __init__(self, p=ORIGIN, v=P_ONE, id=None, shape='Arrow1Mend', zorder=0, color='k', alpha=1):
+    def __init__(self, p=ORIGIN, v=P_ONE, id=None, linewidth=LINEWIDTH, shape='Arrow1Mend', zorder=0, color='k', alpha=1):
         #
-        super().__init__(p, id, zorder, color, alpha)
+        super().__init__(p, id, linewidth, zorder, color, alpha)
         # vector coordinates
         self.v = v
         # arrow head shape
@@ -138,7 +141,7 @@ class Vector(Object3D):
         # calculate vector end point
         q = p + v
         # plot the line
-        line, = self.ax.plot([p[0], q[0]], [p[1], q[1]], [p[2], q[2]], zorder=self.zorder, linewidth=3, solid_capstyle='butt', color=self.color, alpha=self.alpha)
+        line, = self.ax.plot([p[0], q[0]], [p[1], q[1]], [p[2], q[2]], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.color, alpha=self.alpha)
         line.set_gid(self.gid)
         self.line = line
         # add new vector to the list of vectors
@@ -165,9 +168,9 @@ class Point(Object3D):
     '''Class for point objects.
     Opacity (alpha) is implemented on the level of the line path (not marker path) and is inherited to the marker.
     '''
-    def __init__(self, p=ORIGIN, id=None, shape='Point1M', zorder=0, color='k', alpha=1):
+    def __init__(self, p=ORIGIN, id=None, linewidth=LINEWIDTH, shape='Point1M', zorder=0, color='k', alpha=1):
         #
-        super().__init__(p, id, zorder, color, alpha)
+        super().__init__(p, id, linewidth, zorder, color, alpha)
         # point shape
         self.shape = shape
         # point style
@@ -179,7 +182,7 @@ class Point(Object3D):
                 # set unique gid
         self.gid = 'point_' + str(len(points)+1)
         # plot a point where the marker is placed later
-        line, = self.ax.plot([p[0], p[0]], [p[1], p[1]], [p[2], p[2]], zorder=self.zorder, linewidth=3, solid_capstyle='butt', color=self.color, alpha=self.alpha)
+        line, = self.ax.plot([p[0], p[0]], [p[1], p[1]], [p[2], p[2]], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.color, alpha=self.alpha)
         line.set_gid(self.gid)
         self.line = line
         # add new point to the list of points
