@@ -21,7 +21,7 @@ import textwrap
 
 # Default values
 ORIGIN    = np.array([0, 0, 0])
-P_ONE     = np.array([1, 1, 1])
+P111      = np.array([1, 1, 1])
 LINEWIDTH = 3
 
 # Lists for vectors, points and markers
@@ -100,7 +100,7 @@ class Object3D(ABC):
     '''Abstract class for 3D objects.
     '''
     @abstractmethod
-    def __init__(self, p=ORIGIN, id=None, linewidth=LINEWIDTH, zorder=0, color='k', alpha=1):
+    def __init__(self, p=ORIGIN, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, color='k', alpha=1):
         #
         # get current Axes instance
         self.ax = plt.gca()
@@ -110,24 +110,26 @@ class Object3D(ABC):
         self.id = id
         # linewidth
         self.linewidth=linewidth
+        # scaling factor wrt reference point p
+        self.scale = scale
+        # depth order
+        self.zorder = zorder
         # object color
         self.color = color
         # object transparency
         self.alpha = alpha
         # object group id
         self.gid = None
-        # depth order
-        self.zorder = zorder
 
 class Vector(Object3D):
     '''Class for vector objects.
     Opacity (alpha) is implemented on the level of the line path (not marker path) and is inherited to the marker.
     '''
-    def __init__(self, p=ORIGIN, v=P_ONE, id=None, linewidth=LINEWIDTH, shape='Arrow1Mend', zorder=0, color='k', alpha=1):
+    def __init__(self, p=ORIGIN, v=P111, id=None, linewidth=LINEWIDTH, shape='Arrow1Mend', scale=1, zorder=0, color='k', alpha=1):
         #
-        super().__init__(p, id, linewidth, zorder, color, alpha)
+        super().__init__(p, id, linewidth, scale, zorder, color, alpha)
         # vector coordinates
-        self.v = v
+        self.v = v*scale
         # arrow head shape
         self.shape = shape
         # arrow head style
@@ -170,7 +172,7 @@ class Point(Object3D):
     '''
     def __init__(self, p=ORIGIN, id=None, linewidth=LINEWIDTH, shape='Point1M', zorder=0, color='k', alpha=1):
         #
-        super().__init__(p, id, linewidth, zorder, color, alpha)
+        super().__init__(p, id, linewidth, 1, zorder, color, alpha)
         # point shape
         self.shape = shape
         # point style
