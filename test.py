@@ -14,6 +14,10 @@ import numpy as np
 from itertools import product, combinations
 from vplot3d import orthogonal_proj, Vector, Point, save_svg
 
+from IPython.display import set_matplotlib_formats
+set_matplotlib_formats('svg', 'pdf')
+
+
 # Figure size
 mpl.rcParams['figure.figsize'] = 10, 10
 
