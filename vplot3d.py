@@ -21,11 +21,18 @@ import textwrap
 
 # Default values
 ORIGIN    = np.array([0, 0, 0])
-P111      = np.array([1, 1, 1])
+EX        = np.array([1, 0, 0])
+EY        = np.array([0, 1, 0])
+EZ        = np.array([0, 0, 1])
+EXYZ      = np.array([1, 1, 1])
 LINEWIDTH = 3
+DEGREES   = np.arange(0, 361, 1)
+COS       = np.cos(np.radians(DEGREES))
+SIN       = np.sin(np.radians(DEGREES))
 
 # Lists for vectors, points and markers
 vectors = []
+arcs    = []
 points  = []
 markers = []
 
@@ -121,27 +128,39 @@ class Object3D(ABC):
         # object group id
         self.gid = None
 
-class Vector(Object3D):
-    '''Class for vector objects.
-    Opacity (alpha) is implemented on the level of the line path (not marker path) and is inherited to the marker.
-    '''
-    def __init__(self, p=ORIGIN, v=P111, id=None, linewidth=LINEWIDTH, shape='Arrow1Mend', scale=1, zorder=0, color='k', alpha=1):
-        #
-        super().__init__(p, id, linewidth, scale, zorder, color, alpha)
-        # vector coordinates
-        self.v = v*scale
+    def add_marker(self, shape, edgecolor, facecolor):
+        '''Add a marker to the object.
+        Input
+          shape     : type of marker to be added
+          edgecolor : stroke color of marker
+          facecolor : fill color of marker
+        '''
         # arrow head shape
         self.shape = shape
         # arrow head style
-        self.style = shape + '-' + color
+        self.style = shape + '-' + edgecolor
         # add it to the list of markers if it is not yet included
         if self.style not in [m.id for m in markers]:
             # For arrowheads we use the same stroke and fill color (i.e. edge and face color)
-            markers.append(Marker(shape, self.style, facecolor=color, edgecolor=color))
-                # set unique gid
+            markers.append(Marker(shape, self.style, edgecolor=edgecolor, facecolor=facecolor))
+
+class Vector(Object3D):
+    '''Class for vector objects.
+    '''
+    def __init__(self, p=ORIGIN, v=EXYZ, id=None, linewidth=LINEWIDTH, shape='Arrow1Mend', scale=1, zorder=0, color='k', alpha=1):
+        #
+        super().__init__(p, id, linewidth, scale, zorder, color, alpha)
+        super().add_marker(shape, color, color)
+
+#> this code is specific to the geometric construction of the object
+        # set unique gid
         self.gid = 'vector_' + str(len(vectors)+1)
+        # vector coordinates
+        self.v = v*scale
         # calculate vector end point
         q = p + v
+
+#> this code is a bit less specfic, but we should keep it here
         # plot the line
         line, = self.ax.plot([p[0], q[0]], [p[1], q[1]], [p[2], q[2]], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.color, alpha=self.alpha)
         line.set_gid(self.gid)
@@ -168,20 +187,13 @@ class Vector(Object3D):
 
 class Point(Object3D):
     '''Class for point objects.
-    Opacity (alpha) is implemented on the level of the line path (not marker path) and is inherited to the marker.
     '''
     def __init__(self, p=ORIGIN, id=None, linewidth=LINEWIDTH, shape='Point1M', zorder=0, color='k', alpha=1):
         #
         super().__init__(p, id, linewidth, 1, zorder, color, alpha)
-        # point shape
-        self.shape = shape
-        # point style
-        self.style = shape + '-' + color
-        # add it to the list of markers if it is not yet included
-        if self.style not in [m.id for m in markers]:
-            # For arrowheads we use the same stroke and fill color (i.e. edge and face color)
-            markers.append(Marker(shape, self.style, facecolor='w', edgecolor=color))
-                # set unique gid
+        super().add_marker(shape, color, 'w')
+
+        # set unique gid
         self.gid = 'point_' + str(len(points)+1)
         # plot a point where the marker is placed later
         line, = self.ax.plot([p[0], p[0]], [p[1], p[1]], [p[2], p[2]], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.color, alpha=self.alpha)
@@ -192,8 +204,7 @@ class Point(Object3D):
 
 class Marker:
     '''Class for marker objects.
-    Because color is not inherited from the object to which the marker is attached, we generate
-    a marker for each color and embed the color in the marker's path.
+    Because color is not inherited from the object to which the marker is attached, we generate a marker for each color and embed the color in the marker's path.
     '''
 
     # Dictionary of marker paths, follows Inkscape default markers
@@ -231,7 +242,41 @@ class Marker:
         marker_end   = '</marker>'
         self.svg = marker_start + '\n' + marker_path + '\n' + marker_end
 
-    # add a method to expand the paths dictionary on the fly
+class Arc(Object3D):
+    '''Class for circular arc objects.
+    '''
+    def __init__(self, p=ORIGIN, v1=EX, v2=EY, radius=1, id=None, linewidth=LINEWIDTH, shape='Arrow1Mend', scale=1, zorder=0, color='k', alpha=1):
+        '''e1, e2 and e3 are spanning a local vector base
+        '''
+        super().__init__(p, id, linewidth, 1, zorder, color, alpha)
+        super().add_marker(shape, color, color)
+
+        # set unique gid
+        self.gid = 'arc_' + str(len(arcs)+1)
+        # normalized vectors spanning the arc
+        self.e1 = e1 = v1 = v1/np.sqrt(np.dot(v1,v1))
+        self.v2 = v2 =      v2/np.sqrt(np.dot(v2,v2))
+        # angle between the two vectors
+        self.angle = angle = np.degrees(np.arccos(np.dot(e1,v2)))
+        # scaled radius
+        self.radius = radius = radius*scale
+        # normal vector
+        n  = np.cross(e1,v2)
+        # normalized normal vector
+        e3 = n/np.sqrt(np.dot(n,n))
+        # e1, e2 and e3 form a vectorbase
+        e2 = np.cross(e3,e1)
+        # find end index
+        ip = np.argmax(DEGREES>angle)
+        # array with coordinates of discretization points
+        r = e1[:,np.newaxis]*COS[np.newaxis,:ip-1] + e2[:,np.newaxis]*SIN[np.newaxis,:ip-1]
+
+        # plot the line
+        arc, = self.ax.plot(r[0,:], r[1,:], r[2,:], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.color, alpha=self.alpha)
+        arc.set_gid(self.gid)
+        self.arc = arc
+        # add new arc to the list of arcs
+        arcs.append(self)
 
 
 def save_svg(file='unnamed.svg'):
@@ -281,6 +326,13 @@ def save_svg(file='unnamed.svg'):
         velement.set('marker-end', 'url(#' + v.style + ')')
         style = velement.find('.//{'+ns+'}path').attrib['style'].replace('stroke-opacity', 'opacity')
         velement.find('.//{'+ns+'}path').attrib['style'] = style
+
+    # process all arcs
+    for a in arcs:
+        aelement  = xmlid[a.gid]
+        aelement.set('marker-end', 'url(#' + a.style + ')')
+        style = aelement.find('.//{'+ns+'}path').attrib['style'].replace('stroke-opacity', 'opacity')
+        aelement.find('.//{'+ns+'}path').attrib['style'] = style
 
     # process all points
     for p in points:
