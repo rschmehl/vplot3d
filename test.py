@@ -47,7 +47,7 @@ p2 = Point(np.array([0.5, 0.5, 0]),shape='Point1M',zorder=30,color='r')
 p3 = Point(np.array([0.5, 0.5, 0.6]),shape='Point1M',zorder=30,color='r')
 p4 = Point(np.array([0.5, 0.5, 1]),shape='Point1M',zorder=30,color='r')
 
-arc1 = Arc(np.array([0, 0, 0]),np.array([1, 0, 0]),np.array([1, 1, 0]),1,linewidth=2,shape='Arrow1Lend',scale=0.5,zorder=11,color='k')
+arc1 = Arc(np.array([0, 0, 0]),np.array([1, 0, 0]),np.array([1, 1, 0]),1,linewidth=2,shape='Arrow1Mend',scale=0.5,zorder=11,color='k')
 
 ax.set_axis_off()
 save_svg('test.svg')

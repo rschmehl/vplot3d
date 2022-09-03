@@ -152,7 +152,6 @@ class Vector(Object3D):
         super().__init__(p, id, linewidth, scale, zorder, color, alpha)
         super().add_marker(shape, color, color)
 
-#> this code is specific to the geometric construction of the object
         # set unique gid
         self.gid = 'vector_' + str(len(vectors)+1)
         # vector coordinates
@@ -160,7 +159,6 @@ class Vector(Object3D):
         # calculate vector end point
         q = p + v
 
-#> this code is a bit less specfic, but we should keep it here
         # plot the line
         line, = self.ax.plot([p[0], q[0]], [p[1], q[1]], [p[2], q[2]], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.color, alpha=self.alpha)
         line.set_gid(self.gid)
@@ -177,7 +175,7 @@ class Vector(Object3D):
         # unit vector along original vector
         e = v/np.sqrt(v.dot(v))
         # offset for the used marker
-        delta = Marker.deltas[self.shape]
+        delta = Marker.deltas[self.shape]*self.linewidth
         # length of unit vector projected into display
         l = projected_length(elev, azim, e)
         # corrected endpoint
@@ -215,8 +213,8 @@ class Marker:
     }
     # These offset values need to be determined empirically for each vector marker path
     deltas = {
-        'Arrow1Mend' : 0.019,
-        'Arrow1Lend' : 0.038
+        'Arrow1Mend' : 0.00635,
+        'Arrow1Lend' : 0.0127
     }
 
     def __init__(self, shape=None, style=None, facecolor='k', edgecolor='k', css_style='overflow:visible', refX=0, refY=0, orient='auto'):
@@ -269,7 +267,8 @@ class Arc(Object3D):
         # find end index
         ip = np.argmax(DEGREES>angle)
         # array with coordinates of discretization points
-        r = e1[:,np.newaxis]*COS[np.newaxis,:ip-1] + e2[:,np.newaxis]*SIN[np.newaxis,:ip-1]
+        r = e1[:,np.newaxis]*COS[np.newaxis,:ip] + e2[:,np.newaxis]*SIN[np.newaxis,:ip]
+        self.r = r
 
         # plot the line
         arc, = self.ax.plot(r[0,:], r[1,:], r[2,:], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.color, alpha=self.alpha)
@@ -277,6 +276,49 @@ class Arc(Object3D):
         self.arc = arc
         # add new arc to the list of arcs
         arcs.append(self)
+
+    def adjust_length(self, plot_radius, elev, azim):
+        '''
+        Shorten the arc such that the marker tip coincides with the actual target line
+        '''
+        # 1. fetch the last segment of the arc
+        # 2. like for the simple line determine a 3D delta: e*2*plot_radius*delta/l
+        # 3. Shorten the discretized arc by removing complete segments and/or reposition the endpoint of the last segment (similar to simle line
+        # 4: if I do this we can not use set_data because the discretization might have changed
+
+        # last line segment of the discretized arc
+        s    = self.r[:,-1] - self.r[:,-2]
+        sabs = np.sqrt(s.dot(s))
+        # unit vector along this last segment
+        e = s/sabs
+        ax = plt.gca()
+#        ax.plot([self.r[0,-2], self.r[0,-1]], [self.r[1,-2], self.r[1,-1]], [self.r[2,-2], self.r[2,-1]])
+#        ax.plot([ORIGIN[0], e[0]], [ORIGIN[1], e[1]], [ORIGIN[2], e[2]])
+        # offset for the used marker
+        delta = Marker.deltas[self.shape]*self.linewidth
+        # length of unit vector projected into display
+        l = projected_length(elev, azim, e)
+        # endpoint correction in 3D space
+        d = 2*plot_radius*delta/l
+        #
+        n   = np.trunc(d/sabs)
+        m = d % sabs
+        print(d, sabs, n, m, n*sabs+m)
+        dv = e*d
+        ax.plot([self.r[0,-1], self.r[0,-1]+dv[0]], [self.r[1,-1], self.r[1,-1]+dv[1]], [self.r[2,-1], self.r[2,-1]+dv[2]])
+
+
+        # reset vector endpoint
+#        self.arc.set_data_3d([self.r[0,-1]], [self.r[1,-1]], [self.r[2,-1]])
+
+
+
+        # # reset vector endpoint
+        # self.arc.set_data_3d([p[0], q[0]], [p[1], q[1]], [p[2], q[2]])
+
+#        self.arc.set_data_3d(self.r[0,:], self.r[1,:], self.r[2,:])
+#        print(self.r[:,-2:])
+#        ax.scatter(self.r[0,-2:], self.r[1,-2:], self.r[2,-2:])
 
 
 def save_svg(file='unnamed.svg'):
@@ -296,6 +338,10 @@ def save_svg(file='unnamed.svg'):
     # Shorten all vectors lines such that the marker tip coincides with the actual vector end point
     for vec in vectors:
         vec.adjust_length(plot_radius, ax.elev, ax.azim)
+
+    # Shorten all arcs such that the marker tip coincides with the actual vector end point
+    for arc in arcs:
+        arc.adjust_length(plot_radius, ax.elev, ax.azim)
 
     # save the figure as a byte string in SVG format
     f = io.BytesIO()
