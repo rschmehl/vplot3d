@@ -281,44 +281,39 @@ class Arc(Object3D):
         '''
         Shorten the arc such that the marker tip coincides with the actual target line
         '''
-        # 1. fetch the last segment of the arc
-        # 2. like for the simple line determine a 3D delta: e*2*plot_radius*delta/l
-        # 3. Shorten the discretized arc by removing complete segments and/or reposition the endpoint of the last segment (similar to simle line
-        # 4: if I do this we can not use set_data because the discretization might have changed
 
-        # last line segment of the discretized arc
+        # pick the last segment of the discretized arc
         s    = self.r[:,-1] - self.r[:,-2]
         sabs = np.sqrt(s.dot(s))
         # unit vector along this last segment
         e = s/sabs
         ax = plt.gca()
-#        ax.plot([self.r[0,-2], self.r[0,-1]], [self.r[1,-2], self.r[1,-1]], [self.r[2,-2], self.r[2,-1]])
-#        ax.plot([ORIGIN[0], e[0]], [ORIGIN[1], e[1]], [ORIGIN[2], e[2]])
+
         # offset for the used marker
         delta = Marker.deltas[self.shape]*self.linewidth
         # length of unit vector projected into display
         l = projected_length(elev, azim, e)
         # endpoint correction in 3D space
         d = 2*plot_radius*delta/l
-        #
-        n   = np.trunc(d/sabs)
-        m = d % sabs
-        print(d, sabs, n, m, n*sabs+m)
-        dv = e*d
-        ax.plot([self.r[0,-1], self.r[0,-1]+dv[0]], [self.r[1,-1], self.r[1,-1]+dv[1]], [self.r[2,-1], self.r[2,-1]+dv[2]])
 
+        # find the last node of the discretized arc to keep
+        n    = int(np.ceil(d/sabs))            # n can be 1, 2, 3, ...
+        print(n)
+        s    = self.r[:,-1] - self.r[:,-1-n]
+        sabs = np.sqrt(s.dot(s))
+        e = s/sabs
+#       ax.plot([self.r[0,-1-n], self.r[0,-1]], [self.r[1,-1-n], self.r[1,-1]], [self.r[2,-1-n], self.r[2,-1]])
+        # length of unit vector projected into display
+        l = projected_length(elev, azim, e)
 
-        # reset vector endpoint
-#        self.arc.set_data_3d([self.r[0,-1]], [self.r[1,-1]], [self.r[2,-1]])
-
-
-
-        # # reset vector endpoint
-        # self.arc.set_data_3d([p[0], q[0]], [p[1], q[1]], [p[2], q[2]])
-
-#        self.arc.set_data_3d(self.r[0,:], self.r[1,:], self.r[2,:])
-#        print(self.r[:,-2:])
-#        ax.scatter(self.r[0,-2:], self.r[1,-2:], self.r[2,-2:])
+        # endpoint correction in 3D space
+        self.r[:,-n] = self.r[:,-1] - e*2*plot_radius*delta/l
+        # crop nodal array
+        if n > 1:
+            print('> crop array')
+            np.delete(self.r, np.s_[-n+1:], 1)
+            np.delete(self.r, np.s_[-1:], 1)
+        self.arc.set_data_3d(self.r[0,:-n+1], self.r[1,:-n+1], self.r[2,:-n+1])
 
 
 def save_svg(file='unnamed.svg'):
