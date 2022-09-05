@@ -201,8 +201,18 @@ class Point(Object3D):
         points.append(self)
 
 class Marker:
-    '''Class for marker objects.
-    Because color is not inherited from the object to which the marker is attached, we generate a marker for each color and embed the color in the marker's path.
+    '''Class for marker objects to be used for arrow heads marking vectors or
+    For vectors or vector arcs, the marker should be positioned such that its local origin (0,0)
+    precisely coincides with the end of the line that represents the vector, or the end of the arc
+    representing the arc.
+
+    To do this, the path needs to be opened in Inkscape. Use the XML-edio to find the relevant
+    <defs> section
+
+    The current SVG standard (1.1) does not allow for inheritance of the color attribute from
+    the object to which the marker is attached, to the marker. The new SVG standard (2) does
+    but it is not implemented in webbrowsers yet. For that reason, we generate separate
+    markers for each combination of marker shape and color.
     '''
 
     # Dictionary of marker paths, follows Inkscape default markers # -0.75
@@ -240,7 +250,7 @@ class Marker:
         marker_end   = '</marker>'
         self.svg = marker_start + '\n' + marker_path + '\n' + marker_end
 
-class Arc(Object3D):
+class ArcMeasure(Object3D):
     '''Class for circular arc objects.
     '''
     def __init__(self, p=ORIGIN, v1=EX, v2=EY, radius=1, id=None, linewidth=LINEWIDTH, shape='Arrow1Mend', scale=1, zorder=0, color='k', alpha=1):
@@ -279,7 +289,14 @@ class Arc(Object3D):
 
     def adjust_length(self, plot_radius, elev, azim):
         '''
-        Shorten the arc such that the marker tip coincides with the actual target line
+        Shorten the arc such that the marker tip coincides with the actual geometric target point.
+
+        This is similar to the shortening of line segements that are used for vectors, with the additional
+        step of removing line segemnts from the tip of the discretized arc and
+        , such that the entire arrow head
+        marker can be fitted
+
+
         '''
 
         # pick the last segment of the discretized arc
