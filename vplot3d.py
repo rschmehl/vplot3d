@@ -30,7 +30,8 @@ DEGREES   = np.arange(0, 361, 1)
 COS       = np.cos(np.radians(DEGREES))
 SIN       = np.sin(np.radians(DEGREES))
 
-# Lists for vectors, points and markers
+# Lists for geometrical objects
+lines   = []
 vectors = []
 arcs    = []
 points  = []
@@ -144,25 +145,38 @@ class Object3D(ABC):
             # For arrowheads we use the same stroke and fill color (i.e. edge and face color)
             markers.append(Marker(shape, self.style, edgecolor=edgecolor, facecolor=facecolor))
 
-class Vector(Object3D):
-    '''Class for vector objects.
+class Line(Object3D):
+    '''Class for line objects.
     '''
-    def __init__(self, p=ORIGIN, v=EXYZ, id=None, linewidth=LINEWIDTH, shape='Arrow1Mend', scale=1, zorder=0, color='k', alpha=1):
-        #
+    def __init__(self, p=ORIGIN, v=EXYZ, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, color='k', alpha=1):
+
         super().__init__(p, id, linewidth, scale, zorder, color, alpha)
-        super().add_marker(shape, color, color)
 
         # set unique gid
-        self.gid = 'vector_' + str(len(vectors)+1)
-        # vector coordinates
+        self.gid = 'line_' + str(len(lines)+1)
+        # line segment coordinates
         self.v = v*scale
-        # calculate vector end point
+        # calculate line end point
         q = p + v
 
         # plot the line
         line, = self.ax.plot([p[0], q[0]], [p[1], q[1]], [p[2], q[2]], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.color, alpha=self.alpha)
         line.set_gid(self.gid)
         self.line = line
+        # add new vector to the list of vectors
+        lines.append(self)
+
+class Vector(Line):
+    '''Class for vector objects.
+    '''
+    def __init__(self, p=ORIGIN, v=EXYZ, id=None, linewidth=LINEWIDTH, shape='Arrow1Mend', scale=1, zorder=0, color='k', alpha=1):
+
+        super().__init__(p, v, id, linewidth, scale, zorder, color, alpha)
+        super().add_marker(shape, color, color)
+
+        # remove line from the list of lines
+        lines.pop()
+
         # add new vector to the list of vectors
         vectors.append(self)
 
@@ -315,7 +329,6 @@ class ArcMeasure(Object3D):
 
         # find the last node of the discretized arc to keep
         n    = int(np.ceil(d/sabs))            # n can be 1, 2, 3, ...
-        print(n)
         s    = self.r[:,-1] - self.r[:,-1-n]
         sabs = np.sqrt(s.dot(s))
         e = s/sabs
@@ -327,7 +340,6 @@ class ArcMeasure(Object3D):
         self.r[:,-n] = self.r[:,-1] - e*2*plot_radius*delta/l
         # crop nodal array
         if n > 1:
-            print('> crop array')
             np.delete(self.r, np.s_[-n+1:], 1)
             np.delete(self.r, np.s_[-1:], 1)
         self.arc.set_data_3d(self.r[0,:-n+1], self.r[1,:-n+1], self.r[2,:-n+1])
