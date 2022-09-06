@@ -31,11 +31,12 @@ COS       = np.cos(np.radians(DEGREES))
 SIN       = np.sin(np.radians(DEGREES))
 
 # Lists for geometrical objects
-lines   = []
-vectors = []
-arcs    = []
-points  = []
-markers = []
+lines       = []
+vectors     = []
+arcs        = []
+arcmeasures = []
+points      = []
+markers     = []
 
 def orthogonal_proj(zfront, zback):
     a = (zfront+zback)/(zfront-zback)
@@ -174,6 +175,10 @@ class Vector(Line):
         super().__init__(p, v, id, linewidth, scale, zorder, color, alpha)
         super().add_marker(shape, color, color)
 
+        # set unique gid
+        self.gid = 'vector_' + str(len(vectors)+1)
+        self.line.set_gid(self.gid)
+
         # remove line from the list of lines
         lines.pop()
 
@@ -264,14 +269,13 @@ class Marker:
         marker_end   = '</marker>'
         self.svg = marker_start + '\n' + marker_path + '\n' + marker_end
 
-class ArcMeasure(Object3D):
+class Arc(Object3D):
     '''Class for circular arc objects.
     '''
-    def __init__(self, p=ORIGIN, v1=EX, v2=EY, radius=1, id=None, linewidth=LINEWIDTH, shape='Arrow1Mend', scale=1, zorder=0, color='k', alpha=1):
+    def __init__(self, p=ORIGIN, v1=EX, v2=EY, radius=1, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, color='k', alpha=1):
         '''e1, e2 and e3 are spanning a local vector base
         '''
         super().__init__(p, id, linewidth, 1, zorder, color, alpha)
-        super().add_marker(shape, color, color)
 
         # set unique gid
         self.gid = 'arc_' + str(len(arcs)+1)
@@ -300,6 +304,26 @@ class ArcMeasure(Object3D):
         self.arc = arc
         # add new arc to the list of arcs
         arcs.append(self)
+
+class ArcMeasure(Arc):
+    '''Class for circular arc measure objects.
+    '''
+    def __init__(self, p=ORIGIN, v1=EX, v2=EY, radius=1, id=None, linewidth=LINEWIDTH, shape='Arrow1Mend', scale=1, zorder=0, color='k', alpha=1):
+        '''e1, e2 and e3 are spanning a local vector base
+        '''
+
+        super().__init__(p, v1, v2, radius, id, linewidth, scale, zorder, color, alpha)
+        super().add_marker(shape, color, color)
+
+        # set unique gid
+        self.gid = 'arcmeasure_' + str(len(arcmeasures)+1)
+        self.arc.set_gid(self.gid)
+
+        # remove line from the list of lines
+        arcs.pop()
+
+        # add new arc to the list of arcs
+        arcmeasures.append(self)
 
     def adjust_length(self, plot_radius, elev, azim):
         '''
@@ -364,7 +388,7 @@ def save_svg(file='unnamed.svg'):
         vec.adjust_length(plot_radius, ax.elev, ax.azim)
 
     # Shorten all arcs such that the marker tip coincides with the actual vector end point
-    for arc in arcs:
+    for arc in arcmeasures:
         arc.adjust_length(plot_radius, ax.elev, ax.azim)
 
     # save the figure as a byte string in SVG format
@@ -390,6 +414,8 @@ def save_svg(file='unnamed.svg'):
     # insert the marker definition in the svg dom tree.
     tree.insert(0, ET.XML(defs))
 
+#> should be possible to process this as just one list!
+
     # process all vectors
     for v in vectors:
         velement  = xmlid[v.gid]
@@ -397,8 +423,8 @@ def save_svg(file='unnamed.svg'):
         style = velement.find('.//{'+ns+'}path').attrib['style'].replace('stroke-opacity', 'opacity')
         velement.find('.//{'+ns+'}path').attrib['style'] = style
 
-    # process all arcs
-    for a in arcs:
+    # process all arcmeasures
+    for a in arcmeasures:
         aelement  = xmlid[a.gid]
         aelement.set('marker-end', 'url(#' + a.style + ')')
         style = aelement.find('.//{'+ns+'}path').attrib['style'].replace('stroke-opacity', 'opacity')
