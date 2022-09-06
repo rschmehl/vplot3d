@@ -3,7 +3,7 @@
 """
 Created on Thu Aug 11 11:03:50 2022
 
-3D vector diagrams with SVG output.
+Programmatically creating 3D vector diagrams for SVG output.
 
 - Vectors and points use Inkscape-compatible markers (seems to be unique)
 
@@ -146,6 +146,23 @@ class Object3D(ABC):
             # For arrowheads we use the same stroke and fill color (i.e. edge and face color)
             markers.append(Marker(shape, self.style, edgecolor=edgecolor, facecolor=facecolor))
 
+class Point(Object3D):
+    '''Class for point objects.
+    '''
+    def __init__(self, p=ORIGIN, id=None, linewidth=LINEWIDTH, shape='Point1M', zorder=0, color='k', alpha=1):
+        #
+        super().__init__(p, id, linewidth, 1, zorder, color, alpha)
+        super().add_marker(shape, color, 'w')
+
+        # set unique gid
+        self.gid = 'point_' + str(len(points)+1)
+        # plot a point where the marker is placed later
+        line, = self.ax.plot([p[0], p[0]], [p[1], p[1]], [p[2], p[2]], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.color, alpha=self.alpha)
+        line.set_gid(self.gid)
+        self.line = line
+        # add new point to the list of points
+        points.append(self)
+
 class Line(Object3D):
     '''Class for line objects.
     '''
@@ -201,73 +218,6 @@ class Vector(Line):
         q = p + v - e*2*plot_radius*delta/l
         # reset vector endpoint
         self.line.set_data_3d([p[0], q[0]], [p[1], q[1]], [p[2], q[2]])
-
-class Point(Object3D):
-    '''Class for point objects.
-    '''
-    def __init__(self, p=ORIGIN, id=None, linewidth=LINEWIDTH, shape='Point1M', zorder=0, color='k', alpha=1):
-        #
-        super().__init__(p, id, linewidth, 1, zorder, color, alpha)
-        super().add_marker(shape, color, 'w')
-
-        # set unique gid
-        self.gid = 'point_' + str(len(points)+1)
-        # plot a point where the marker is placed later
-        line, = self.ax.plot([p[0], p[0]], [p[1], p[1]], [p[2], p[2]], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.color, alpha=self.alpha)
-        line.set_gid(self.gid)
-        self.line = line
-        # add new point to the list of points
-        points.append(self)
-
-class Marker:
-    '''Class for marker objects to be used for arrow heads marking vectors or
-    For vectors or vector arcs, the marker should be positioned such that its local origin (0,0)
-    precisely coincides with the end of the line that represents the vector, or the end of the arc
-    representing the arc.
-
-    To do this, the path needs to be opened in Inkscape. Use the XML-edio to find the relevant
-    <defs> section
-
-    The current SVG standard (1.1) does not allow for inheritance of the color attribute from
-    the object to which the marker is attached, to the marker. The new SVG standard (2) does
-    but it is not implemented in webbrowsers yet. For that reason, we generate separate
-    markers for each combination of marker shape and color.
-    '''
-
-    # Dictionary of marker paths, follows Inkscape default markers # -0.75
-    paths = {
-        'Arrow1Mend' : ';stroke-width:1pt;opacity:1;stroke-linejoin:miter" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z" transform="scale(0.4) rotate(180) translate(-0.9,0)',
-        'Arrow1Lend' : ';stroke-width:1pt;opacity:1;stroke-linejoin:miter" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z" transform="scale(0.8) rotate(180) translate(10,0)',
-        'Point1M'    : ';stroke-width:3;opacity:1;f" d="M -2.5,-1.0 C -2.5,1.7600000 -4.7400000,4.0 -7.5,4.0 C -10.260000,4.0 -12.5,1.7600000 -12.5,-1.0 C -12.5,-3.7600000 -10.260000,-6.0 -7.5,-6.0 C -4.7400000,-6.0 -2.5,-3.7600000 -2.5,-1.0 z" transform="scale(0.25) translate(7.4, 1)'
-    }
-    # These offset values need to be determined empirically for each vector marker path
-    deltas = {
-        'Arrow1Mend' : 0.02,
-        'Arrow1Lend' : 0.0127
-    }
-
-    def __init__(self, shape=None, style=None, facecolor='k', edgecolor='k', css_style='overflow:visible', refX=0, refY=0, orient='auto'):
-        # shape
-        self.shape = shape
-        # colors
-        self.facecolor = facecolor
-        self.edgecolor = edgecolor
-        # marker id composed of path + color
-        self.id = style
-        # marker css style
-        self.css_style = css_style
-        # refX and refY
-        self.refX = str(refX)
-        self.refY = str(refY)
-        # orientation
-        self.orient = orient
-        # svg code
-        hexfacecolor = mpl.colors.to_hex(facecolor)
-        hexedgecolor = mpl.colors.to_hex(edgecolor)
-        marker_start = '<marker id="' + self.id + '" style="' + self.css_style + '" refX="' + self.refX + '" refY="' + self.refY + '" orient="' + self.orient + '">'
-        marker_path  = '   <path style="stroke:' + hexedgecolor + ';fill:' + hexfacecolor + Marker.paths[shape] + '"/>'
-        marker_end   = '</marker>'
-        self.svg = marker_start + '\n' + marker_path + '\n' + marker_end
 
 class Arc(Object3D):
     '''Class for circular arc objects.
@@ -368,6 +318,55 @@ class ArcMeasure(Arc):
             np.delete(self.r, np.s_[-1:], 1)
         self.arc.set_data_3d(self.r[0,:-n+1], self.r[1,:-n+1], self.r[2,:-n+1])
 
+class Marker:
+    '''Class for marker objects to be used for arrow heads marking vectors or
+    For vectors or vector arcs, the marker should be positioned such that its local origin (0,0)
+    precisely coincides with the end of the line that represents the vector, or the end of the arc
+    representing the arc.
+
+    To do this, the path needs to be opened in Inkscape. Use the XML-edio to find the relevant
+    <defs> section
+
+    The current SVG standard (1.1) does not allow for inheritance of the color attribute from
+    the object to which the marker is attached, to the marker. The new SVG standard (2) does
+    but it is not implemented in webbrowsers yet. For that reason, we generate separate
+    markers for each combination of marker shape and color.
+    '''
+
+    # Dictionary of marker paths, follows Inkscape default markers # -0.75
+    paths = {
+        'Arrow1Mend' : ';stroke-width:1pt;opacity:1;stroke-linejoin:miter" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z" transform="scale(0.4) rotate(180) translate(-0.9,0)',
+        'Arrow1Lend' : ';stroke-width:1pt;opacity:1;stroke-linejoin:miter" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z" transform="scale(0.8) rotate(180) translate(10,0)',
+        'Point1M'    : ';stroke-width:3;opacity:1;f" d="M -2.5,-1.0 C -2.5,1.7600000 -4.7400000,4.0 -7.5,4.0 C -10.260000,4.0 -12.5,1.7600000 -12.5,-1.0 C -12.5,-3.7600000 -10.260000,-6.0 -7.5,-6.0 C -4.7400000,-6.0 -2.5,-3.7600000 -2.5,-1.0 z" transform="scale(0.25) translate(7.4, 1)'
+    }
+    # These offset values need to be determined empirically for each vector marker path
+    deltas = {
+        'Arrow1Mend' : 0.02,
+        'Arrow1Lend' : 0.0127
+    }
+
+    def __init__(self, shape=None, style=None, facecolor='k', edgecolor='k', css_style='overflow:visible', refX=0, refY=0, orient='auto'):
+        # shape
+        self.shape = shape
+        # colors
+        self.facecolor = facecolor
+        self.edgecolor = edgecolor
+        # marker id composed of path + color
+        self.id = style
+        # marker css style
+        self.css_style = css_style
+        # refX and refY
+        self.refX = str(refX)
+        self.refY = str(refY)
+        # orientation
+        self.orient = orient
+        # svg code
+        hexfacecolor = mpl.colors.to_hex(facecolor)
+        hexedgecolor = mpl.colors.to_hex(edgecolor)
+        marker_start = '<marker id="' + self.id + '" style="' + self.css_style + '" refX="' + self.refX + '" refY="' + self.refY + '" orient="' + self.orient + '">'
+        marker_path  = '   <path style="stroke:' + hexedgecolor + ';fill:' + hexfacecolor + Marker.paths[shape] + '"/>'
+        marker_end   = '</marker>'
+        self.svg = marker_start + '\n' + marker_path + '\n' + marker_end
 
 def save_svg(file='unnamed.svg'):
     '''Function for modifying the generated SVG code.
