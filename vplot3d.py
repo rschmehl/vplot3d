@@ -3,9 +3,13 @@
 """
 Created on Thu Aug 11 11:03:50 2022
 
-Programmatically creating 3D vector diagrams for SVG output.
+Programmatically creating 3D vector diagrams for SVG output. The following diagram objects can be used
 
-- Vectors and points use Inkscape-compatible markers (seems to be unique)
+- points
+- lines and circular arcs
+- vectors and arcmeasures
+
+Points, vectors and arcmeasures use SVG markers.
 
 @author: rschmehl
 """
@@ -333,13 +337,14 @@ class Marker:
     markers for each combination of marker shape and color.
     '''
 
-    # Dictionary of marker paths, follows Inkscape default markers # -0.75
+    # Dictionary of marker paths, follows Inkscape default markers
     paths = {
         'Arrow1Mend' : ';stroke-width:1pt;opacity:1;stroke-linejoin:miter" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z" transform="scale(0.4) rotate(180) translate(-0.9,0)',
         'Arrow1Lend' : ';stroke-width:1pt;opacity:1;stroke-linejoin:miter" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z" transform="scale(0.8) rotate(180) translate(10,0)',
         'Point1M'    : ';stroke-width:3;opacity:1;f" d="M -2.5,-1.0 C -2.5,1.7600000 -4.7400000,4.0 -7.5,4.0 C -10.260000,4.0 -12.5,1.7600000 -12.5,-1.0 C -12.5,-3.7600000 -10.260000,-6.0 -7.5,-6.0 C -4.7400000,-6.0 -2.5,-3.7600000 -2.5,-1.0 z" transform="scale(0.25) translate(7.4, 1)'
     }
-    # These offset values need to be determined empirically for each vector marker path
+
+    # Dictionary of path offsets (to be determined empirically for each vector marker path)
     deltas = {
         'Arrow1Mend' : 0.02,
         'Arrow1Lend' : 0.0127
