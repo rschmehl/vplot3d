@@ -5,13 +5,13 @@ Created on Thu Aug 11 11:03:50 2022
 
 Programmatically creating 3D vector diagrams for SVG output. The following diagram objects can be used
 
-- points
-- lines and circular arcs
-- vectors and arcmeasures
+- points,
+- lines and circular arcs,
+- vectors and arc measures.
 
-Points, vectors and arcmeasures use SVG markers.
+Points and arrowheads (for vectors and arc measures) are generated as SVG markers.
 
-@author: rschmehl
+@author: Roland Schmehl
 """
 
 from abc import ABC, abstractmethod
