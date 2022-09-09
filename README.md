@@ -1,7 +1,8 @@
 # vplot3d
 
-vplot3d extends the Python toolkit mplot3d to generating 3D drawings with high-quality SVG output.
+This library extends the Python toolkit mplot3d to programmatically generate 3D vector diagrams for SVG output.
+The following diagram objects can be used
 
-Key features:
-* Vectors with customizable arrow heads represented by SVG markers.
-* Points represented by SVG markers
+- Points,
+- Lines and circular arcs,
+- Vectors and arc measures.
