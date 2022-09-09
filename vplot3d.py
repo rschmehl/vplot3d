@@ -343,6 +343,10 @@ class Marker:
     numerical value indicates by how far the line (vectors) or discretized arc (arcmeasures) needs to
     be shortened to position the tip of the arrowhead precisely on the target.
 
+    It seems that value of the scale() function of the path's transform attribute and the deltas value
+    are linearly related. That means that the same scaling factor can be used for scale() and deltas
+    values.
+
     The current SVG standard (1.1) does not allow for inheritance of the color attribute from
     the object to which the marker is attached, to the marker. The new SVG standard (2) does
     but it is not implemented in webbrowsers yet. For that reason, we generate separate
