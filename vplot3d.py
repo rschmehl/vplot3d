@@ -323,13 +323,25 @@ class ArcMeasure(Arc):
         self.arc.set_data_3d(self.r[0,:-n+1], self.r[1,:-n+1], self.r[2,:-n+1])
 
 class Marker:
-    '''Class for marker objects to be used for arrow heads marking vectors or
-    For vectors or vector arcs, the marker should be positioned such that its local origin (0,0)
-    precisely coincides with the end of the line that represents the vector, or the end of the arc
-    representing the arc.
+    '''Class for marker objects for use as
+    - arrowheads of vectors,
+    - arrowheads of arc measures,
+    - points.
 
-    To do this, the path needs to be opened in Inkscape. Use the XML-edio to find the relevant
-    <defs> section
+    To precisely position an arrowhead for arc measures, the marker path needs to be adjusted such that
+    the base of the arrowhead (the local origin of the marker path) coincides with the end point of the
+    line segment to which it is attached. This can best be achieved by adjusting the x-value of the
+    translate() function of the path's transform attribute. This is easiest done in Inkscape, by first
+    drawing a horizontal line and adding the desired arrowhead, then double clicking this line to show
+    its two control points. Activating the XML Editor, one needs to look for the <defs> section and the
+    correct <marker>. Clicking the <path> subelement of this marker, one can manually adjust the x-value
+    of the translate() function until the base of the arrowhead is precisely positioned on the end
+    control point of the line. The determined value is then changed in the corresponding entry of the
+    paths dictionary below.
+
+    In a second step, the corresponding value of the deltas dictionary below needs to be adjusted. The
+    numerical value indicates by how far the line (vectors) or discretized arc (arcmeasures) needs to
+    be shortened to position the tip of the arrowhead precisely on the target.
 
     The current SVG standard (1.1) does not allow for inheritance of the color attribute from
     the object to which the marker is attached, to the marker. The new SVG standard (2) does
@@ -340,14 +352,14 @@ class Marker:
     # Dictionary of marker paths, follows Inkscape default markers
     paths = {
         'Arrow1Mend' : ';stroke-width:1pt;opacity:1;stroke-linejoin:miter" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z" transform="scale(0.4) rotate(180) translate(-0.9,0)',
-        'Arrow1Lend' : ';stroke-width:1pt;opacity:1;stroke-linejoin:miter" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z" transform="scale(0.8) rotate(180) translate(10,0)',
+        'Arrow1Lend' : ';stroke-width:1pt;opacity:1;stroke-linejoin:miter" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z" transform="scale(0.8) rotate(180) translate(-0.9,0)',
         'Point1M'    : ';stroke-width:3;opacity:1;f" d="M -2.5,-1.0 C -2.5,1.7600000 -4.7400000,4.0 -7.5,4.0 C -10.260000,4.0 -12.5,1.7600000 -12.5,-1.0 C -12.5,-3.7600000 -10.260000,-6.0 -7.5,-6.0 C -4.7400000,-6.0 -2.5,-3.7600000 -2.5,-1.0 z" transform="scale(0.25) translate(7.4, 1)'
     }
 
     # Dictionary of path offsets (to be determined empirically for each vector marker path)
     deltas = {
-        'Arrow1Mend' : 0.02,
-        'Arrow1Lend' : 0.0127
+        'Arrow1Mend' : 0.0204,
+        'Arrow1Lend' : 0.0408
     }
 
     def __init__(self, shape=None, style=None, facecolor='k', edgecolor='k', css_style='overflow:visible', refX=0, refY=0, orient='auto'):
