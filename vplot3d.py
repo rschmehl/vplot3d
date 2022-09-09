@@ -189,7 +189,8 @@ class Line(Object3D):
         lines.append(self)
 
 class Vector(Line):
-    '''Class for vector objects.
+    '''Class for vector objects, consisting of a line and an arrowhead attached to its end point.
+    The arrowhead is not drawn explicitly, but added as an SVG marker object.
     '''
     def __init__(self, p=ORIGIN, v=EXYZ, id=None, linewidth=LINEWIDTH, shape='Arrow1Mend', scale=1, zorder=0, color='k', alpha=1):
 
@@ -207,8 +208,17 @@ class Vector(Line):
         vectors.append(self)
 
     def adjust_length(self, plot_radius, elev, azim):
-        '''
-        Shorten the vector line such that the marker tip coincides with the actual vector end point
+        '''Shorten the line to which the arrowhead is attached such that the tip of the arrowhead
+        coincides with the intended vector end point. Arrowhead markers are defined in such a way
+        that the base of the arrowhead (the local origin of the marker path) coincides with the end
+        point of the line segment to which it is attached. Because of this, the line has to be
+        shortened by the length of the arrowhead to make the tip of the arrowhead coincide with the
+        actual vector end point.
+
+        Because the shortening of the line meeds to accommodate the 2D arrowhead in display
+        coordinate space, we need to apply a scaling to the shortening in 3D model coordinate space.
+        In fact, the shortening in 3D model coordinate space is always larger, depending on the
+        respective projection.
         '''
         v = self.v
         p = self.p
@@ -224,7 +234,7 @@ class Vector(Line):
         self.line.set_data_3d([p[0], q[0]], [p[1], q[1]], [p[2], q[2]])
 
 class Arc(Object3D):
-    '''Class for circular arc objects.
+    '''Class for circular arc objects, discretized by a number of equidistant line segments.
     '''
     def __init__(self, p=ORIGIN, v1=EX, v2=EY, radius=1, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, color='k', alpha=1):
         '''e1, e2 and e3 are spanning a local vector base
@@ -260,7 +270,9 @@ class Arc(Object3D):
         arcs.append(self)
 
 class ArcMeasure(Arc):
-    '''Class for circular arc measure objects.
+    '''Class for circular arc measure objects, discretized by a number of equidistant line
+    segments and an arrowhead attached to its end point. The arrowhead is not drawn explicitly,
+    but added as an SVG marker object.
     '''
     def __init__(self, p=ORIGIN, v1=EX, v2=EY, radius=1, id=None, linewidth=LINEWIDTH, shape='Arrow1Mend', scale=1, zorder=0, color='k', alpha=1):
         '''e1, e2 and e3 are spanning a local vector base
@@ -280,15 +292,23 @@ class ArcMeasure(Arc):
         arcmeasures.append(self)
 
     def adjust_length(self, plot_radius, elev, azim):
-        '''
-        Shorten the arc such that the marker tip coincides with the actual geometric target point.
+        '''Shorten the arc to which the arrowhead is attached such that the tip of the arrowhead
+        coincides with the intended end point. Arrowhead markers are defined in such a way that the
+        base of the arrowhead (the local origin of the marker path) coincides with the end point of
+        the arc's last line segment. If the line segment is longer than the length of the arrowhead,
+        the line segment can just be shortened, similar as for the shortening of the single line
+        segment defining a vector. However, if the line segment is shorter than the arrowhead (which
+        in most situations will be the case) one or even more line segments of the arc need to be
+        removed and replaced by a longer line segment that can accomodate the arrowhead. This
+        enlarged line segment is then shortened.
 
-        This is similar to the shortening of line segements that are used for vectors, with the additional
-        step of removing line segemnts from the tip of the discretized arc and
-        , such that the entire arrow head
-        marker can be fitted
+        For the replacement operation, we keep the target point of the arc measure, and determine
+        the last node of the discretized arc that we can keep, such the entire arrowhead will fit.
+        This replacement line segment is then shortened. In this way, we get a precise placement of
+        the arc measure, while maintaining a clean representation of the arrowhead.
 
-
+        See the Vector.adust_length() how to deal with the fact that the arrowhead is a 2D object
+        in display coordinate space, while we need to shorteh the arc in 3D model coordinate space.
         '''
 
         # pick the last segment of the discretized arc
@@ -296,7 +316,7 @@ class ArcMeasure(Arc):
         sabs = np.sqrt(s.dot(s))
         # unit vector along this last segment
         e = s/sabs
-        ax = plt.gca()
+#        ax = plt.gca()
 
         # offset for the used marker
         delta = Marker.deltas[self.shape]*self.linewidth
