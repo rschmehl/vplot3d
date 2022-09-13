@@ -245,10 +245,12 @@ class Arc(Object3D):
         self.gid = 'arc_' + str(len(arcs)+1)
         # normalized vectors spanning the arc
         self.e1 = e1 = v1 = v1/np.sqrt(np.dot(v1,v1))
+#        print(e1)
         self.v2 = v2 =      v2/np.sqrt(np.dot(v2,v2))
         # angle between the two vectors
         self.angle = angle = np.degrees(np.arccos(np.dot(e1,v2)))
         # scaled radius
+#       print(scale)
         self.radius = radius = radius*scale
         # normal vector
         n  = np.cross(e1,v2)
@@ -259,7 +261,7 @@ class Arc(Object3D):
         # find end index
         ip = np.argmax(DEGREES>angle)
         # array with coordinates of discretization points
-        r = e1[:,np.newaxis]*COS[np.newaxis,:ip] + e2[:,np.newaxis]*SIN[np.newaxis,:ip]
+        r = p[:,np.newaxis] + radius*(e1[:,np.newaxis]*COS[np.newaxis,:ip] + e2[:,np.newaxis]*SIN[np.newaxis,:ip])
         self.r = r
 
         # plot the line
@@ -310,37 +312,31 @@ class ArcMeasure(Arc):
         See the Vector.adust_length() how to deal with the fact that the arrowhead is a 2D object
         in display coordinate space, while we need to shorteh the arc in 3D model coordinate space.
         '''
-
-        # pick the last segment of the discretized arc
-        s    = self.r[:,-1] - self.r[:,-2]
-        sabs = np.sqrt(s.dot(s))
-        # unit vector along this last segment
-        e = s/sabs
-#        ax = plt.gca()
-
         # offset for the used marker
         delta = Marker.deltas[self.shape]*self.linewidth
-        # length of unit vector projected into display
-        l = projected_length(elev, azim, e)
-        # endpoint correction in 3D space
-        d = 2*plot_radius*delta/l
+        # start at tip of arrowhead and walk back on arc
+        for i, alpha in enumerate(DEGREES):
+            if i == 0: continue                # i = 1, 2, 3, ...
+            # chord vector (determined from discrete points)
+            s = self.r[:,-1] - self.r[:,-1-i]
+            # chord length
+            sabs = np.sqrt(s.dot(s))
+            # chord unit vector (pointing towards arc end point)
+            e = s/sabs
+            # length of chord unit vector projected into display coordinate space
+            l = projected_length(elev, azim, e)
+            # endpoint correction in 3D space
+            d = 2*plot_radius*delta/l
+#            print(i, alpha, sabs, d)
+            if sabs > d: break
 
-        # find the last node of the discretized arc to keep
-        n    = int(np.ceil(d/sabs))            # n can be 1, 2, 3, ...
-        s    = self.r[:,-1] - self.r[:,-1-n]
-        sabs = np.sqrt(s.dot(s))
-        e = s/sabs
-#       ax.plot([self.r[0,-1-n], self.r[0,-1]], [self.r[1,-1-n], self.r[1,-1]], [self.r[2,-1-n], self.r[2,-1]])
-        # length of unit vector projected into display
-        l = projected_length(elev, azim, e)
-
         # endpoint correction in 3D space
-        self.r[:,-n] = self.r[:,-1] - e*2*plot_radius*delta/l
-        # crop nodal array
-        if n > 1:
-            np.delete(self.r, np.s_[-n+1:], 1)
-            np.delete(self.r, np.s_[-1:], 1)
-        self.arc.set_data_3d(self.r[0,:-n+1], self.r[1,:-n+1], self.r[2,:-n+1])
+        self.r[:,-i] = self.r[:,-1] - e*d
+        # reset discrete arc data
+        if i > 1: # i = 2, 3, ...
+            self.arc.set_data_3d(self.r[0,:-i+1], self.r[1,:-i+1], self.r[2,:-i+1])
+        else:
+            self.arc.set_data_3d(self.r[0,:], self.r[1,:], self.r[2,:])
 
 class Marker:
     '''Class for marker objects for use as
