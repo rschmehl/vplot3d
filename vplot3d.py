@@ -182,6 +182,7 @@ class Line(Object3D):
         q = p + v
 
         # plot the line
+        print('ṕlot the line')
         line, = self.ax.plot([p[0], q[0]], [p[1], q[1]], [p[2], q[2]], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.color, alpha=self.alpha)
         line.set_gid(self.gid)
         self.line = line
