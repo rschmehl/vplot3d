@@ -16,6 +16,7 @@ Points and arrowheads (for vectors and arc measures) are generated as SVG marker
 
 from abc import ABC, abstractmethod
 from mpl_toolkits.mplot3d import Axes3D, proj3d
+from matplotlib.text import Annotation
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
@@ -41,6 +42,11 @@ arcs        = []
 arcmeasures = []
 points      = []
 markers     = []
+
+# Raw Latex math - see https://github.com/matplotlib/matplotlib/issues/4938#issuecomment-783252908
+RAW_MATH  = False
+def _m(s):
+    return s.replace("$", r"\$") if RAW_MATH else s
 
 def orthogonal_proj(zfront, zback):
     a = (zfront+zback)/(zfront-zback)
@@ -108,6 +114,29 @@ def projected_length(beta_deg, phi_deg, vec):
     ly =             -np.sin(phi)*vec[0]             +np.cos(phi)*vec[1]
     lz =-np.sin(beta)*np.cos(phi)*vec[0]-np.sin(beta)*np.sin(phi)*vec[1]+np.cos(beta)*vec[2]
     return np.sqrt(ly*ly + lz*lz)
+
+class Annotation3D(Annotation):
+    '''Annotate the point xyz with text s
+    See https://stackoverflow.com/a/42915422
+    '''
+
+    def __init__(self, s, xyz, *args, **kwargs):
+        Annotation.__init__(self,s, xy=(0,0), *args, **kwargs)
+        self._verts3d = xyz
+
+    def draw(self, renderer):
+        xs3d, ys3d, zs3d = self._verts3d
+        xs, ys, zs = proj3d.proj_transform(xs3d, ys3d, zs3d, renderer.M)
+        self.xy=(xs,ys)
+        Annotation.draw(self, renderer)
+
+def annotate3D(ax, s, *args, **kwargs):
+    '''add anotation text s to to Axes3d ax
+    See https://stackoverflow.com/a/42915422
+    '''
+
+    tag = Annotation3D(_m(s), *args, **kwargs)
+    ax.add_artist(tag)
 
 class Object3D(ABC):
     '''Abstract class for 3D objects.
@@ -182,7 +211,6 @@ class Line(Object3D):
         q = p + v
 
         # plot the line
-        print('ṕlot the line')
         line, = self.ax.plot([p[0], q[0]], [p[1], q[1]], [p[2], q[2]], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.color, alpha=self.alpha)
         line.set_gid(self.gid)
         self.line = line

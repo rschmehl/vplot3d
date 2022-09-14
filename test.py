@@ -7,22 +7,26 @@ Created on Thu Aug 11 11:03:50 2022
 @author: rschmehl
 """
 
-from mpl_toolkits.mplot3d import proj3d, art3d
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import vplot3d as v3d
 import numpy as np
+from mpl_toolkits.mplot3d import proj3d, art3d
 from itertools import product, combinations
-from vplot3d import orthogonal_proj, Line, Vector, Point, Arc, ArcMeasure, save_svg
+from vplot3d import orthogonal_proj, annotate3D, Line, Vector, Point, Arc, ArcMeasure, save_svg
 
 from IPython.display import set_matplotlib_formats
 set_matplotlib_formats('svg', 'pdf')
 
 
-# Figure size
+mpl.rcParams['svg.fonttype']   = 'none'
 mpl.rcParams['figure.figsize'] = 10, 10
 
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d', proj_type='ortho')
+
+# Render raw math string
+v3d.RAW_MATH = False
 
 #
 # elevation and azimuth angle -> 0,0 gives yz-perspective of coordinate system
@@ -72,6 +76,11 @@ poly3d = [[q1, q2, q3, q4]]
 ax.add_collection3d(art3d.Poly3DCollection(poly3d, facecolors='g', edgecolors='k', linewidths=1, alpha=0.95))
 
 #pg = Polygon([[q1, q2, q3, q4]], )
+
+# add some text
+#ax.text(q3[0],q3[1],q3[2], '$P_1$', size=20, color='k')
+annotate3D(ax, s='$P_1$', xyz=q3, fontsize=12, xytext=(5,5), textcoords='offset points')
+annotate3D(ax, s='$\phi$', xyz=q4, fontsize=12, xytext=(5,5), textcoords='offset points')
 
 ax.set_axis_off()
 save_svg('test.svg')
