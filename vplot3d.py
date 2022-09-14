@@ -48,6 +48,8 @@ markers     = []
 # Raw Latex math - see https://github.com/matplotlib/matplotlib/issues/4938#issuecomment-783252908
 RAW_MATH  = False
 def _m(s):
+    '''Helper method escaping backslash for raw math output
+    '''
     return s.replace("$", r"\$") if RAW_MATH else s
 
 def orthogonal_proj(zfront, zback):
@@ -142,7 +144,16 @@ class Object3D(ABC):
     '''
     @abstractmethod
     def __init__(self, p=ORIGIN, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, color='k', alpha=1):
-        #
+        '''Constructor.
+        Input
+          p         : reference point coordinates
+          id        : name identifier
+          linewidth : line width
+          scale     : scale of object, relative to p
+          zorder    : parameter used for depth sorting
+          color     : color of object
+          alpha     : transparency of object
+        '''
         # get current Axes instance
         self.ax = plt.gca()
         # reference point coordinates
@@ -182,7 +193,16 @@ class Point(Object3D):
     '''Class for point objects.
     '''
     def __init__(self, p=ORIGIN, id=None, linewidth=LINEWIDTH, shape='Point1M', zorder=0, color='k', alpha=1):
-        #
+        '''Constructor.
+        Input
+          p         : point coordinates
+          id        : name identifier
+          linewidth : line width
+          shape     : type of marker to be added
+          zorder    : parameter used for depth sorting
+          color     : color of point
+          alpha     : transparency of point
+        '''
         super().__init__(p, id, linewidth, 1, zorder, color, alpha)
         super().add_marker(shape, color, 'w')
 
@@ -199,7 +219,17 @@ class Line(Object3D):
     '''Class for line objects.
     '''
     def __init__(self, p=ORIGIN, v=EXYZ, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, color='k', alpha=1):
-
+        '''Constructor.
+        Input
+          p         : line starting point coordinates (absolute)
+          v         : line end point coordinates, relative to p
+          id        : name identifier
+          linewidth : line width
+          scale     : scale of line, relative to p
+          zorder    : parameter used for depth sorting
+          color     : color of line
+          alpha     : transparency of line
+        '''
         super().__init__(p, id, linewidth, scale, zorder, color, alpha)
 
         # set unique gid
@@ -221,7 +251,18 @@ class Vector(Line):
     The arrowhead is not drawn explicitly, but added as an SVG marker object.
     '''
     def __init__(self, p=ORIGIN, v=EXYZ, id=None, linewidth=LINEWIDTH, shape='Arrow1Mend', scale=1, zorder=0, color='k', alpha=1):
-
+        '''Constructor.
+        Input
+          p         : vector origin coordinates (absolute)
+          v         : vector target coordinates, relative to p
+          id        : name identifier
+          linewidth : line width
+          shape     : type of marker to be added
+          scale     : scale of line, relative to p
+          zorder    : parameter used for depth sorting
+          color     : color of line
+          alpha     : transparency of line
+        '''
         super().__init__(p, v, id, linewidth, scale, zorder, color, alpha)
         super().add_marker(shape, color, color)
 
@@ -265,7 +306,21 @@ class Arc(Object3D):
     '''Class for circular arc objects, discretized by a number of equidistant line segments.
     '''
     def __init__(self, p=ORIGIN, v1=EX, v2=EY, radius=1, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, color='k', alpha=1):
-        '''e1, e2 and e3 are spanning a local vector base
+        '''Constructor.
+        Input
+          p         : line starting point coordinates (absolute)
+          v1        : arc starting vector, relative to p
+          v2        : arc target vector, relative to p
+          radius    : radius of arc
+          id        : name identifier
+          linewidth : line width
+          scale     : scale of line, relative to p
+          zorder    : parameter used for depth sorting
+          color     : color of line
+          alpha     : transparency of line
+
+        The computed unit vectors e1, e2 and e3 span a local vector base in which the
+        discretized arc is computed.
         '''
         super().__init__(p, id, linewidth, 1, zorder, color, alpha)
 
@@ -305,9 +360,23 @@ class ArcMeasure(Arc):
     but added as an SVG marker object.
     '''
     def __init__(self, p=ORIGIN, v1=EX, v2=EY, radius=1, id=None, linewidth=LINEWIDTH, shape='Arrow1Mend', scale=1, zorder=0, color='k', alpha=1):
-        '''e1, e2 and e3 are spanning a local vector base
-        '''
+        '''Constructor.
+        Input
+          p         : line starting point coordinates (absolute)
+          v1        : arc starting vector, relative to p
+          v2        : arc target vector, relative to p
+          radius    : radius of arc
+          id        : name identifier
+          linewidth : line width
+          shape     : type of marker to be added
+          scale     : scale of line, relative to p
+          zorder    : parameter used for depth sorting
+          color     : color of line
+          alpha     : transparency of line
 
+        The computed unit vectors e1, e2 and e3 span a local vector base in which the
+        discretized arc is computed.
+        '''
         super().__init__(p, v1, v2, radius, id, linewidth, scale, zorder, color, alpha)
         super().add_marker(shape, color, color)
 
@@ -411,6 +480,17 @@ class Marker:
     }
 
     def __init__(self, shape=None, style=None, facecolor='k', edgecolor='k', css_style='overflow:visible', refX=0, refY=0, orient='auto'):
+        '''Constructor.
+        Input
+          shape     : type of marker to be added
+          style     : marker id composed of path + (edge)color
+          facecolor : fill color of marker
+          edgecolor : line color of marker
+          css_style : CSS style
+          refX      : x-displacement of marker
+          refY      : y-displacement of marker
+          orient    : orientation of marker
+        '''
         # shape
         self.shape = shape
         # colors
