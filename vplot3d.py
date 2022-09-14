@@ -30,8 +30,10 @@ EX        = np.array([1, 0, 0])
 EY        = np.array([0, 1, 0])
 EZ        = np.array([0, 0, 1])
 EXYZ      = np.array([1, 1, 1])
-LINEWIDTH = 3
-DEGREES   = np.arange(0, 361, 1)
+LINEWIDTH = 3                              # Linewidth of line objects
+FONTSIZE  = 12                             # Fontsize for text objects
+XYOFF     = (5,5)                          # xy-offset of text objects
+DEGREES   = np.arange(0, 361, 1)           # Discretization of circular objects
 COS       = np.cos(np.radians(DEGREES))
 SIN       = np.sin(np.radians(DEGREES))
 
@@ -117,26 +119,23 @@ def projected_length(beta_deg, phi_deg, vec):
 
 class Annotation3D(Annotation):
     '''Annotate the point xyz with text s
-    See https://stackoverflow.com/a/42915422
+    Inspired by https://stackoverflow.com/a/42915422
     '''
-
-    def __init__(self, s, xyz, *args, **kwargs):
-        Annotation.__init__(self,s, xy=(0,0), *args, **kwargs)
+    def __init__(self, s, xyz, xytext=None, fontsize=None, *args, **kwargs):
+        if xytext is None:
+            xytext = XYOFF
+        if fontsize is None:
+            fontsize = FONTSIZE
+        super().__init__(_m(s), xy=(0,0), xytext=xytext, fontsize=fontsize, textcoords='offset points', *args, **kwargs)
         self._verts3d = xyz
+        self.ax = plt.gca()
+        self.ax.add_artist(self)
 
     def draw(self, renderer):
         xs3d, ys3d, zs3d = self._verts3d
         xs, ys, zs = proj3d.proj_transform(xs3d, ys3d, zs3d, renderer.M)
-        self.xy=(xs,ys)
+        self.xy = (xs,ys)
         Annotation.draw(self, renderer)
-
-def annotate3D(ax, s, *args, **kwargs):
-    '''add anotation text s to to Axes3d ax
-    See https://stackoverflow.com/a/42915422
-    '''
-
-    tag = Annotation3D(_m(s), *args, **kwargs)
-    ax.add_artist(tag)
 
 class Object3D(ABC):
     '''Abstract class for 3D objects.
@@ -442,7 +441,6 @@ def save_svg(file='unnamed.svg'):
     Before saving the drawing, vector lines are shortened. See also https://stackoverflow.com/a/50797203
 
     '''
-
     # get current Axes instance and prepare axes for plotting
     ax = plt.gca()
     plot_radius = set_axes_equal(ax)
