@@ -464,13 +464,11 @@ class Polygon(Object3D):
         self.r = r
 
         # plot the polygon
-        self.ax.add_collection3d(art3d.Poly3DCollection(r, facecolors='g', edgecolors='k', linewidths=1, alpha=0.95))
-        # plot the line
-#        line, = self.ax.plot([p[0], q[0]], [p[1], q[1]], [p[2], q[2]], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.color, alpha=self.alpha)
-#        polygon.set_gid(self.gid)
-#        self.polygon = polygon
+        polygon = self.ax.add_collection3d(art3d.Poly3DCollection(r, facecolors='g', edgecolors='k', linewidths=1, alpha=0.95))
+        polygon.set_gid(self.gid)
+        self.polygon = polygon
         # add new polygon to the list of polygons
-#        polygons.append(self)
+        polygons.append(self)
 
 class Marker:
     '''Class for marker objects for use as

@@ -80,10 +80,6 @@ r4 = Point(q4,color='g',zorder=21)
 # Polygon
 pg1 = Polygon(p, [[q1, q2, q3, q4]], facecolor='g', edgecolor='k', scale=1, linewidth=1, alpha=0.95)
 
-#ax.add_collection3d(art3d.Poly3DCollection(poly3d, facecolors='g', edgecolors='k', linewidths=1, alpha=0.95))
-
-
-
 # add some text
 t1 = Annotation3D('$P_1$',  xyz=q3, xytext=(10,10))
 t2 = Annotation3D('$\phi$', xyz=q4)
