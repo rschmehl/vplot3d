@@ -15,7 +15,7 @@ Points and arrowheads (for vectors and arc measures) are generated as SVG marker
 """
 
 from abc import ABC, abstractmethod
-from mpl_toolkits.mplot3d import Axes3D, proj3d
+from mpl_toolkits.mplot3d import Axes3D, art3d, proj3d
 from matplotlib.text import Annotation
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -42,6 +42,7 @@ lines       = []
 vectors     = []
 arcs        = []
 arcmeasures = []
+polygons    = []
 points      = []
 markers     = []
 
@@ -328,12 +329,10 @@ class Arc(Object3D):
         self.gid = 'arc_' + str(len(arcs)+1)
         # normalized vectors spanning the arc
         self.e1 = e1 = v1 = v1/np.sqrt(np.dot(v1,v1))
-#        print(e1)
         self.v2 = v2 =      v2/np.sqrt(np.dot(v2,v2))
         # angle between the two vectors
         self.angle = angle = np.degrees(np.arccos(np.dot(e1,v2)))
         # scaled radius
-#       print(scale)
         self.radius = radius = radius*scale
         # normal vector
         n  = np.cross(e1,v2)
@@ -343,7 +342,7 @@ class Arc(Object3D):
         e2 = np.cross(e3,e1)
         # find end index
         ip = np.argmax(DEGREES>angle)
-        # array with coordinates of discretization points
+        # nodal points of the discretized arc
         r = p[:,np.newaxis] + radius*(e1[:,np.newaxis]*COS[np.newaxis,:ip] + e2[:,np.newaxis]*SIN[np.newaxis,:ip])
         self.r = r
 
@@ -434,6 +433,44 @@ class ArcMeasure(Arc):
             self.arc.set_data_3d(self.r[0,:-i+1], self.r[1,:-i+1], self.r[2,:-i+1])
         else:
             self.arc.set_data_3d(self.r[0,:], self.r[1,:], self.r[2,:])
+
+class Polygon(Object3D):
+    '''Class for polygon objects.
+    '''
+    def __init__(self, p=ORIGIN, v=[[EXYZ]], id=None, linewidth=LINEWIDTH, scale=1, zorder=0, facecolor='w', edgecolor='k', alpha=1):
+        '''Constructor.
+        Input
+          p         : polygon reference point coordinates, absolute
+          v         : polygon nodal point coordinates, relative to p
+          id        : name identifier
+          linewidth : line width
+          scale     : scale of polygon, relative to p
+          zorder    : parameter used for depth sorting
+          facecolor : fill color of polygon
+          edgecolor : line color of polygon
+          alpha     : transparency of line
+        '''
+        super().__init__(p, id, linewidth, scale, zorder, edgecolor, alpha)
+
+        # set unique gid
+        self.gid = 'polygon_' + str(len(polygons)+1)
+        # colors
+        self.facecolor = facecolor
+        self.edgecolor = edgecolor
+        # scale polygon nodal points, relative to p
+        self.v = [[vn*scale for vn in v[0]]]
+        # compute absolute coordinates of nodal points
+        r = [[p + vn for vn in self.v[0]]]
+        self.r = r
+
+        # plot the polygon
+        self.ax.add_collection3d(art3d.Poly3DCollection(r, facecolors='g', edgecolors='k', linewidths=1, alpha=0.95))
+        # plot the line
+#        line, = self.ax.plot([p[0], q[0]], [p[1], q[1]], [p[2], q[2]], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.color, alpha=self.alpha)
+#        polygon.set_gid(self.gid)
+#        self.polygon = polygon
+        # add new polygon to the list of polygons
+#        polygons.append(self)
 
 class Marker:
     '''Class for marker objects for use as

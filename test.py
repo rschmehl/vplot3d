@@ -13,7 +13,7 @@ import vplot3d as v3d
 import numpy as np
 from mpl_toolkits.mplot3d import proj3d, art3d
 from itertools import product, combinations
-from vplot3d import orthogonal_proj, Annotation3D, Line, Vector, Point, Arc, ArcMeasure, save_svg
+from vplot3d import orthogonal_proj, Annotation3D, Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg
 
 from IPython.display import set_matplotlib_formats
 set_matplotlib_formats('svg', 'pdf')
@@ -63,20 +63,26 @@ am1 = ArcMeasure(np.array([0, 0, 0]),np.array([1, 0, 0]),np.array([1, 1, 0]),1,l
 am2 = ArcMeasure(np.array([0, 1, 1]),np.array([0, -1, 0]),np.array([0, -1, -1]),0.5,linewidth=2,shape='Arrow1Mend',scale=1,zorder=31,color='r')
 
 # draw a polygon
+p  = np.array([0, 0, 0])
 q1 = np.array([0.5, -0.5, 1.0])
 q2 = np.array([0.8, -0.5, 0.9])
 q3 = np.array([1.0, 1.0, 1.0])
 q4 = np.array([0.4, 1.0, 1.0])
+poly3d = [[q1, q2, q3, q4]]
+
+#print(poly3d)
 
 r1 = Point(q1,color='g',zorder=21)
 r2 = Point(q2,color='g',zorder=21)
 r3 = Point(q3,color='g',zorder=21)
 r4 = Point(q4,color='g',zorder=21)
 
-poly3d = [[q1, q2, q3, q4]]
-ax.add_collection3d(art3d.Poly3DCollection(poly3d, facecolors='g', edgecolors='k', linewidths=1, alpha=0.95))
+# Polygon
+pg1 = Polygon(p, [[q1, q2, q3, q4]], facecolor='g', edgecolor='k', scale=1, linewidth=1, alpha=0.95)
 
-#pg = Polygon([[q1, q2, q3, q4]], )
+#ax.add_collection3d(art3d.Poly3DCollection(poly3d, facecolors='g', edgecolors='k', linewidths=1, alpha=0.95))
+
+
 
 # add some text
 t1 = Annotation3D('$P_1$',  xyz=q3, xytext=(10,10))
