@@ -464,7 +464,7 @@ class Polygon(Object3D):
         self.r = r
 
         # plot the polygon
-        polygon = self.ax.add_collection3d(art3d.Poly3DCollection(r, facecolors='g', edgecolors='k', linewidths=1, alpha=0.95))
+        polygon = self.ax.add_collection3d(art3d.Poly3DCollection(r, facecolors=self.facecolor, edgecolors=self.edgecolor, linewidths=self.linewidth, alpha=self.alpha))
         polygon.set_gid(self.gid)
         self.polygon = polygon
         # add new polygon to the list of polygons

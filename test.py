@@ -78,7 +78,7 @@ r3 = Point(q3,color='g',zorder=21)
 r4 = Point(q4,color='g',zorder=21)
 
 # Polygon
-pg1 = Polygon(p, [[q1, q2, q3, q4]], facecolor='g', edgecolor='k', scale=1, linewidth=1, alpha=0.95)
+pg1 = Polygon(p, [[q1, q2, q3, q4]], facecolor='g', edgecolor='k', scale=1, linewidth=1, alpha=0.5)
 
 # add some text
 t1 = Annotation3D('$P_1$',  xyz=q3, xytext=(10,10))
