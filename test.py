@@ -77,10 +77,13 @@ r1 = Point(q1,color='g',zorder=21)
 r2 = Point(q2,color='g',zorder=21)
 r3 = Point(q3,color='g',zorder=21)
 r4 = Point(q4,color='g',zorder=21)
+ex = np.array([1, 0, 0])
+ey = np.array([0, 1, 0])
+ez = np.array([0, 0, 1])
 
 # Polygon
 pg1 = Polygon(p, [[q1, q2, q3, q4]], facecolor='g', edgecolor='k', scale=1, linewidth=1, alpha=0.5)
-pg2 = Polygon.reoriented(p, [[u1, u2, u3]], facecolor='r', edgecolor='k', scale=1, linewidth=1, alpha=0.3)
+pg2 = Polygon.reoriented(np.array([0, 0.3, 0.2]), [[u1, u2, u3]], e1=ex, e3=ez, facecolor='r', edgecolor='k', scale=1, linewidth=1, alpha=0.3)
 
 # add some text
 t1 = Annotation3D('$P_1$',  xyz=q3, xytext=(10,10))
