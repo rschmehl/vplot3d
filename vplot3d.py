@@ -470,6 +470,14 @@ class Polygon(Object3D):
         # add new polygon to the list of polygons
         polygons.append(self)
 
+    @classmethod
+    def reoriented(cls, p=ORIGIN, v=[[EXYZ]], id=None, linewidth=LINEWIDTH, scale=1, zorder=0, facecolor='w', edgecolor='k', alpha=1):
+        '''Simulated constructor.
+        '''
+        return cls(p, v, id, linewidth, scale, zorder, facecolor, edgecolor, alpha)
+
+
+
 class Marker:
     '''Class for marker objects for use as
     - arrowheads of vectors,
