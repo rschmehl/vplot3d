@@ -471,10 +471,10 @@ class Polygon(Object3D):
         polygons.append(self)
 
     @classmethod
-    def reoriented(cls, p=ORIGIN, v=[[EXYZ]], e1=None, e2=None, e3=None, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, facecolor='w', edgecolor='k', alpha=1):
+    def rotated(cls, p=ORIGIN, v=None, file=None, e1=None, e2=None, e3=None, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, facecolor='w', edgecolor='k', alpha=1):
         '''Simulated constructor.
-        The polygon is plotted in a vector base (e1, e2, e3), of which at least two vectors must be specified.
-        Vectors e1, e2 and e3 do not need to be normalized.
+        The polygon is plotted in a vector base (e1, e2, e3), of which at least two axis-diections must be specified.
+        The vectors e1, e2 and e3 do not need to be normalized.
 
         Input
           p         : polygon reference point coordinates, absolute
@@ -503,11 +503,57 @@ class Polygon(Object3D):
             e3 = np.cross(e1, e2)
         e3abs = np.sqrt(e3.dot(e3))
         e3    = e3/e3abs
+
         # calculate polygon nodal point coordinates, relative to p
         r = [[vn[0]*e1 + vn[1]*e2 + vn[2]*e3 for vn in v[0]]]
-
         return cls(p, r, id, linewidth, scale, zorder, facecolor, edgecolor, alpha)
 
+    @classmethod
+    def fromfile(cls, p=ORIGIN, file=None, e1=None, e2=None, e3=None, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, facecolor='w', edgecolor='k', alpha=1):
+        '''Simulated constructor.
+        The polygon is plotted in a vector base (e1, e2, e3), of which at least two vectors must be specified as direase vtions.
+        The nodal coordinates are read from file. BVectors e1, e2 and e3 do not need to be normalized.
+
+        Input
+          p         : polygon reference point coordinates, absolute
+          file      : file name
+          e1        : x-direction new vector base
+          e2        : y-direction new vector base
+          e3        : z-direction new vector base
+          id        : name identifier
+          linewidth : line width
+          scale     : scale of polygon, relative to p
+          zorder    : parameter used for depth sorting
+          facecolor : fill color of polygon
+          edgecolor : line color of polygon
+          alpha     : transparency of line
+        '''
+        # complete the vector base
+        if e1 is None:
+            e1 = np.cross(e2, e3)
+        e1abs = np.sqrt(e1.dot(e1))
+        e1    = e1/e1abs
+        if e2 is None:
+            e2 = np.cross(e3, e1)
+        e2abs = np.sqrt(e2.dot(e2))
+        e2    = e2/e2abs
+        if e3 is None:
+            e3 = np.cross(e1, e2)
+        e3abs = np.sqrt(e3.dot(e3))
+        e3    = e3/e3abs
+
+        # read data from file
+        data = np.loadtxt(file, skiprows=1)
+        # add a zero column if data is 2D
+        if data.shape[1] < 3:
+            # add column
+            col = np.zeros((data.shape[0],1))
+            data = np.append(data, col, axis=1)
+        v = [list(data)]
+
+        # calculate polygon nodal point coordinates, relative to p
+        r = [[vn[0]*e1 + vn[1]*e2 + vn[2]*e3 for vn in v[0]]]
+        return cls(p, r, id, linewidth, scale, zorder, facecolor, edgecolor, alpha)
 
 
 class Marker:
