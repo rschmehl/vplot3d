@@ -84,7 +84,7 @@ ez = np.array([0, 0, 1])
 # Polygon
 pg1 = Polygon(p, [[q1, q2, q3, q4]], facecolor='g', edgecolor='k', scale=1, linewidth=1, alpha=0.5)
 pg2 = Polygon.rotated(np.array([0, 0.3, 0.2]), [[u1, u2, u3]], e1=ex, e3=ez, facecolor='r', edgecolor='k', scale=0.5, linewidth=1, alpha=0.3)
-pg3 = Polygon.fromfile(p, 'clarky.dat', e1=ex, e3=ez, facecolor='k', edgecolor='k', scale=1, linewidth=1, alpha=0.2)
+pg3 = Polygon.fromfile(p, 'clarky.dat', e1=ex, e3=ez, facecolor='k', edgecolor='k', scale=1, linewidth=1, alpha=0.1, edgecoloralpha=0.1)
 
 # add some text
 t1 = Annotation3D('$P_1$',  xyz=q3, xytext=(10,10))

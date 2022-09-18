@@ -437,7 +437,7 @@ class ArcMeasure(Arc):
 class Polygon(Object3D):
     '''Class for polygon objects.
     '''
-    def __init__(self, p=ORIGIN, v=[[EXYZ]], id=None, linewidth=LINEWIDTH, scale=1, zorder=0, facecolor='w', edgecolor='k', alpha=1):
+    def __init__(self, p=ORIGIN, v=[[EXYZ]], id=None, linewidth=LINEWIDTH, scale=1, zorder=0, facecolor='w', edgecolor='k', alpha=1, edgecoloralpha=None):
         '''Constructor.
         Input
           p         : polygon reference point coordinates, absolute
@@ -456,7 +456,13 @@ class Polygon(Object3D):
         self.gid = 'polygon_' + str(len(polygons)+1)
         # colors
         self.facecolor = facecolor
-        self.edgecolor = edgecolor
+        # alpha seems to not be applied to edgecolor -> do it here explicitly
+        if edgecoloralpha is not None:
+            self.edgecoloralpha = edgecoloralpha
+            self.edgecolor = mpl.colors.to_rgba(edgecolor, alpha=edgecoloralpha)
+        else:
+            self.edgecoloralpha = alpha
+            self.edgecolor = mpl.colors.to_rgba(edgecolor, alpha=alpha)
         # scale polygon nodal points, relative to p
         self.v = [[vn*scale for vn in v[0]]]
         # compute absolute coordinates of nodal points
@@ -464,14 +470,15 @@ class Polygon(Object3D):
         self.r = r
 
         # plot the polygon
-        polygon = self.ax.add_collection3d(art3d.Poly3DCollection(r, facecolors=self.facecolor, edgecolors=self.edgecolor, linewidths=self.linewidth, alpha=self.alpha))
+        pg = art3d.Poly3DCollection(r, facecolors=self.facecolor, edgecolors=self.edgecolor, linewidths=self.linewidth, alpha=self.alpha)
+        polygon = self.ax.add_collection3d(pg)
         polygon.set_gid(self.gid)
         self.polygon = polygon
         # add new polygon to the list of polygons
         polygons.append(self)
 
     @classmethod
-    def rotated(cls, p=ORIGIN, v=None, file=None, e1=None, e2=None, e3=None, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, facecolor='w', edgecolor='k', alpha=1):
+    def rotated(cls, p=ORIGIN, v=None, file=None, e1=None, e2=None, e3=None, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, facecolor='w', edgecolor='k', alpha=1, edgecoloralpha=None):
         '''Simulated constructor.
         The polygon is plotted in a vector base (e1, e2, e3), of which at least two axis-diections must be specified.
         The vectors e1, e2 and e3 do not need to be normalized.
@@ -506,10 +513,10 @@ class Polygon(Object3D):
 
         # calculate polygon nodal point coordinates, relative to p
         r = [[vn[0]*e1 + vn[1]*e2 + vn[2]*e3 for vn in v[0]]]
-        return cls(p, r, id, linewidth, scale, zorder, facecolor, edgecolor, alpha)
+        return cls(p, r, id, linewidth, scale, zorder, facecolor, edgecolor, alpha, edgecoloralpha)
 
     @classmethod
-    def fromfile(cls, p=ORIGIN, file=None, e1=None, e2=None, e3=None, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, facecolor='w', edgecolor='k', alpha=1):
+    def fromfile(cls, p=ORIGIN, file=None, e1=None, e2=None, e3=None, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, facecolor='w', edgecolor='k', alpha=1, edgecoloralpha=None):
         '''Simulated constructor.
         The polygon is plotted in a vector base (e1, e2, e3), of which at least two vectors must be specified as direase vtions.
         The nodal coordinates are read from file. BVectors e1, e2 and e3 do not need to be normalized.
@@ -553,7 +560,7 @@ class Polygon(Object3D):
 
         # calculate polygon nodal point coordinates, relative to p
         r = [[vn[0]*e1 + vn[1]*e2 + vn[2]*e3 for vn in v[0]]]
-        return cls(p, r, id, linewidth, scale, zorder, facecolor, edgecolor, alpha)
+        return cls(p, r, id, linewidth, scale, zorder, facecolor, edgecolor, alpha, edgecoloralpha)
 
 
 class Marker:
