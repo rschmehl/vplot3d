@@ -31,8 +31,8 @@ v3d.FONTSIZE = 20
 
 #
 # elevation and azimuth angle -> 0,0 gives yz-perspective of coordinate system
-elev =  90   # default:  30
-azim = -90   # default: -60
+elev =  30   # default:  30
+azim = -60   # default: -60
 ax.view_init(elev, azim)
 proj3d.persp_transformation = orthogonal_proj
 
@@ -83,8 +83,8 @@ ez = np.array([0, 0, 1])
 
 # Polygon
 pg1 = Polygon(p, [[q1, q2, q3, q4]], facecolor='g', edgecolor='k', scale=1, linewidth=1, alpha=0.5)
-pg2 = Polygon.rotated(np.array([0, 0.3, 0.2]), [[u1, u2, u3]], e1=ex, e3=ez, facecolor='r', edgecolor='k', scale=0.5, linewidth=1, alpha=0.3)
-pg3 = Polygon.fromfile(p, 'clarky.dat', e1=ex, e3=ez, facecolor='k', edgecolor='k', scale=1, linewidth=1, alpha=0.1, edgecoloralpha=0.1)
+pg2 = Polygon.rotated(np.array([0, 0.3, 0.2]), v=[[u1, u2, u3]], e1=ex, e3=ez, facecolor='r', edgecolor='k', scale=0.5, linewidth=1, alpha=0.3)
+pg3 = Polygon.rotated(p, file='clarky.dat', e1=ex, e3=ez, facecolor='k', edgecolor='k', scale=1, linewidth=1, alpha=0.1, edgecoloralpha=0.8)
 
 # add some text
 t1 = Annotation3D('$P_1$',  xyz=q3, xytext=(10,10))
