@@ -440,15 +440,16 @@ class Polygon(Object3D):
     def __init__(self, p=ORIGIN, v=[[EXYZ]], id=None, linewidth=LINEWIDTH, scale=1, zorder=0, facecolor='w', edgecolor='k', alpha=1, edgecoloralpha=None):
         '''Constructor.
         Input
-          p         : polygon reference point coordinates, absolute
-          v         : polygon nodal point coordinates, relative to p
-          id        : name identifier
-          linewidth : line width
-          scale     : scale of polygon, relative to p
-          zorder    : parameter used for depth sorting
-          facecolor : fill color of polygon
-          edgecolor : line color of polygon
-          alpha     : transparency of line
+          p              : polygon reference point coordinates, absolute
+          v              : polygon nodal point coordinates, relative to p
+          id             : name identifier
+          linewidth      : line width
+          scale          : scale of polygon, relative to p
+          zorder         : parameter used for depth sorting
+          facecolor      : fill color of polygon
+          edgecolor      : line color of polygon
+          alpha          : transparency of polygon line and fill colors
+          edgecoloralpha : different transparency of polygon line color
         '''
         super().__init__(p, id, linewidth, scale, zorder, edgecolor, alpha)
 
@@ -456,13 +457,13 @@ class Polygon(Object3D):
         self.gid = 'polygon_' + str(len(polygons)+1)
         # colors
         self.facecolor = facecolor
-        # alpha seems to not be applied to edgecolor -> do it here explicitly
-        if edgecoloralpha is not None:
-            self.edgecoloralpha = edgecoloralpha
-            self.edgecolor = mpl.colors.to_rgba(edgecolor, alpha=edgecoloralpha)
-        else:
+        # alpha seems to not be applied to edgecolor and we do it here explicitly
+        if edgecoloralpha is None:
             self.edgecoloralpha = alpha
             self.edgecolor = mpl.colors.to_rgba(edgecolor, alpha=alpha)
+        else:
+            self.edgecoloralpha = edgecoloralpha
+            self.edgecolor = mpl.colors.to_rgba(edgecolor, alpha=edgecoloralpha)
         # scale polygon nodal points, relative to p
         self.v = [[vn*scale for vn in v[0]]]
         # compute absolute coordinates of nodal points
