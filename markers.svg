@@ -1,0 +1,20 @@
+<svg>
+  <defs>
+    <marker id="Arrow1Mend" orient="auto" refX="0" refY="0" style="overflow:visible">
+      <path style="stroke:#000000;fill:#000000;stroke-width:1pt;opacity:1;stroke-linejoin:miter" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z" transform="scale(0.4) rotate(180) translate(-0.9,0)" />
+    </marker>
+    <marker id="Arrow1Lend" orient="auto" refX="0" refY="0" style="overflow:visible">
+      <path style="stroke:#000000;fill:#000000;stroke-width:1pt;opacity:1;stroke-linejoin:miter" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z" transform="scale(0.8) rotate(180) translate(-0.9,0)" />
+    </marker>
+    <marker id="Point1M" orient="auto" refX="0" refY="0" style="overflow:visible">
+      <path style="stroke:#000000;fill:#ffffff;stroke-width:3;opacity:1;" d="M -2.5,-1.0 C -2.5,1.7600000 -4.7400000,4.0 -7.5,4.0 C -10.260000,4.0 -12.5,1.7600000 -12.5,-1.0 C -12.5,-3.7600000 -10.260000,-6.0 -7.5,-6.0 C -4.7400000,-6.0 -2.5,-3.7600000 -2.5,-1.0 z" transform="scale(0.25) translate(7.4, 1)" />
+    </marker>
+    <marker id="CoG1" orient="auto" refX="0" refY="0" style="overflow:visible">
+      <circle style="fill:none;stroke:#000000;stroke-width:2" cx="100.5657" cy="118.74059" r="50" transform="translate(-100.5657,-118.74059)" />
+      <path style="fill:none;stroke:none" d="m 100.5657,68.740593 a 50,50 0 0 1 50,49.999997 h -50 z" transform="translate(-100.5657,-118.74059)" />
+      <path style="fill:#000000;stroke:none" d="M 50.565697,118.74059 A 50,50 0 0 1 100.5657,68.740593 v 49.999997 z" transform="translate(-100.5657,-118.74059)" />
+      <path style="fill:none;stroke:none" d="M 100.5657,168.74059 A 50,50 0 0 1 65.210357,154.09593 50,50 0 0 1 50.565697,118.74059 H 100.5657 Z" transform="translate(-100.5657,-118.74059)" />
+      <path style="fill:#000000;stroke:none" d="m 150.5657,118.74059 a 50,50 0 0 1 -50,50 v -50 z" transform="translate(-100.5657,-118.74059)" />
+    </marker>
+  </defs>
+</svg>

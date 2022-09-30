@@ -20,6 +20,7 @@ from matplotlib.text import Annotation
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
+import copy
 import io
 import xml.etree.ElementTree as ET
 import textwrap
@@ -45,6 +46,10 @@ arcmeasures = []
 polygons    = []
 points      = []
 markers     = []
+
+# Open file with marker definitions
+mtree = ET.parse('markers.svg')
+mroot = mtree.getroot()
 
 # Raw Latex math - see https://github.com/matplotlib/matplotlib/issues/4938#issuecomment-783252908
 RAW_MATH  = False
@@ -439,6 +444,7 @@ class Polygon(Object3D):
     '''
     def __init__(self, p=ORIGIN, v=[[EXYZ]], id=None, linewidth=LINEWIDTH, scale=1, zorder=0, facecolor='w', edgecolor='k', alpha=1, edgecoloralpha=None):
         '''Constructor.
+        Draws a polygon with nodal points v specified relative to a reference point p.
         Input
           p              : polygon reference point coordinates, absolute
           v              : polygon nodal point coordinates, relative to p
@@ -479,7 +485,7 @@ class Polygon(Object3D):
         polygons.append(self)
 
     @classmethod
-    def rotated(cls, p=ORIGIN, v=None, file=None, e1=None, e2=None, e3=None, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, facecolor='w', edgecolor='k', alpha=1, edgecoloralpha=None):
+    def rotated(cls, p=ORIGIN, v=None, file=None, e1=None, e2=None, e3=None, voff=ORIGIN, d=None, linewidth=LINEWIDTH, scale=1, zorder=0, facecolor='w', edgecolor='k', alpha=1, edgecoloralpha=None):
         '''Simulated constructor.
         The polygon is plotted in a vector base (e1, e2, e3), of which at least two axis-diections must be specified.
         The vectors e1, e2 and e3 do not need to be normalized.
@@ -491,6 +497,7 @@ class Polygon(Object3D):
           e1        : x-direction new vector base
           e2        : y-direction new vector base
           e3        : z-direction new vector base
+          voff      : offset applied to nodal points, relative to p
           id        : name identifier
           linewidth : line width
           scale     : scale of polygon, relative to p
@@ -524,9 +531,8 @@ class Polygon(Object3D):
                 data = np.append(data, col, axis=1)
             v = [list(data)]
 
-
         # calculate polygon nodal point coordinates, relative to p
-        r = [[vn[0]*e1 + vn[1]*e2 + vn[2]*e3 for vn in v[0]]]
+        r = [[(vn[0]+voff[0])*e1 + (vn[1]+voff[1])*e2 + (vn[2]+voff[2])*e3 for vn in v[0]]]
         return cls(p, r, id, linewidth, scale, zorder, facecolor, edgecolor, alpha, edgecoloralpha)
 
 
@@ -565,7 +571,7 @@ class Marker:
     paths = {
         'Arrow1Mend' : ';stroke-width:1pt;opacity:1;stroke-linejoin:miter" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z" transform="scale(0.4) rotate(180) translate(-0.9,0)',
         'Arrow1Lend' : ';stroke-width:1pt;opacity:1;stroke-linejoin:miter" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z" transform="scale(0.8) rotate(180) translate(-0.9,0)',
-        'Point1M'    : ';stroke-width:3;opacity:1;f" d="M -2.5,-1.0 C -2.5,1.7600000 -4.7400000,4.0 -7.5,4.0 C -10.260000,4.0 -12.5,1.7600000 -12.5,-1.0 C -12.5,-3.7600000 -10.260000,-6.0 -7.5,-6.0 C -4.7400000,-6.0 -2.5,-3.7600000 -2.5,-1.0 z" transform="scale(0.25) translate(7.4, 1)'
+        'Point1M'    : ';stroke-width:3;opacity:1;" d="M -2.5,-1.0 C -2.5,1.7600000 -4.7400000,4.0 -7.5,4.0 C -10.260000,4.0 -12.5,1.7600000 -12.5,-1.0 C -12.5,-3.7600000 -10.260000,-6.0 -7.5,-6.0 C -4.7400000,-6.0 -2.5,-3.7600000 -2.5,-1.0 z" transform="scale(0.25) translate(7.4, 1)'
     }
 
     # Dictionary of path offsets (to be determined empirically for each vector marker path)
@@ -574,13 +580,14 @@ class Marker:
         'Arrow1Lend' : 0.0408
     }
 
-    def __init__(self, shape=None, style=None, facecolor='k', edgecolor='k', css_style='overflow:visible', refX=0, refY=0, orient='auto'):
+    def __init__(self, shape=None, style=None, edgecolor=None, facecolor=None, bgcolor=None, css_style='overflow:visible', refX=0, refY=0, orient='auto'):
         '''Constructor.
         Input
           shape     : type of marker to be added
           style     : marker id composed of path + (edge)color
-          facecolor : fill color of marker
           edgecolor : line color of marker
+          facecolor : fill color of marker
+          bgcolor   : background color
           css_style : CSS style
           refX      : x-displacement of marker
           refY      : y-displacement of marker
@@ -589,8 +596,10 @@ class Marker:
         # shape
         self.shape = shape
         # colors
+# better assign after constructing marker SVG?
         self.facecolor = facecolor
         self.edgecolor = edgecolor
+        self.bgcolor = bgcolor
         # marker id composed of path + color
         self.id = style
         # marker css style
@@ -601,19 +610,63 @@ class Marker:
         # orientation
         self.orient = orient
         # svg code
-        hexfacecolor = mpl.colors.to_hex(facecolor)
-        hexedgecolor = mpl.colors.to_hex(edgecolor)
+
+#>>>>>>>
+        print(shape + ' ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+        svg = ''
+        marker = mroot.find('.//defs/marker[@id="{}"]'.format(shape))
+
+        if marker is None:
+
+            print('Marker ' + shape + ' not found in markers.svg')
+
+        else:
+
+            # Iterate through all paths of the marker
+            for path in marker:
+
+                p = copy.deepcopy(path)
+
+                # build a dictionary from the css-style information
+
+                print(p.tag, p.attrib)
+
+                # Remove appended semicolon which is valid CSS but crashes the following splitting algorithm
+                if p.attrib['style'][-1] == ';': p.attrib['style'] = p.attrib['style'][:-1]
+                style = {pair.split(":")[0]:pair.split(":")[1] for pair in p.attrib['style'].split(";")}
+
+                if 'stroke' in style:
+                    if edgecolor is not None and style['stroke'] != 'none':
+                        style['stroke'] = mpl.colors.to_hex(edgecolor)
+
+                if 'fill' in style:
+                    if mpl.colors.to_hex(style['fill']) == '#ffffff':
+                        if bgcolor is not None and style['fill'] != 'none':
+                            style['fill'] = mpl.colors.to_hex(bgcolor)
+                    elif mpl.colors.to_hex(style['fill']) == '#000000':
+                        if facecolor is not None and style['fill'] != 'none':
+                            style['fill'] = mpl.colors.to_hex(facecolor)
+                    else:
+                        print('Color ' + str(style['fill']) + ' in marker ' + str(marker.attrib['id']) + ' in file markers.svg is not changed')
+
+                p.attrib['style'] = ';'.join(f'{key}:{value}' for key, value in style.items())
+
+                svg = svg + '<' + p.tag + ' ' + ' '.join(f'{key}="{value}"' for key, value in p.attrib.items()) + '/>\n'
+
+#<<<<<<<
         marker_start = '<marker id="' + self.id + '" style="' + self.css_style + '" refX="' + self.refX + '" refY="' + self.refY + '" orient="' + self.orient + '">'
-        marker_path  = '   <path style="stroke:' + hexedgecolor + ';fill:' + hexfacecolor + Marker.paths[shape] + '"/>'
         marker_end   = '</marker>'
-        self.svg = marker_start + '\n' + marker_path + '\n' + marker_end
+        self.svg = marker_start + '\n' + svg + marker_end
+
+        print(self.svg)
 
 def save_svg(file='unnamed.svg'):
     '''Function for modifying the generated SVG code.
 
     Inspired by https://matplotlib.org/stable/gallery/misc/svg_filter_line.html and other sources.
 
-    Before saving the drawing, vector lines are shortened. See also https://stackoverflow.com/a/50797203
+    Before saving the drawing, lines for vectors and polylines for arc measures are shortened.
+    See also https://stackoverflow.com/a/50797203
 
     '''
     # get current Axes instance and prepare axes for plotting
