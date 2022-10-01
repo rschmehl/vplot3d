@@ -45,7 +45,7 @@ for s, e in combinations(np.array(list(product(r, r, r))), 2):
         ax.plot3D(*zip(s, e), color="b")
 
 # draw a line
-l1 = Line(np.array([0, 1, 1]),np.array([0, -1, -1]),linewidth=1,color='k')
+l1 = Line(np.array([0, 1, 1]),np.array([0, -1, -1]),linewidth=1)
 
 # draw some vectors
 v1 = Vector(np.array([0, 0, 0]),np.array([1, 1, 0.5]),shape='Arrow1Mend',zorder=11,color='k')
@@ -58,6 +58,8 @@ p1 = Point(np.array([0, 0, 0]),shape='Point1M',zorder=30,color='b')
 p2 = Point(np.array([0.5, 0.5, 0]),shape='Point1M',zorder=30,color='r')
 p3 = Point(np.array([0.5, 0.5, 0.6]),shape='Point1M',color='r')
 p4 = Point(np.array([0.25, 0.75, 0.9]),shape='Point1M',color='r')
+
+p5 = Point(np.array([0.25, 0.65, 0.75]),shape='CoG',color='r')
 
 # draw some arcs and arc measures
 a1  = Arc(np.array([0, 0, 0]),np.array([1, 0, 0]),np.array([0, 0, 1]),1,linewidth=2,color='b')
@@ -95,8 +97,8 @@ t2 = Annotation3D('$\phi$', xyz=q4)
 
 ax.set_axis_off()
 save_svg('test.svg')
-#plt.close()
+plt.close()
 
 # Use Inkscape to convert the SVG into a PNG file
-#p=subprocess.call(['/usr/bin/inkscape', 'test.svg', '--export-type=png', '--export-filename=test.png'])
-#display(Image(filename='test.png'))
+p=subprocess.call(['/usr/bin/inkscape', 'test.svg', '--export-type=png', '--export-filename=test.png'])
+display(Image(filename='test.png'))

@@ -127,6 +127,7 @@ def projected_length(beta_deg, phi_deg, vec):
 
 class Annotation3D(Annotation):
     '''Annotate the point xyz with text s
+
     Inspired by https://stackoverflow.com/a/42915422
     '''
     def __init__(self, s, xyz, xytext=None, fontsize=None, *args, **kwargs):
@@ -147,17 +148,26 @@ class Annotation3D(Annotation):
 
 class Object3D(ABC):
     '''Abstract class for 3D objects.
+    The three colors edgecolor, facecolor, bgcolor can be used to control the coloring of a specific Object3D.
+    The specific meaning may vary per child class.
     '''
     @abstractmethod
-    def __init__(self, p=ORIGIN, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, color='k', alpha=1):
+    def __init__(self, p=ORIGIN, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, edgecolor=None, facecolor=None, bgcolor=None, alpha=1):
         '''Constructor.
+
+        The three colors edgecolor, facecolor and bgcolor can be used to set different color regions in the Object3D,
+        depending on the specific implementation. This set could be extended in the future for more complex Object3D
+        implementations.
+
         Input
           p         : reference point coordinates
           id        : name identifier
           linewidth : line width
           scale     : scale of object, relative to p
           zorder    : parameter used for depth sorting
-          color     : color of object
+          edgecolor : stroke color of object
+          facecolor : fill color (foreground) of abject
+          bgcolor   : fill color (background) of abject
           alpha     : transparency of object
         '''
         # get current Axes instance
@@ -172,19 +182,22 @@ class Object3D(ABC):
         self.scale = scale
         # depth order
         self.zorder = zorder
-        # object color
-        self.color = color
+        # object colors
+        self.edgecolor = edgecolor
+        self.facecolor = facecolor
+        self.bgcolor = bgcolor
         # object transparency
         self.alpha = alpha
         # object group id
         self.gid = None
 
-    def add_marker(self, shape, edgecolor, facecolor):
+    def add_marker(self, shape, edgecolor, facecolor, bgcolor):
         '''Add a marker to the object.
         Input
           shape     : type of marker to be added
-          edgecolor : stroke color of marker
-          facecolor : fill color of marker
+          edgecolor : stroke color of object
+          facecolor : fill color (foreground) of abject
+          bgcolor   : fill color (background) of abject
         '''
         # arrow head shape
         self.shape = shape
@@ -193,12 +206,14 @@ class Object3D(ABC):
         # add it to the list of markers if it is not yet included
         if self.style not in [m.id for m in markers]:
             # For arrowheads we use the same stroke and fill color (i.e. edge and face color)
-            markers.append(Marker(shape, self.style, edgecolor=edgecolor, facecolor=facecolor))
+            markers.append(Marker(shape, self.style, edgecolor=edgecolor, facecolor=facecolor, bgcolor=bgcolor))
 
 class Point(Object3D):
     '''Class for point objects.
+    Display SVG marker objects from file markers.svg at a specific location.
+    Default values of colors are taken from SVG file.
     '''
-    def __init__(self, p=ORIGIN, id=None, linewidth=LINEWIDTH, shape='Point1M', zorder=0, color='k', alpha=1):
+    def __init__(self, p=ORIGIN, id=None, linewidth=LINEWIDTH, shape='Point1M', zorder=0, color=None, edgecolor=None, facecolor=None, bgcolor=None, alpha=1):
         '''Constructor.
         Input
           p         : point coordinates
@@ -206,16 +221,24 @@ class Point(Object3D):
           linewidth : line width
           shape     : type of marker to be added
           zorder    : parameter used for depth sorting
-          color     : color of point
+          color     : color of point object
+          edgecolor : stroke color of point
+          facecolor : fill color (foreground) of point
+          bgcolor   : fill color (background) of point
           alpha     : transparency of point
         '''
-        super().__init__(p, id, linewidth, 1, zorder, color, alpha)
-        super().add_marker(shape, color, 'w')
+        if color is not None:
+            if edgecolor is None: edgecolor = color
+            if facecolor is None: facecolor = color
+            if bgcolor is None: bgcolor = 'w'
+
+        super().__init__(p, id, linewidth, 1, zorder, edgecolor, facecolor, bgcolor, alpha)
+        super().add_marker(shape, edgecolor, facecolor, bgcolor)
 
         # set unique gid
         self.gid = 'point_' + str(len(points)+1)
         # plot a point where the marker is placed later
-        line, = self.ax.plot([p[0], p[0]], [p[1], p[1]], [p[2], p[2]], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.color, alpha=self.alpha)
+        line, = self.ax.plot([p[0], p[0]], [p[1], p[1]], [p[2], p[2]], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.edgecolor, alpha=self.alpha)
         line.set_gid(self.gid)
         self.line = line
         # add new point to the list of points
@@ -236,7 +259,7 @@ class Line(Object3D):
           color     : color of line
           alpha     : transparency of line
         '''
-        super().__init__(p, id, linewidth, scale, zorder, color, alpha)
+        super().__init__(p, id, linewidth, scale, zorder, color, None, None, alpha)
 
         # set unique gid
         self.gid = 'line_' + str(len(lines)+1)
@@ -246,7 +269,7 @@ class Line(Object3D):
         q = p + v
 
         # plot the line
-        line, = self.ax.plot([p[0], q[0]], [p[1], q[1]], [p[2], q[2]], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.color, alpha=self.alpha)
+        line, = self.ax.plot([p[0], q[0]], [p[1], q[1]], [p[2], q[2]], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.edgecolor, alpha=self.alpha)
         line.set_gid(self.gid)
         self.line = line
         # add new vector to the list of vectors
@@ -270,7 +293,7 @@ class Vector(Line):
           alpha     : transparency of line
         '''
         super().__init__(p, v, id, linewidth, scale, zorder, color, alpha)
-        super().add_marker(shape, color, color)
+        super().add_marker(shape, color, color, None)
 
         # set unique gid
         self.gid = 'vector_' + str(len(vectors)+1)
@@ -328,7 +351,7 @@ class Arc(Object3D):
         The computed unit vectors e1, e2 and e3 span a local vector base in which the
         discretized arc is computed.
         '''
-        super().__init__(p, id, linewidth, 1, zorder, color, alpha)
+        super().__init__(p, id, linewidth, 1, zorder, color, None, None, alpha)
 
         # set unique gid
         self.gid = 'arc_' + str(len(arcs)+1)
@@ -352,7 +375,7 @@ class Arc(Object3D):
         self.r = r
 
         # plot the line
-        arc, = self.ax.plot(r[0,:], r[1,:], r[2,:], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.color, alpha=self.alpha)
+        arc, = self.ax.plot(r[0,:], r[1,:], r[2,:], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.edgecolor, alpha=self.alpha)
         arc.set_gid(self.gid)
         self.arc = arc
         # add new arc to the list of arcs
@@ -382,7 +405,7 @@ class ArcMeasure(Arc):
         discretized arc is computed.
         '''
         super().__init__(p, v1, v2, radius, id, linewidth, scale, zorder, color, alpha)
-        super().add_marker(shape, color, color)
+        super().add_marker(shape, color, color, None)
 
         # set unique gid
         self.gid = 'arcmeasure_' + str(len(arcmeasures)+1)
@@ -442,7 +465,7 @@ class ArcMeasure(Arc):
 class Polygon(Object3D):
     '''Class for polygon objects.
     '''
-    def __init__(self, p=ORIGIN, v=[[EXYZ]], id=None, linewidth=LINEWIDTH, scale=1, zorder=0, facecolor='w', edgecolor='k', alpha=1, edgecoloralpha=None):
+    def __init__(self, p=ORIGIN, v=[[EXYZ]], id=None, linewidth=LINEWIDTH, scale=1, zorder=0, edgecolor='k', facecolor='w', alpha=1, edgecoloralpha=None):
         '''Constructor.
         Draws a polygon with nodal points v specified relative to a reference point p.
         Input
@@ -457,7 +480,9 @@ class Polygon(Object3D):
           alpha          : transparency of polygon line and fill colors
           edgecoloralpha : different transparency of polygon line color
         '''
-        super().__init__(p, id, linewidth, scale, zorder, edgecolor, alpha)
+        super().__init__(p, id, linewidth, scale, zorder, edgecolor, facecolor, None, alpha)
+
+#    def __init__(self, p=ORIGIN, id=None, linewidth=LINEWIDTH, shape='Point1M', zorder=0, edgecolor=None, facecolor=None, bgcolor=None, alpha=1):
 
         # set unique gid
         self.gid = 'polygon_' + str(len(polygons)+1)
@@ -542,6 +567,15 @@ class Marker:
     - arrowheads of arc measures,
     - points.
 
+    The constructor only generates the SVG code to be used for the marker.
+
+    Color mapping: the SVG file markers.svg should contain only the following key-color combinations:
+
+        none is never overwritten
+        stroke:#000000 (black) -> edgecolor
+        fill:#000000   (black) -> facecolor
+        fill:#ffffff   (white) -> bgcolor
+
     To precisely position an arrowhead for arc measures, the marker path needs to be adjusted such that
     the base of the arrowhead (the local origin of the marker path) coincides with the end point of the
     line segment to which it is attached. This can best be achieved by adjusting the x-value of the
@@ -567,13 +601,6 @@ class Marker:
     markers for each combination of marker shape and color.
     '''
 
-    # Dictionary of marker paths, follows Inkscape default markers
-    paths = {
-        'Arrow1Mend' : ';stroke-width:1pt;opacity:1;stroke-linejoin:miter" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z" transform="scale(0.4) rotate(180) translate(-0.9,0)',
-        'Arrow1Lend' : ';stroke-width:1pt;opacity:1;stroke-linejoin:miter" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z" transform="scale(0.8) rotate(180) translate(-0.9,0)',
-        'Point1M'    : ';stroke-width:3;opacity:1;" d="M -2.5,-1.0 C -2.5,1.7600000 -4.7400000,4.0 -7.5,4.0 C -10.260000,4.0 -12.5,1.7600000 -12.5,-1.0 C -12.5,-3.7600000 -10.260000,-6.0 -7.5,-6.0 C -4.7400000,-6.0 -2.5,-3.7600000 -2.5,-1.0 z" transform="scale(0.25) translate(7.4, 1)'
-    }
-
     # Dictionary of path offsets (to be determined empirically for each vector marker path)
     deltas = {
         'Arrow1Mend' : 0.0204,
@@ -596,7 +623,6 @@ class Marker:
         # shape
         self.shape = shape
         # colors
-# better assign after constructing marker SVG?
         self.facecolor = facecolor
         self.edgecolor = edgecolor
         self.bgcolor = bgcolor
@@ -610,35 +636,21 @@ class Marker:
         # orientation
         self.orient = orient
         # svg code
-
-#>>>>>>>
-        print(shape + ' ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
         svg = ''
         marker = mroot.find('.//defs/marker[@id="{}"]'.format(shape))
-
         if marker is None:
-
             print('Marker ' + shape + ' not found in markers.svg')
-
         else:
-
             # Iterate through all paths of the marker
             for path in marker:
-
                 p = copy.deepcopy(path)
-
                 # build a dictionary from the css-style information
-
-                print(p.tag, p.attrib)
-
                 # Remove appended semicolon which is valid CSS but crashes the following splitting algorithm
                 if p.attrib['style'][-1] == ';': p.attrib['style'] = p.attrib['style'][:-1]
                 style = {pair.split(":")[0]:pair.split(":")[1] for pair in p.attrib['style'].split(";")}
-
                 if 'stroke' in style:
                     if edgecolor is not None and style['stroke'] != 'none':
                         style['stroke'] = mpl.colors.to_hex(edgecolor)
-
                 if 'fill' in style:
                     if mpl.colors.to_hex(style['fill']) == '#ffffff':
                         if bgcolor is not None and style['fill'] != 'none':
@@ -648,17 +660,11 @@ class Marker:
                             style['fill'] = mpl.colors.to_hex(facecolor)
                     else:
                         print('Color ' + str(style['fill']) + ' in marker ' + str(marker.attrib['id']) + ' in file markers.svg is not changed')
-
                 p.attrib['style'] = ';'.join(f'{key}:{value}' for key, value in style.items())
-
                 svg = svg + '<' + p.tag + ' ' + ' '.join(f'{key}="{value}"' for key, value in p.attrib.items()) + '/>\n'
-
-#<<<<<<<
         marker_start = '<marker id="' + self.id + '" style="' + self.css_style + '" refX="' + self.refX + '" refY="' + self.refY + '" orient="' + self.orient + '">'
         marker_end   = '</marker>'
         self.svg = marker_start + '\n' + svg + marker_end
-
-        print(self.svg)
 
 def save_svg(file='unnamed.svg'):
     '''Function for modifying the generated SVG code.
