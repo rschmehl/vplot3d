@@ -54,12 +54,10 @@ v3 = Vector(np.array([0, 0, 0]),np.array([0, 0, 0.2]),scale=3,zorder=13,color='b
 v4 = Vector(np.array([0.5, 0.5, 0]),np.array([0, 0, 1.2]),scale=0.5,color='r')
 
 # draw some points
-p1 = Point(np.array([0, 0, 0]),shape='Point1M',zorder=30,color='b')
+p1 = Point(np.array([0, 0, 0]),shape='CoG',color='r',zorder=50)
 p2 = Point(np.array([0.5, 0.5, 0]),shape='Point1M',zorder=30,color='r')
 p3 = Point(np.array([0.5, 0.5, 0.6]),shape='Point1M',color='r')
 p4 = Point(np.array([0.25, 0.75, 0.9]),shape='Point1M',color='r')
-
-p5 = Point(np.array([0.25, 0.65, 0.75]),shape='CoG',color='r')
 
 # draw some arcs and arc measures
 a1  = Arc(np.array([0, 0, 0]),np.array([1, 0, 0]),np.array([0, 0, 1]),1,linewidth=2,color='b')
