@@ -213,7 +213,7 @@ class Point(Object3D):
     Display SVG marker objects from file markers.svg at a specific location.
     Default values of colors are taken from SVG file.
     '''
-    def __init__(self, p=ORIGIN, id=None, linewidth=LINEWIDTH, shape='Point1M', zorder=0, color=None, edgecolor=None, facecolor=None, bgcolor=None, alpha=1):
+    def __init__(self, p=ORIGIN, id=None, scale=1, shape='Point1M', zorder=0, color=None, edgecolor=None, facecolor=None, bgcolor=None, alpha=1):
         '''Constructor.
         Input
           p         : point coordinates
@@ -232,7 +232,7 @@ class Point(Object3D):
             if facecolor is None: facecolor = color
             if bgcolor is None: bgcolor = 'w'
 
-        super().__init__(p, id, linewidth, 1, zorder, edgecolor, facecolor, bgcolor, alpha)
+        super().__init__(p, id, scale*LINEWIDTH, 1, zorder, edgecolor, facecolor, bgcolor, alpha)
         super().add_marker(shape, edgecolor, facecolor, bgcolor)
 
         # set unique gid
