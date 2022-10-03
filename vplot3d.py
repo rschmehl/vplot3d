@@ -17,6 +17,7 @@ Points and arrowheads (for vectors and arc measures) are generated as SVG marker
 from abc import ABC, abstractmethod
 from mpl_toolkits.mplot3d import Axes3D, art3d, proj3d
 from matplotlib.text import Annotation
+from  matplotlib.colors import is_color_like
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
@@ -199,10 +200,20 @@ class Object3D(ABC):
           facecolor : fill color (foreground) of abject
           bgcolor   : fill color (background) of abject
         '''
-        # arrow head shape
+        # marker geometry
         self.shape = shape
-        # arrow head style
-        self.style = shape + '-' + edgecolor
+        # marker style (= shape + colors)
+        mec = mfc = mbc = ''
+        if is_color_like(bgcolor):
+            mbc = ':' + bgcolor
+            mfc = ':N'
+            mec = ':N'
+        if is_color_like(facecolor):
+            mfc = ':' + facecolor
+            mec = ':N'
+        if is_color_like(edgecolor):
+            mec = '-' + edgecolor
+        self.style = shape + mec + mfc + mbc
         # add it to the list of markers if it is not yet included
         if self.style not in [m.id for m in markers]:
             # For arrowheads we use the same stroke and fill color (i.e. edge and face color)
@@ -211,6 +222,7 @@ class Object3D(ABC):
 class Point(Object3D):
     '''Class for point objects.
     Display SVG marker objects from file markers.svg at a specific location.
+    Markers scale with linewidth of the line they are attached to. We use this linewidth for scaling the Point obkects.
     Default values of colors are taken from SVG file.
     '''
     def __init__(self, p=ORIGIN, id=None, scale=1, shape='Point1M', zorder=0, color=None, edgecolor=None, facecolor=None, bgcolor=None, alpha=1):
@@ -218,7 +230,7 @@ class Point(Object3D):
         Input
           p         : point coordinates
           id        : name identifier
-          linewidth : line width
+          scale     : scaling factor
           shape     : type of marker to be added
           zorder    : parameter used for depth sorting
           color     : color of point object

@@ -54,7 +54,8 @@ v3 = Vector(np.array([0, 0, 0]),np.array([0, 0, 0.2]),scale=3,zorder=13,color='b
 v4 = Vector(np.array([0.5, 0.5, 0]),np.array([0, 0, 1.2]),scale=0.5,color='r')
 
 # draw some points
-p1 = Point(np.array([0, 0, 0]),shape='CoG',scale=1.5,color='r',zorder=50)
+p1 = Point(np.array([0, 0, 0]),shape='CoG',scale=1.5,zorder=50,color='r')
+
 p2 = Point(np.array([0.5, 0.5, 0]),shape='Point1M',zorder=30,color='r')
 p3 = Point(np.array([0.5, 0.5, 0.6]),shape='Point1M',color='r')
 p4 = Point(np.array([0.25, 0.75, 0.9]),shape='Point1M',color='r')
@@ -84,7 +85,7 @@ ey = np.array([0, 1, 0])
 ez = np.array([0, 0, 1])
 
 # Polygon
-pg1 = Polygon(p, [[q1, q2, q3, q4]], facecolor='g', edgecolor='k', scale=1, linewidth=1, alpha=0.5)
+pg1 = Polygon(p, [[q1, q2, q3, q4]], edgecolor='k', facecolor='g', scale=1, linewidth=1, alpha=0.5)
 pg2 = Polygon.rotated(np.array([0, 0.3, 0.2]), v=[[u1, u2, u3]], e1=ex, e3=ez, facecolor='r', edgecolor='k', scale=0.5, linewidth=1, alpha=0.3)
 voff = np.array([-0.25, 0, 0])
 pg3 = Polygon.rotated(p, file='clarky.dat', e1=ex, e3=ez, voff=voff, facecolor='k', edgecolor='k', scale=1, linewidth=1, alpha=0.1, edgecoloralpha=0.8)
