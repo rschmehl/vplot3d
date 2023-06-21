@@ -225,7 +225,7 @@ class Point(Object3D):
     Markers scale with linewidth of the line they are attached to. We use this linewidth for scaling the Point obkects.
     Default values of colors are taken from SVG file.
     '''
-    def __init__(self, p=ORIGIN, id=None, scale=1, shape='Point1M', zorder=0, color=None, edgecolor=None, facecolor=None, bgcolor=None, alpha=1):
+    def __init__(self, p=ORIGIN, id=None, scale=1, shape='Point1M', zorder=0, color=None, edgecolor=None, facecolor=None, bgcolor=None, alpha=1, *args, **kwargs):
         '''Constructor.
         Input
           p         : point coordinates
@@ -259,7 +259,7 @@ class Point(Object3D):
 class Line(Object3D):
     '''Class for line objects.
     '''
-    def __init__(self, p=ORIGIN, v=EXYZ, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, color='k', alpha=1):
+    def __init__(self, p=ORIGIN, v=EXYZ, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, color='k', alpha=1, *args, **kwargs):
         '''Constructor.
         Input
           p         : line starting point coordinates (absolute)
@@ -514,7 +514,7 @@ class Polygon(Object3D):
         self.r = r
 
         # plot the polygon
-        pg = art3d.Poly3DCollection(r, facecolors=self.facecolor, edgecolors=self.edgecolor, linewidths=self.linewidth, alpha=self.alpha)
+        pg = art3d.Poly3DCollection(r, facecolors=self.facecolor, edgecolors=self.edgecolor, linewidths=self.linewidth, alpha=self.alpha, closed=False)
         polygon = self.ax.add_collection3d(pg)
         polygon.set_gid(self.gid)
         self.polygon = polygon

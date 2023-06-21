@@ -22,7 +22,7 @@ set_matplotlib_formats('svg', 'pdf')
 
 
 mpl.rcParams['svg.fonttype']   = 'none'
-mpl.rcParams['figure.figsize'] = 10, 10
+mpl.rcParams['figure.figsize'] = 10, 5
 
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d', proj_type='ortho')
@@ -33,8 +33,8 @@ v3d.FONTSIZE = 20
 
 #
 # elevation and azimuth angle -> 0,0 gives yz-perspective of coordinate system
-elev =  90   # default:  30
-azim = -90   # default: -60
+elev =  30   # default:  30
+azim = -60   # default: -60
 ax.view_init(elev, azim)
 proj3d.persp_transformation = orthogonal_proj
 
@@ -45,7 +45,7 @@ for s, e in combinations(np.array(list(product(r, r, r))), 2):
         ax.plot3D(*zip(s, e), color="b")
 
 # draw a line
-l1 = Line(np.array([0, 1, 1]),np.array([0, -1, -1]),linewidth=1)
+l1 = Line(np.array([0, 1, 1]),np.array([0, -1, -1]),linewidth=2, linestyle="dotted")
 
 # draw some vectors
 v1 = Vector(np.array([0, 0, 0]),np.array([1, 1, 0.5]),shape='Arrow1Mend',zorder=11,color='k')
@@ -90,9 +90,9 @@ pg2 = Polygon.rotated(np.array([0, 0.3, 0.2]), v=[[u1, u2, u3]], e1=ex, e3=ez, f
 voff = np.array([-0.25, 0, 0])
 pg3 = Polygon.rotated(p, file='clarky.dat', e1=ex, e3=ez, voff=voff, facecolor='k', edgecolor='k', scale=1, linewidth=1, alpha=0.1, edgecoloralpha=0.8)
 
-# add some text
-t1 = Annotation3D('$P_1$',  xyz=q3, xytext=(10,10))
-t2 = Annotation3D('$\phi$', xyz=q4)
+# add some text | does not work anymore (error message in renderer)
+#t1 = Annotation3D('$P_1$',  xyz=q3, xytext=(10,10))
+#t2 = Annotation3D('$\phi$', xyz=q4)
 
 ax.set_axis_off()
 save_svg('test.svg')
