@@ -69,16 +69,25 @@ am1 = ArcMeasure(PO, Px, Pk, 1, linewidth=2, shape='Arrow1Mend', scale=0.4, zord
 
 # Wing
 voff  = np.array([0, 0, 0])
-er    = np.array([1, 0, 1])
-ephi  = np.array([0, 1, 0])
-ebeta = np.array([0, 0, 1])
-pg1 = Polygon.rotated(Pk, file='planform.dat', e2=Py, e3=er, voff=voff, facecolor='k', edgecolor='k', scale=0.00005, linewidth=1, alpha=0.1, edgecoloralpha=0.8)
-pg2 = Polygon.rotated(Pk, file='tubeframe.dat', e2=Py, e3=er, voff=voff, facecolor='k', edgecolor='k', scale=0.00005, linewidth=3, alpha=0, edgecoloralpha=1)
+phi   = 0
+chi   = np.deg2rad(75)
+cb    = np.cos(beta)
+sb    = np.sin(beta)
+cp    = np.cos(phi)
+sp    = np.sin(phi)
+cc    = np.cos(chi)
+sc    = np.sin(chi)
+er    = np.array([ cb*cp,  cb*sp, sb])
+ephi  = np.array([   -sp,     cp,  0])
+ebeta = np.array([-sb*cp, -sb*sp, cb])
+vkt   = cc*ebeta + sc*ephi
+pg1 = Polygon.rotated(Pk, file='planform.dat', e2=vkt, e3=er, voff=voff, facecolor='k', edgecolor='k', scale=0.00005, linewidth=1, alpha=0.1, edgecoloralpha=0.8)
+pg2 = Polygon.rotated(Pk, file='tubeframe.dat', e2=vkt, e3=er, voff=voff, facecolor='k', edgecolor='k', scale=0.00005, linewidth=3, alpha=0, edgecoloralpha=1)
 
 # Velocity vectors
 Vw = np.array([0.5, 0, 0])
 vw = Vector(Pk, Vw, shape='Arrow1Mend', zorder=55, linewidth=2, color='r')
-Vk = np.array([0, 0.8, 0])
+Vk = 0.8*vkt
 vk = Vector(Pk, Vk, shape='Arrow1Mend', zorder=55, linewidth=2, color='r')
 
 ax.set_axis_off()
