@@ -60,6 +60,7 @@ e3 = Vector(PO, Pz, shape='Arrow1Mend', zorder=50, color='k')
 
 # Tether
 beta = np.deg2rad(30)
+phi  = 0
 Pk = r*np.array([np.cos(beta), 0, np.sin(beta)])
 l1 = Line(PO, Pk, linewidth=1, linestyle="solid")
 K  = Point(Pk,shape='Point1M',scale=0.5,zorder=60,color='k',bgcolor='k')
@@ -69,7 +70,6 @@ am1 = ArcMeasure(PO, Px, Pk, 1, linewidth=2, shape='Arrow1Mend', scale=0.4, zord
 
 # Wing
 voff  = np.array([0, 0, 0])
-phi   = 0
 chi   = np.deg2rad(75)
 cb    = np.cos(beta)
 sb    = np.sin(beta)

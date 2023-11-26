@@ -3,13 +3,19 @@
 """
 Created on Thu Aug 11 11:03:50 2022
 
-Programmatically creating 3D vector diagrams for SVG output. The following diagram objects can be used
+Programmatically creating 3D vector diagrams for SVG output. The following
+diagram objects can be used
 
 - points,
 - lines and circular arcs,
 - vectors and arc measures.
 
-Points and arrowheads (for vectors and arc measures) are generated as SVG markers.
+Points and arrowheads (for vectors and arc measures) are generated as SVG
+markers. At the time of writing this library, the MarkerKnockout feature did
+not make it into the SVG2 standard. This would have been the perfect native
+solution for the most painful problem addressed by this library, to make arrow
+heads ending precisely at the target node:
+https://svgwg.org/specs/markers/#MarkerKnockout
 
 @author: Roland Schmehl
 """
