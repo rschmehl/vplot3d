@@ -69,6 +69,8 @@ def figsize(figure_width_px, figure_height_px):
     ''' Sets figure size in inches, given a desired width and height in pixels.
     This approach is necessary because the SVG backend (print_svg) uses a
     hardcoded DPI value of 72.
+    See also function save_svg, where the hardcoded points "pt" units are
+    removed from the SVG root attributes width and height.
 
     Input
       figure_width_px:  figure width in pixels
@@ -710,7 +712,7 @@ def save_svg(file='unnamed.svg'):
     # get current Axes instance and prepare axes for plotting
     ax = plt.gca()
     plot_radius = set_axes_equal(ax)
-    ax.set_box_aspect([1,1,1]) # requires matplotlib 3.3.0
+    ax.set_box_aspect([1,1,1], zoom=3) # requires matplotlib 3.3.0
 
     # Shorten all vectors lines such that the marker tip coincides with the actual vector end point
     for vec in vectors:
@@ -722,7 +724,7 @@ def save_svg(file='unnamed.svg'):
 
     # save the figure as a byte string in SVG format
     f = io.BytesIO()
-    plt.savefig(f, format="svg", dpi=200)
+    plt.savefig(f, format="svg")
 
     # read in the saved SVG and define the SVG namespace
     ns = 'http://www.w3.org/2000/svg'
@@ -732,8 +734,6 @@ def save_svg(file='unnamed.svg'):
     # Remove the "pt" units from the width and height attributes
     tree.attrib['width']  = tree.attrib['width'].removesuffix('pt')
     tree.attrib['height'] = tree.attrib['height'].removesuffix('pt')
-
-    print(tree.attrib['width'], tree.attrib['height'])
 
     # remove the defs element with matplotlib's default css style
 #    for defs in tree.findall('{'+ns+'}defs'):
