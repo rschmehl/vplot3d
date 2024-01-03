@@ -13,7 +13,7 @@ import vplot3d as v3d
 import numpy as np
 from mpl_toolkits.mplot3d import proj3d, art3d
 from itertools import product, combinations
-from vplot3d import orthogonal_proj, Annotation3D, Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg
+from vplot3d import figsize, orthogonal_proj, Annotation3D, Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg
 import subprocess
 from IPython.display import display, Image
 
@@ -22,7 +22,7 @@ set_matplotlib_formats('svg', 'pdf')
 
 
 mpl.rcParams['svg.fonttype']   = 'none'
-mpl.rcParams['figure.figsize'] = 10, 5
+mpl.rcParams['figure.figsize'] = figsize(800, 400)
 
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d', proj_type='ortho')

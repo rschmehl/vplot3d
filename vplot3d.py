@@ -65,6 +65,20 @@ def _m(s):
     '''
     return s.replace("$", r"\$") if RAW_MATH else s
 
+def figsize(figure_width_px, figure_height_px):
+    ''' Sets figure size in inches, given a desired width and height in pixels.
+    This approach is necessary because the SVG backend (print_svg) uses a
+    hardcoded DPI value of 72.
+
+    Input
+      figure_width_px:  figure width in pixels
+      figure_height_px: figure height in pixels
+    Output
+      figsize:          figure width and height in inches
+    '''
+    fixed_dpi = 72    # SVG backend (print_svg) uses this hardcoded DPI value
+    return figure_width_px/fixed_dpi, figure_height_px/fixed_dpi
+
 def orthogonal_proj(zfront, zback):
     a = (zfront+zback)/(zfront-zback)
     b = -2*(zfront*zback)/(zfront-zback)
@@ -708,12 +722,18 @@ def save_svg(file='unnamed.svg'):
 
     # save the figure as a byte string in SVG format
     f = io.BytesIO()
-    plt.savefig(f, format="svg")
+    plt.savefig(f, format="svg", dpi=200)
 
     # read in the saved SVG and define the SVG namespace
     ns = 'http://www.w3.org/2000/svg'
     ET.register_namespace("", ns)
     tree, xmlid = ET.XMLID(f.getvalue())
+
+    # Remove the "pt" units from the width and height attributes
+    tree.attrib['width']  = tree.attrib['width'].removesuffix('pt')
+    tree.attrib['height'] = tree.attrib['height'].removesuffix('pt')
+
+    print(tree.attrib['width'], tree.attrib['height'])
 
     # remove the defs element with matplotlib's default css style
 #    for defs in tree.findall('{'+ns+'}defs'):
