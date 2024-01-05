@@ -714,6 +714,9 @@ def save_svg(file='unnamed.svg'):
     plot_radius = set_axes_equal(ax)
     ax.set_box_aspect([1,1,1], zoom=3) # requires matplotlib 3.3.0
 
+    # Remove margins (required?)
+    plt.subplots_adjust(left=0, right=1, top=1, bottom=0)
+
     # Shorten all vectors lines such that the marker tip coincides with the actual vector end point
     for vec in vectors:
         vec.adjust_length(plot_radius, ax.elev, ax.azim)
@@ -725,6 +728,7 @@ def save_svg(file='unnamed.svg'):
     # save the figure as a byte string in SVG format
     f = io.BytesIO()
     plt.savefig(f, format="svg")
+#   plt.savefig(f, format="svg", bbox_inches=0, transparent=True)
 
     # read in the saved SVG and define the SVG namespace
     ns = 'http://www.w3.org/2000/svg'
@@ -734,6 +738,14 @@ def save_svg(file='unnamed.svg'):
     # Remove the "pt" units from the width and height attributes
     tree.attrib['width']  = tree.attrib['width'].removesuffix('pt')
     tree.attrib['height'] = tree.attrib['height'].removesuffix('pt')
+
+    # Set clipPath to viewbox
+    clipPath = tree.find('.//{'+ns+'}clipPath')
+    rect = clipPath.find('.//{'+ns+'}rect')
+    rect.set('x', '0')
+    rect.set('y', '0')
+    rect.set('width',  tree.attrib['width'])
+    rect.set('height', tree.attrib['height'])
 
     # remove the defs element with matplotlib's default css style
 #    for defs in tree.findall('{'+ns+'}defs'):
