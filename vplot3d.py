@@ -714,7 +714,7 @@ def save_svg(file='unnamed.svg'):
     plot_radius = set_axes_equal(ax)
     ax.set_box_aspect([1,1,1], zoom=3) # requires matplotlib 3.3.0
 
-    # Remove margins (required?)
+    # Remove margins
     plt.subplots_adjust(left=0, right=1, top=1, bottom=0)
 
     # Shorten all vectors lines such that the marker tip coincides with the actual vector end point
@@ -728,7 +728,7 @@ def save_svg(file='unnamed.svg'):
     # save the figure as a byte string in SVG format
     f = io.BytesIO()
     plt.savefig(f, format="svg")
-#   plt.savefig(f, format="svg", bbox_inches=0, transparent=True)
+#   plt.savefig(f, format="svg", transparent=True)
 
     # read in the saved SVG and define the SVG namespace
     ns = 'http://www.w3.org/2000/svg'
