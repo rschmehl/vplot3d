@@ -33,6 +33,7 @@ import xml.etree.ElementTree as ET
 import textwrap
 
 # Default values
+ZOOM      = 1                              # For set_box_aspect
 ORIGIN    = np.array([0, 0, 0])
 EX        = np.array([1, 0, 0])
 EY        = np.array([0, 1, 0])
@@ -358,6 +359,8 @@ class Vector(Line):
         e = v/np.sqrt(v.dot(v))
         # offset for the used marker
         delta = Marker.deltas[self.shape]*self.linewidth
+        # correction with the minimum of figure width and height
+        delta = delta/(min(mpl.rcParams['figure.figsize'])/7.52777777777777)/ZOOM
         # length of unit vector projected into display
         l = projected_length(elev, azim, e)
         # corrected endpoint
@@ -472,6 +475,8 @@ class ArcMeasure(Arc):
         '''
         # offset for the used marker
         delta = Marker.deltas[self.shape]*self.linewidth
+        # correction with the minimum of figure width and height
+        delta = delta/(min(mpl.rcParams['figure.figsize'])/7.52777777777777)/ZOOM
         # start at tip of arrowhead and walk back on arc
         for i, alpha in enumerate(DEGREES):
             if i == 0: continue                # i = 1, 2, 3, ...
@@ -712,7 +717,7 @@ def save_svg(file='unnamed.svg'):
     # get current Axes instance and prepare axes for plotting
     ax = plt.gca()
     plot_radius = set_axes_equal(ax)
-    ax.set_box_aspect([1,1,1], zoom=3) # requires matplotlib 3.3.0
+    ax.set_box_aspect([1,1,1], zoom=ZOOM) # requires matplotlib 3.3.0
 
     # Remove margins
     plt.subplots_adjust(left=0, right=1, top=1, bottom=0)
@@ -725,12 +730,12 @@ def save_svg(file='unnamed.svg'):
     for arc in arcmeasures:
         arc.adjust_length(plot_radius, ax.elev, ax.azim)
 
-    # save the figure as a byte string in SVG format
+    # Save the figure as a byte string in SVG format
     f = io.BytesIO()
     plt.savefig(f, format="svg")
 #   plt.savefig(f, format="svg", transparent=True)
 
-    # read in the saved SVG and define the SVG namespace
+    # Read in the saved SVG and define the SVG namespace
     ns = 'http://www.w3.org/2000/svg'
     ET.register_namespace("", ns)
     tree, xmlid = ET.XMLID(f.getvalue())
@@ -739,7 +744,7 @@ def save_svg(file='unnamed.svg'):
     tree.attrib['width']  = tree.attrib['width'].removesuffix('pt')
     tree.attrib['height'] = tree.attrib['height'].removesuffix('pt')
 
-    # Set clipPath to viewbox
+    # Set clipPath to SVG viewbox
     clipPath = tree.find('.//{'+ns+'}clipPath')
     rect = clipPath.find('.//{'+ns+'}rect')
     rect.set('x', '0')

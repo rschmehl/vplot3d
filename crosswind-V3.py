@@ -22,7 +22,7 @@ set_matplotlib_formats('svg', 'pdf')
 
 
 mpl.rcParams['svg.fonttype']   = 'none'
-mpl.rcParams['figure.figsize'] = figsize(800, 400)
+mpl.rcParams['figure.figsize'] = figsize(400, 400)
 
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d', proj_type='ortho')
@@ -30,13 +30,14 @@ ax = fig.add_subplot(projection='3d', proj_type='ortho')
 # Rendering options
 #v3d.RAW_MATH = True
 v3d.FONTSIZE = 20
+v3d.ZOOM = 1.5
 
 #
 # elevation and azimuth angle -> 0,0 gives yz-perspective of coordinate system
 elev = 20   # default:  30
 azim = 30   # default: -60
 ax.view_init(elev, azim)
-ax.dist = 6                # default=10, https://stackoverflow.com/a/42350761
+#ax.dist = 6                # default=10, https://stackoverflow.com/a/42350761
 proj3d.persp_transformation = orthogonal_proj
 
 # Origin
@@ -53,16 +54,16 @@ e2 = Vector(PO, Py, shape='Arrow1Mend', zorder=50, color='k')
 e3 = Vector(PO, Pz, shape='Arrow1Mend', zorder=50, color='k')
 
 # draw cube https://itecnote.com/tecnote/python-plotting-a-3d-cube-a-sphere-and-a-vector-in-matplotlib/
-#rb = [0, r]
-#for s, e in combinations(np.array(list(product(rb, rb, rb))), 2):
-#    if np.sum(np.abs(s-e)) == rb[1]-rb[0]:
-#        ax.plot3D(*zip(s, e), color="b")
+rb = [0, r]
+for s, e in combinations(np.array(list(product(rb, rb, rb))), 2):
+    if np.sum(np.abs(s-e)) == rb[1]-rb[0]:
+        ax.plot3D(*zip(s, e), color="b")
 
 # Tether
 beta = np.deg2rad(30)
 phi  = 0
 Pk = r*np.array([np.cos(beta), 0, np.sin(beta)])
-l1 = Line(PO, Pk, linewidth=1, linestyle="solid")
+l1 = Line(PO, Pk, linewidth=2, linestyle="solid")
 K  = Point(Pk,shape='Point1M',scale=0.5,zorder=60,color='k',bgcolor='k')
 
 # Arc measure
@@ -91,7 +92,6 @@ Vk = 0.8*vkt
 vk = Vector(Pk, Vk, shape='Arrow1Mend', zorder=55, linewidth=2, color='r')
 
 ax.set_axis_off()
-
 save_svg('planform.svg')
 plt.close()
 

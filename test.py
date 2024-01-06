@@ -22,7 +22,7 @@ set_matplotlib_formats('svg', 'pdf')
 
 
 mpl.rcParams['svg.fonttype']   = 'none'
-mpl.rcParams['figure.figsize'] = figsize(600, 400)
+mpl.rcParams['figure.figsize'] = figsize(400, 600) # reference size for perfect arrowhead positioning.
 
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d', proj_type='ortho')
@@ -30,6 +30,7 @@ ax = fig.add_subplot(projection='3d', proj_type='ortho')
 # Rendering options
 #v3d.RAW_MATH = True
 v3d.FONTSIZE = 20
+v3d.ZOOM = 2
 
 #
 # elevation and azimuth angle -> 0,0 gives yz-perspective of coordinate system
@@ -52,6 +53,8 @@ v1 = Vector(np.array([0, 0, 0]),np.array([1, 1, 0.5]),shape='Arrow1Mend',zorder=
 v2 = Vector(np.array([0, 0, 0]),np.array([1, 1, 0]),shape='Arrow1Lend',zorder=12,color='r', alpha=0.2)
 v3 = Vector(np.array([0, 0, 0]),np.array([0, 0, 0.2]),scale=3,zorder=13,color='b',alpha=0.2)
 v4 = Vector(np.array([0.5, 0.5, 0]),np.array([0, 0, 1.2]),scale=0.5,color='r')
+
+v5 = Vector(np.array([0, 0, 0]),np.array([1, 1, 3.]),shape='Arrow1Mend',zorder=11,color='r')
 
 # draw some points
 p1 = Point(np.array([0, 0, 0]),shape='CoG',scale=1.5,zorder=50,color='r')
