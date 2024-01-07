@@ -9,6 +9,7 @@ Created on Thu Aug 11 11:03:50 2022
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import matplotlib_inline
 import vplot3d as v3d
 import numpy as np
 from mpl_toolkits.mplot3d import proj3d, art3d
@@ -17,9 +18,7 @@ from vplot3d import figsize, orthogonal_proj, Annotation3D, Line, Vector, Point,
 import subprocess
 from IPython.display import display, Image
 
-from IPython.display import set_matplotlib_formats
-set_matplotlib_formats('svg', 'pdf')
-
+matplotlib_inline.backend_inline.set_matplotlib_formats('svg')
 
 mpl.rcParams['svg.fonttype']   = 'none'
 mpl.rcParams['figure.figsize'] = figsize(400, 600) # reference size for perfect arrowhead positioning.
@@ -30,9 +29,11 @@ ax = fig.add_subplot(projection='3d', proj_type='ortho')
 # Rendering options
 #v3d.RAW_MATH = True
 v3d.FONTSIZE = 20
-v3d.ZOOM = 2
 
-#
+# scale and position diagram in dataspace
+v3d.ZOOM      = 2.5
+v3d.XYZOFFSET = np.array([0, 0, -0.2])
+
 # elevation and azimuth angle -> 0,0 gives yz-perspective of coordinate system
 elev =  30   # default:  30
 azim = -60   # default: -60

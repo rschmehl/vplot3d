@@ -33,12 +33,13 @@ import xml.etree.ElementTree as ET
 import textwrap
 
 # Default values
-ZOOM      = 1                              # For set_box_aspect
 ORIGIN    = np.array([0, 0, 0])
 EX        = np.array([1, 0, 0])
 EY        = np.array([0, 1, 0])
 EZ        = np.array([0, 0, 1])
 EXYZ      = np.array([1, 1, 1])
+ZOOM      = 1                              # Scales drawing
+XYZOFFSET = np.array([0, 0, 0])            # Shifts drawing in data space
 LINEWIDTH = 3                              # Linewidth of line objects
 FONTSIZE  = 12                             # Fontsize for text objects
 XYOFF     = (5,5)                          # xy-offset of text objects
@@ -101,18 +102,21 @@ def set_axes_equal(ax):
 
     Input
       ax: a matplotlib axis, e.g., as output from plt.gca().
+    Output
+      plot_radius: radius of data in data space
     '''
     # get current Axes instance
     x_limits = ax.get_xlim3d()
     y_limits = ax.get_ylim3d()
     z_limits = ax.get_zlim3d()
-    #
+    # determine data rannge and offset origin
     x_range = abs(x_limits[1] - x_limits[0])
-    x_middle = np.mean(x_limits)
+    x_middle = np.mean(x_limits) - XYZOFFSET[0]
     y_range = abs(y_limits[1] - y_limits[0])
-    y_middle = np.mean(y_limits)
+    y_middle = np.mean(y_limits) - XYZOFFSET[1]
     z_range = abs(z_limits[1] - z_limits[0])
-    z_middle = np.mean(z_limits)
+    z_middle = np.mean(z_limits) - XYZOFFSET[2]
+
     #
     # The plot bounding box is a sphere in the sense of the infinity
     # norm, hence I call half the max range the plot radius.

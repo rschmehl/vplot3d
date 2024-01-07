@@ -9,6 +9,7 @@ Created on Thu Aug 11 11:03:50 2022
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import matplotlib_inline
 import vplot3d as v3d
 import numpy as np
 from mpl_toolkits.mplot3d import proj3d, art3d
@@ -17,9 +18,7 @@ from vplot3d import figsize, orthogonal_proj, Annotation3D, Line, Vector, Point,
 import subprocess
 from IPython.display import display, Image
 
-from IPython.display import set_matplotlib_formats
-set_matplotlib_formats('svg', 'pdf')
-
+matplotlib_inline.backend_inline.set_matplotlib_formats('svg')
 
 mpl.rcParams['svg.fonttype']   = 'none'
 mpl.rcParams['figure.figsize'] = figsize(800, 500)
@@ -29,15 +28,16 @@ ax = fig.add_subplot(projection='3d', proj_type='ortho')
 
 # Rendering options
 #v3d.RAW_MATH = True
-v3d.FONTSIZE = 20
-v3d.ZOOM = 1.5
+v3d.FONTSIZE  = 20
 
-#
+# scale and position diagram in dataspace
+v3d.ZOOM      = 2
+v3d.XYZOFFSET = np.array([0, 0, -0.2])
+
 # elevation and azimuth angle -> 0,0 gives yz-perspective of coordinate system
 elev = 20   # default:  30
 azim = 30   # default: -60
 ax.view_init(elev, azim)
-#ax.dist = 6                # default=10, https://stackoverflow.com/a/42350761
 proj3d.persp_transformation = orthogonal_proj
 
 # Origin
@@ -82,8 +82,8 @@ er    = np.array([ cb*cp,  cb*sp, sb])
 ephi  = np.array([   -sp,     cp,  0])
 ebeta = np.array([-sb*cp, -sb*sp, cb])
 vkt   = cc*ebeta + sc*ephi
-pg1 = Polygon.rotated(Pk, file='planform.dat', e2=vkt, e3=er, voff=voff, facecolor='k', edgecolor='k', scale=0.00005, linewidth=1, alpha=0.1, edgecoloralpha=0.8)
-pg2 = Polygon.rotated(Pk, file='tubeframe.dat', e2=vkt, e3=er, voff=voff, facecolor='k', edgecolor='k', scale=0.00005, linewidth=3, alpha=0, edgecoloralpha=1)
+pg1 = Polygon.rotated(Pk, file='planform.dat', e2=vkt, e3=er, voff=voff, facecolor='k', edgecolor='k', scale=0.00003, linewidth=1, alpha=0.1, edgecoloralpha=0.8)
+pg2 = Polygon.rotated(Pk, file='tubeframe.dat', e2=vkt, e3=er, voff=voff, facecolor='k', edgecolor='k', scale=0.00003, linewidth=3, alpha=0, edgecoloralpha=1)
 
 # Velocity vectors
 Vw = np.array([0.5, 0, 0])
