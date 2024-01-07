@@ -54,10 +54,10 @@ e2 = Vector(PO, Py, shape='Arrow1Mend', zorder=50, color='k')
 e3 = Vector(PO, Pz, shape='Arrow1Mend', zorder=50, color='k')
 
 # draw cube https://itecnote.com/tecnote/python-plotting-a-3d-cube-a-sphere-and-a-vector-in-matplotlib/
-rb = [0, r]
-for s, e in combinations(np.array(list(product(rb, rb, rb))), 2):
-    if np.sum(np.abs(s-e)) == rb[1]-rb[0]:
-        ax.plot3D(*zip(s, e), color="b")
+#rb = [0, r]
+#for s, e in combinations(np.array(list(product(rb, rb, rb))), 2):
+#    if np.sum(np.abs(s-e)) == rb[1]-rb[0]:
+#        ax.plot3D(*zip(s, e), color="b")
 
 # Tether
 beta = np.deg2rad(30)
@@ -67,7 +67,7 @@ l1 = Line(PO, Pk, linewidth=2, linestyle="solid")
 K  = Point(Pk,shape='Point1M',scale=0.5,zorder=60,color='k',bgcolor='k')
 
 # Arc measure
-am1 = ArcMeasure(PO, Px, Pk, 1, linewidth=2, shape='Arrow1Mend', scale=0.4, zorder=31, color='k')
+am1 = ArcMeasure(PO, Px, Pk, 1, linewidth=2, shape='Arrow1Mend', scale=0.4, zorder=31, color='r')
 
 # Wing
 voff  = np.array([0, 0, 0])

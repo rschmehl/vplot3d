@@ -406,9 +406,11 @@ class Arc(Object3D):
         # e1, e2 and e3 form a vectorbase
         e2 = np.cross(e3,e1)
         # find end index
-        ip = np.argmax(DEGREES>angle)
+        ip = np.argmax(DEGREES>angle) - 1
         # nodal points of the discretized arc
-        r = p[:,np.newaxis] + radius*(e1[:,np.newaxis]*COS[np.newaxis,:ip] + e2[:,np.newaxis]*SIN[np.newaxis,:ip])
+        r = p[:,np.newaxis] + radius*(e1[:,np.newaxis]*COS[np.newaxis,:ip+1] + e2[:,np.newaxis]*SIN[np.newaxis,:ip+1])
+        # recalculate last node to match exactly the target point
+        r[:,ip] = p + radius*(e1*np.cos(np.radians(angle)) + e2*np.sin(np.radians(angle)))
         self.r = r
 
         # plot the line
