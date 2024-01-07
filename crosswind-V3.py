@@ -22,7 +22,7 @@ set_matplotlib_formats('svg', 'pdf')
 
 
 mpl.rcParams['svg.fonttype']   = 'none'
-mpl.rcParams['figure.figsize'] = figsize(400, 400)
+mpl.rcParams['figure.figsize'] = figsize(800, 500)
 
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d', proj_type='ortho')
