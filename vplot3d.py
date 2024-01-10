@@ -3,19 +3,26 @@
 """
 Created on Thu Aug 11 11:03:50 2022
 
-Programmatically creating 3D vector diagrams for SVG output. The following
+Programmatically create 3D vector diagrams for SVG output. The following
 diagram objects can be used
 
+- text,
 - points,
 - lines and circular arcs,
 - vectors and arc measures.
 
 Points and arrowheads (for vectors and arc measures) are generated as SVG
-markers. At the time of writing this library, the MarkerKnockout feature did
+markers. Vectors and arc measures are shortened such that the tip is positioned
+precisely on the target point.
+
+Note: At the time of developing this library, the MarkerKnockout feature did
 not make it into the SVG2 standard. This would have been the perfect native
 solution for the most painful problem addressed by this library, to make arrow
 heads ending precisely at the target node:
 https://svgwg.org/specs/markers/#MarkerKnockout
+
+Mathematical symbols can be included as Latex code, which is compiled in a
+postprocessing step.
 
 @author: Roland Schmehl
 """
@@ -42,7 +49,7 @@ ZOOM      = 1                              # Scales drawing
 XYZOFFSET = np.array([0, 0, 0])            # Shifts drawing in data space
 LINEWIDTH = 3                              # Linewidth of line objects
 FONTSIZE  = 12                             # Fontsize for text objects
-XYOFF     = (5,5)                          # xy-offset of text objects
+XYOFF     = (0,0)                          # xy-offset of text objects
 DEGREES   = np.arange(0, 361, 1)           # Discretization of circular objects
 COS       = np.cos(np.radians(DEGREES))
 SIN       = np.sin(np.radians(DEGREES))
