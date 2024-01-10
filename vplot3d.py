@@ -61,7 +61,7 @@ mtree = ET.parse('markers.svg')
 mroot = mtree.getroot()
 
 # Raw Latex math - see https://github.com/matplotlib/matplotlib/issues/4938#issuecomment-783252908
-RAW_MATH  = False
+RAW_MATH  = True
 def _m(s):
     '''Helper method escaping backslash for raw math output
     '''
@@ -153,6 +153,13 @@ def projected_length(beta_deg, phi_deg, vec):
     lz =-np.sin(beta)*np.cos(phi)*vec[0]-np.sin(beta)*np.sin(phi)*vec[1]+np.cos(beta)*vec[2]
     return np.sqrt(ly*ly + lz*lz)
 
+def _annotate3D(ax, text, xyz, *args, **kwargs):
+    '''Add annotation `text` to an `Axes3d` instance.'''
+    annotation = Annotation3D(text, xyz, *args, **kwargs)
+    ax.add_artist(annotation)
+
+setattr(Axes3D, 'annotate3D', _annotate3D)
+
 class Annotation3D(Annotation):
     '''Annotate the point xyz with text s
 
@@ -168,20 +175,11 @@ class Annotation3D(Annotation):
         self.ax = plt.gca()
         self.ax.add_artist(self)
 
-#   def __init__(self, text, xyz, *args, **kwargs):
-#       super().__init__(text, xy=(0, 0), *args, **kwargs)
-#       self._xyz = xyz
-
     def draw(self, renderer):
         xs3d, ys3d, zs3d = self._verts3d
         xs, ys, zs = proj3d.proj_transform(xs3d, ys3d, zs3d, self.axes.M)
         self.xy = (xs,ys)
-        Annotation.draw(self, renderer)
-
-#   def draw(self, renderer):
-#       x2, y2, z2 = proj_transform(*self._xyz, self.axes.M)
-#       self.xy = (x2, y2)
-#       super().draw(renderer)
+        super().draw(renderer)
 
 class Object3D(ABC):
     '''Abstract class for 3D objects.

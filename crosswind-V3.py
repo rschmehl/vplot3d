@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 import matplotlib_inline
 import vplot3d as v3d
 import numpy as np
-from mpl_toolkits.mplot3d import proj3d, art3d
+from mpl_toolkits.mplot3d import proj3d
 from itertools import product, combinations
 from vplot3d import figsize, orthogonal_proj, Annotation3D, Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg
 import subprocess
@@ -92,12 +92,16 @@ Vk = 0.8*vkt
 vk = Vector(Pk, Vk, shape='Arrow1Mend', zorder=55, linewidth=2, color='r')
 
 # Text labels
-t1 = Annotation3D('$O$',  xyz=PO, xytext=(0,-1.2))
+ax.annotate3D(r'$\vec{O}$', xyz=PO, xytext=(0,-1.6))
+ax.annotate3D(r'$\vvk$', xyz=PO+Pk+Vk, xytext=(-0.3,-1.3))
+ax.annotate3D(r'$\beta$', xyz=PO+0.4*Pk, xytext=(0,-2))
 
 ax.set_axis_off()
-save_svg('planform.svg')
+
+fname='crosswind-V3'
+save_svg(fname+'_tex.svg')
 plt.close()
 
-# Use Inkscape to convert the SVG into a PNG file
-p=subprocess.call(['inkscape', 'crosswind-V3.svg', '--export-type=png', '--export-filename=planform.png'])
-display(Image(filename='planform.png'))
+# Compile Latex code in diagram using inkscape > pdflatex > inkscape toolchain
+p=subprocess.call(['convert_tex.sh', fname+'_tex.svg'])
+display(Image(filename=fname+'.png'))
