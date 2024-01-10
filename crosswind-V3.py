@@ -91,10 +91,13 @@ vw = Vector(Pk, Vw, shape='Arrow1Mend', zorder=55, linewidth=2, color='r')
 Vk = 0.8*vkt
 vk = Vector(Pk, Vk, shape='Arrow1Mend', zorder=55, linewidth=2, color='r')
 
+# Text labels
+t1 = Annotation3D('$O$',  xyz=PO, xytext=(0,-1.2))
+
 ax.set_axis_off()
 save_svg('planform.svg')
 plt.close()
 
 # Use Inkscape to convert the SVG into a PNG file
-p=subprocess.call(['/usr/bin/inkscape', 'planform.svg', '--export-type=png', '--export-filename=planform.png'])
+p=subprocess.call(['inkscape', 'crosswind-V3.svg', '--export-type=png', '--export-filename=planform.png'])
 display(Image(filename='planform.png'))

@@ -163,16 +163,25 @@ class Annotation3D(Annotation):
             xytext = XYOFF
         if fontsize is None:
             fontsize = FONTSIZE
-        super().__init__(_m(s), xy=(0,0), xytext=xytext, fontsize=fontsize, textcoords='offset points', *args, **kwargs)
+        super().__init__(_m(s), xy=(0,0), xytext=xytext, fontsize=fontsize, textcoords='offset fontsize', *args, **kwargs)
         self._verts3d = xyz
         self.ax = plt.gca()
         self.ax.add_artist(self)
 
+#   def __init__(self, text, xyz, *args, **kwargs):
+#       super().__init__(text, xy=(0, 0), *args, **kwargs)
+#       self._xyz = xyz
+
     def draw(self, renderer):
         xs3d, ys3d, zs3d = self._verts3d
-        xs, ys, zs = proj3d.proj_transform(xs3d, ys3d, zs3d, renderer.M)
+        xs, ys, zs = proj3d.proj_transform(xs3d, ys3d, zs3d, self.axes.M)
         self.xy = (xs,ys)
         Annotation.draw(self, renderer)
+
+#   def draw(self, renderer):
+#       x2, y2, z2 = proj_transform(*self._xyz, self.axes.M)
+#       self.xy = (x2, y2)
+#       super().draw(renderer)
 
 class Object3D(ABC):
     '''Abstract class for 3D objects.

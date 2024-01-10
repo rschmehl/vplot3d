@@ -95,7 +95,7 @@ voff = np.array([-0.25, 0, 0])
 pg3 = Polygon.rotated(p, file='clarky.dat', e1=ex, e3=ez, voff=voff, facecolor='k', edgecolor='k', scale=1, linewidth=1, alpha=0.1, edgecoloralpha=0.8)
 
 # add some text | does not work anymore (error message in renderer)
-#t1 = Annotation3D('$P_1$',  xyz=q3, xytext=(10,10))
+t1 = Annotation3D('$P_1$',  xyz=q3, xytext=(10,10))
 #t2 = Annotation3D('$\phi$', xyz=q4)
 
 ax.set_axis_off()
