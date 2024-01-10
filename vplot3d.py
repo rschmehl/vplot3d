@@ -177,10 +177,8 @@ class Annotation3D(Annotation):
             xytext = XYOFF
         if fontsize is None:
             fontsize = FONTSIZE
-        super().__init__(_m(s), xy=(0,0), xytext=xytext, fontsize=fontsize, textcoords='offset fontsize', *args, **kwargs)
+        super().__init__(_m(s), xy=(0,0), xytext=xytext, fontsize=fontsize, textcoords='offset fontsize', annotation_clip=False, *args, **kwargs)
         self._verts3d = xyz
-        self.ax = plt.gca()
-        self.ax.add_artist(self)
 
     def draw(self, renderer):
         xs3d, ys3d, zs3d = self._verts3d
@@ -614,7 +612,6 @@ class Polygon(Object3D):
                 col = np.zeros((data.shape[0],1))
                 data = np.append(data, col, axis=1)
             v = [list(data)]
-
         # calculate polygon nodal point coordinates, relative to p
         r = [[(vn[0]+voff[0])*e1 + (vn[1]+voff[1])*e2 + (vn[2]+voff[2])*e3 for vn in v[0]]]
         return cls(p, r, id, linewidth, scale, zorder, facecolor, edgecolor, alpha, edgecoloralpha)

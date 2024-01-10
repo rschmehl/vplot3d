@@ -23,4 +23,4 @@ inkscape tmp.pdf --pdf-poppler --export-type=svg --export-filename=$fname'.svg' 
 # clean up
 rm -f tmp.* $fname.pdf $fname.pdf_tex
 
-inkscape --batch-process --export-type=png --export-filename=$fname'.png' $fname'.svg' & > /dev/null
+inkscape --export-type=png --export-filename=$fname'.png' $fname'.svg'
