@@ -25,9 +25,14 @@ mpl.rcParams['figure.figsize'] = figsize(980, 700)
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d', proj_type='ortho')
 
+# Set anticipated diagram range in data space
+ax.set_xlim3d([-1, 1])
+ax.set_ylim3d([-1, 1.05])
+ax.set_zlim3d([-0.2, 1])
+
 # Diagram layout
-v3d.ZOOM      = 2 # was 2
-v3d.XYZOFFSET = np.array([0, 0, -0.14])
+v3d.ZOOM      = 2.4 # was 2
+#v3d.XYZOFFSET = np.array([0, 0, 0])
 
 # Diagram perspective
 elev = 20   # default:  30
@@ -57,17 +62,16 @@ e3 = Vector(PO, Pz, shape='Arrow1Mend', linewidth=5, zorder=50, color='k')
 # Tether
 beta = np.deg2rad(30)
 phi  = 0
-Pk = r*np.array([np.cos(beta), 0, np.sin(beta)])
-l1 = Line(PO, Pk, linewidth=2, linestyle="solid")
-K  = Point(Pk, shape='Point1M', zorder=100, color='k')
+Pk   = r*np.array([np.cos(beta), 0, np.sin(beta)])
+Pkx  = r*np.array([0, 0, np.sin(beta)])
+l1   = Line(PO, Pk, linewidth=2, linestyle="solid")
+K    = Point(Pk, shape='Point1M', zorder=100, color='k')
 
 # Arc
-#a1 = Arc(PO, Px, -Px, -Py, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
-#a2 = Arc(PO, -Px, Px, -Py, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
-a1 = Arc(PO, Px, Pz, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
+a1 = Arc(PO, Px, -Px, -Py, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
 
 # Arc measure
-am1 = ArcMeasure(PO, Px, Pk, 1, linewidth=3, shape='Arrow1Mend', scale=0.3, zorder=31, color='k')
+am1 = ArcMeasure(PO, Px, Pk, 1, linewidth=3, shape='Arrow1Mend', scale=0.3, zorder=31, color='r')
 
 # Wing
 voff  = np.array([0, 0, 0])
@@ -82,8 +86,8 @@ er    = np.array([ cb*cp,  cb*sp, sb])
 ephi  = np.array([   -sp,     cp,  0])
 ebeta = np.array([-sb*cp, -sb*sp, cb])
 vkt   = cc*ebeta + sc*ephi
-pg1 = Polygon.rotated(Pk, file='planform.dat', e2=vkt, e3=er, voff=voff, facecolor='k', edgecolor='k', scale=4e-5, linewidth=1, alpha=0.1, edgecoloralpha=0.8)
-pg2 = Polygon.rotated(Pk, file='tubeframe.dat', e2=vkt, e3=er, voff=voff, facecolor='k', edgecolor='k', scale=4e-5, linewidth=5, alpha=0, edgecoloralpha=1)
+pg1 = Polygon.rotated(Pk, file='planform.dat', e2=vkt, e3=er, voff=voff, zorder=52, facecolor='k', edgecolor='k', scale=4e-5, linewidth=1, alpha=0.1, edgecoloralpha=0.8)
+pg2 = Polygon.rotated(Pk, file='tubeframe.dat', e2=vkt, e3=er, voff=voff, zorder=52, facecolor='k', edgecolor='k', scale=4e-5, linewidth=5, alpha=0, edgecoloralpha=1)
 
 # Velocity vectors
 Vw = np.array([0.5, 0, 0])
@@ -105,22 +109,20 @@ ax.set_axis_off()
 
 fname='kite_kinematics_3d'
 save_svg(fname+'_tex.svg')
-plt.close()
-
-# Compile Latex code in diagram using inkscape > pdflatex > inkscape toolchain
 p=subprocess.call(['convert_tex.sh', fname+'_tex.svg'])
 display(Image(filename=fname+'.png'))
 
-# > second plot
+###############################################################################
+# Second plot
 
-# a2 = Arc(PO, Px, -Px, -Py, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
-# fname='kite_kinematics_3d_a'
-# save_svg(fname+'_tex.svg')
-# p=subprocess.call(['convert_tex.sh', fname+'_tex.svg'])
-# display(Image(filename=fname+'.png'))
-# plt.close()
+a2 = Arc(PO, Px, Px, Pz, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
+a3 = Arc(Pkx, Px, Px, Pz, np.cos(beta)*r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
+fname='kite_kinematics_3d_a'
+save_svg(fname+'_tex.svg')
+p=subprocess.call(['convert_tex.sh', fname+'_tex.svg'])
+display(Image(filename=fname+'.png'))
 
-# # Compile Latex code in diagram using inkscape > pdflatex > inkscape toolchain
-# p=subprocess.call(['convert_tex.sh', fname+'_tex.svg'])
-# display(Image(filename=fname+'.png'))
+###############################################################################
+plt.close()
+
 

@@ -54,6 +54,7 @@ XYOFF     = (0,0)                          # xy-offset of text objects
 DEGREES   = np.arange(0, 362, 1)           # Discretization of circular objects
 COS       = np.cos(np.radians(DEGREES))
 SIN       = np.sin(np.radians(DEGREES))
+_FSCALE   = 7.547               # Scaling factor for shortening
 
 # Lists for geometrical objects
 lines       = []
@@ -376,7 +377,7 @@ class Vector(Line):
         # offset for the used marker
         delta = Marker.deltas[self.shape]*self.linewidth
         # correction with the minimum of figure width and height
-        delta = delta/(min(mpl.rcParams['figure.figsize'])/7.52777777777777)/ZOOM
+        delta = delta/(min(mpl.rcParams['figure.figsize'])/_FSCALE)/ZOOM
         # length of unit vector projected into display
         l = projected_length(elev, azim, e)
         # corrected endpoint
@@ -505,7 +506,7 @@ class ArcMeasure(Arc):
         # offset for the used marker
         delta = Marker.deltas[self.shape]*self.linewidth
         # correction with the minimum of figure width and height
-        delta = delta/(min(mpl.rcParams['figure.figsize'])/7.52777777777777)/ZOOM
+        delta = delta/(min(mpl.rcParams['figure.figsize'])/_FSCALE)/ZOOM
         # start at tip of arrowhead and walk back on arc
         for i, alpha in enumerate(DEGREES):
             if i == 0: continue                # i = 1, 2, 3, ...
