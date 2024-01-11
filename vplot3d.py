@@ -124,7 +124,6 @@ def set_axes_equal(ax):
     y_middle = np.mean(y_limits) - XYZOFFSET[1]
     z_range = abs(z_limits[1] - z_limits[0])
     z_middle = np.mean(z_limits) - XYZOFFSET[2]
-
     #
     # The plot bounding box is a sphere in the sense of the infinity
     # norm, hence I call half the max range the plot radius.
