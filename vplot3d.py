@@ -296,6 +296,9 @@ class Point(Object3D):
         # add new point to the list of points
         points.append(self)
 
+    def remove(self):
+        points.remove(self)
+
 class Line(Object3D):
     '''Class for line objects.
     '''
@@ -327,6 +330,10 @@ class Line(Object3D):
         # add new vector to the list of vectors
         lines.append(self)
 
+    def remove(self):
+        self.line.remove()
+        lines.remove(self)
+
 class Vector(Line):
     '''Class for vector objects, consisting of a line and an arrowhead attached to its end point.
     The arrowhead is not drawn explicitly, but added as an SVG marker object.
@@ -356,6 +363,10 @@ class Vector(Line):
 
         # add new vector to the list of vectors
         vectors.append(self)
+
+    def remove(self):
+        self.line.remove()
+        vectors.remove(self)
 
     def adjust_length(self, plot_radius, elev, azim):
         '''Shorten the line to which the arrowhead is attached such that the tip of the arrowhead
@@ -447,6 +458,10 @@ class Arc(Object3D):
         # add new arc to the list of arcs
         arcs.append(self)
 
+    def remove(self):
+        self.arc.remove()
+        arcs.remove(self)
+
 class ArcMeasure(Arc):
     '''Class for circular arc measure objects, discretized by a number of equidistant line
     segments and an arrowhead attached to its end point. The arrowhead is not drawn explicitly,
@@ -483,6 +498,10 @@ class ArcMeasure(Arc):
 
         # add new arc to the list of arcs
         arcmeasures.append(self)
+
+    def remove(self):
+        self.arc.remove()
+        arcmeasures.remove(self)
 
     def adjust_length(self, plot_radius, elev, azim):
         '''Shorten the arc to which the arrowhead is attached such that the tip of the arrowhead
@@ -578,6 +597,10 @@ class Polygon(Object3D):
         # add new polygon to the list of polygons
         polygons.append(self)
 
+    def remove(self):
+        self.polygon.remove()
+        polygons.remove(self)
+
     @classmethod
     def rotated(cls, p=ORIGIN, v=None, file=None, e1=None, e2=None, e3=None, voff=ORIGIN, d=None, linewidth=LINEWIDTH, scale=1, zorder=0, facecolor='w', edgecolor='k', alpha=1, edgecoloralpha=None):
         '''Simulated constructor.
@@ -627,7 +650,6 @@ class Polygon(Object3D):
         # calculate polygon nodal point coordinates, relative to p
         r = [[(vn[0]+voff[0])*e1 + (vn[1]+voff[1])*e2 + (vn[2]+voff[2])*e3 for vn in v[0]]]
         return cls(p, r, id, linewidth, scale, zorder, facecolor, edgecolor, alpha, edgecoloralpha)
-
 
 class Marker:
     '''Class for marker objects for use as

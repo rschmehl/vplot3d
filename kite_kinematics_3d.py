@@ -28,8 +28,8 @@ ax = fig.add_subplot(projection='3d', proj_type='ortho')
 # Set anticipated diagram range in data space
 ax.set_xlim3d([-1, 1])
 ax.set_ylim3d([-1, 1.05])
-ax.set_zlim3d([-0.2, 1])
-v3d.ZOOM = 2.4
+ax.set_zlim3d([-0.15, 1])
+v3d.ZOOM = 2.2
 
 # Diagram perspective
 elev = 20   # default:  30
@@ -42,7 +42,7 @@ PO = np.array([0, 0, 0])
 O  = Point(PO, shape='Point1M', zorder=100, color='k')
 
 # Cartesian base vectors
-r  = 1
+r  = 1.25
 Px = np.array([r, 0, 0])
 Py = np.array([0, r, 0])
 Pz = np.array([0, 0, r])
@@ -57,12 +57,16 @@ e3 = Vector(PO, Pz, shape='Arrow1Mend', linewidth=5, zorder=50, color='k')
 #        ax.plot3D(*zip(s, e), color="b")
 
 # Tether
+r    = 1
 beta = np.deg2rad(30)
-phi  = 0
+phi  = np.deg2rad(15)
+
+Pz   = np.array([0, 0, r])
 Pk   = r*np.array([np.cos(beta), 0, np.sin(beta)])
 Pkx  = r*np.array([0, 0, np.sin(beta)])
 l1   = Line(PO, Pk, linewidth=2, linestyle="solid")
 K    = Point(Pk, shape='Point1M', zorder=100, color='k')
+Z    = Point(Pz, shape='Point1M', zorder=100, color='k')
 
 # Arc
 a1 = Arc(PO, Px, -Px, -Py, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
@@ -95,9 +99,9 @@ vk = Vector(Pk, Vk, shape='Arrow1Mend', zorder=55, linewidth=5, color='r')
 # Text labels
 ax.annotate3D(r'$\vec{O}$', xyz=PO, xytext=(-0.5,-1.8))
 ax.annotate3D(r'$\vec{K}$', xyz=PO+Pk, xytext=(0.7,0.5))
-ax.annotate3D(r'$\xw$', xyz=Px, xytext=(0,-1.2))
+ax.annotate3D(r'$\xw$', xyz=Px, xytext=(-0.4,-1.2))
 ax.annotate3D(r'$\yw$', xyz=Py, xytext=(-0.8,-1.5))
-ax.annotate3D(r'$\zw$', xyz=Pz, xytext=(0.6,-0.9))
+ax.annotate3D(r'$\zw$', xyz=1.25*Pz, xytext=(0.6,-0.9))
 ax.annotate3D(r'$\vvk$', xyz=PO+Pk+Vk, xytext=(-1,-1.8))
 ax.annotate3D(r'$\vvw$', xyz=PO+Pk+Vw, xytext=(0,-1.6))
 ax.annotate3D(r'$\beta$', xyz=PO+0.3*Pk, xytext=(0,-2))
@@ -114,6 +118,8 @@ display(Image(filename=fname+'.png'))
 
 a2 = Arc(PO, Px, Px, Pz, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
 a3 = Arc(Pkx, Px, Px, Pz, np.cos(beta)*r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
+pg1.remove()
+pg2.remove()
 
 fname='kite_kinematics_3d_a'
 save_svg(fname+'_tex.svg')
