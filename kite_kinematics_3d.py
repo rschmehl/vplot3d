@@ -13,7 +13,7 @@ import matplotlib_inline
 import vplot3d as v3d
 import numpy as np
 from mpl_toolkits.mplot3d import proj3d
-from vplot3d import figsize, orthogonal_proj, Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg, reset
+from vplot3d import figsize, orthogonal_proj, Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg
 import subprocess
 from IPython.display import display, Image
 
@@ -29,10 +29,7 @@ ax = fig.add_subplot(projection='3d', proj_type='ortho')
 ax.set_xlim3d([-1, 1])
 ax.set_ylim3d([-1, 1.05])
 ax.set_zlim3d([-0.2, 1])
-
-# Diagram layout
-v3d.ZOOM      = 2.4 # was 2
-#v3d.XYZOFFSET = np.array([0, 0, 0])
+v3d.ZOOM = 2.4
 
 # Diagram perspective
 elev = 20   # default:  30
@@ -117,6 +114,7 @@ display(Image(filename=fname+'.png'))
 
 a2 = Arc(PO, Px, Px, Pz, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
 a3 = Arc(Pkx, Px, Px, Pz, np.cos(beta)*r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
+
 fname='kite_kinematics_3d_a'
 save_svg(fname+'_tex.svg')
 p=subprocess.call(['convert_tex.sh', fname+'_tex.svg'])
