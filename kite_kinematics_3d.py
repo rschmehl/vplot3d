@@ -62,8 +62,9 @@ l1 = Line(PO, Pk, linewidth=2, linestyle="solid")
 K  = Point(Pk, shape='Point1M', zorder=100, color='k')
 
 # Arc
-#a1 = Arc(PO, Px, -Px, -Py, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
-a1 = Arc(PO, Px, Pz, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
+a1 = Arc(PO, Px, Px, -Py, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
+#a2 = Arc(PO, -Px, Px, -Py, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
+#a1 = Arc(PO, Px, Pz, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
 
 # Arc measure
 am1 = ArcMeasure(PO, Px, Pk, 1, linewidth=3, shape='Arrow1Mend', scale=0.3, zorder=31, color='k')

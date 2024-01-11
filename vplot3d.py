@@ -51,7 +51,7 @@ XYZOFFSET = np.array([0, 0, 0])            # Shifts drawing in data space
 LINEWIDTH = 3                              # Linewidth of line objects
 FONTSIZE  = 20                             # Fontsize for text objects
 XYOFF     = (0,0)                          # xy-offset of text objects
-DEGREES   = np.arange(0, 361, 1)           # Discretization of circular objects
+DEGREES   = np.arange(0, 362, 1)           # Discretization of circular objects
 COS       = np.cos(np.radians(DEGREES))
 SIN       = np.sin(np.radians(DEGREES))
 
@@ -393,7 +393,7 @@ class Arc(Object3D):
         Input
           p         : line starting point coordinates (absolute)
           v1        : arc starting vector, relative to p
-          v2        : arc target vector, relative to p
+          v2        : arc target vector, relative to p (complete circle for v2=v1)
           vn        : arc normal vector (must be used when v1 and v2 are aligned!)
           radius    : radius of arc
           id        : name identifier
@@ -410,11 +410,13 @@ class Arc(Object3D):
 
         # set unique gid
         self.gid = 'arc_' + str(len(arcs)+1)
-        # normalized vectors spanning the arc
+        # normalized starting vector spanning the arc
         self.e1 = e1 = v1 = v1/np.sqrt(np.dot(v1,v1))
+        # normalized end vector spanning the arc
         self.v2 = v2 =      v2/np.sqrt(np.dot(v2,v2))
         # angle between the two vectors
         self.angle = angle = np.degrees(np.arccos(np.dot(e1,v2)))
+        if angle < EPS: angle = 360
         # scaled radius
         self.radius = radius = radius*scale
         # normal vector
