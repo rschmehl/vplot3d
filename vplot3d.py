@@ -45,6 +45,7 @@ EX        = np.array([1, 0, 0])
 EY        = np.array([0, 1, 0])
 EZ        = np.array([0, 0, 1])
 EXYZ      = np.array([1, 1, 1])
+EPS       = 1e-5                           # Small number
 ZOOM      = 1                              # Scales drawing
 XYZOFFSET = np.array([0, 0, 0])            # Shifts drawing in data space
 LINEWIDTH = 3                              # Linewidth of line objects
@@ -385,14 +386,15 @@ class Vector(Line):
         self.line.set_data_3d([p[0], q[0]], [p[1], q[1]], [p[2], q[2]])
 
 class Arc(Object3D):
-    '''Class for circular arc objects, discretized by a number of equidistant line segments.
+    '''Class for circular arc objects, discretized by concatenated equidistant line segments.
     '''
-    def __init__(self, p=ORIGIN, v1=EX, v2=EY, radius=1, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, color='k', alpha=1, *args, **kwargs):
+    def __init__(self, p=ORIGIN, v1=EX, v2=EY, vn=None, radius=1, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, color='k', alpha=1, *args, **kwargs):
         '''Constructor.
         Input
           p         : line starting point coordinates (absolute)
           v1        : arc starting vector, relative to p
           v2        : arc target vector, relative to p
+          vn        : arc normal vector (must be used when v1 and v2 are aligned!)
           radius    : radius of arc
           id        : name identifier
           linewidth : line width
@@ -416,9 +418,16 @@ class Arc(Object3D):
         # scaled radius
         self.radius = radius = radius*scale
         # normal vector
-        n  = np.cross(e1,v2)
+        n    = np.cross(e1,v2)
+        nabs = np.sqrt(np.dot(n,n))
         # normalized normal vector
-        e3 = n/np.sqrt(np.dot(n,n))
+        if nabs > EPS:
+            e3 = n/nabs
+        else:
+            if (vn == None).any():
+                print('Error: normal vector required for arc')
+            else:
+                e3 = vn/np.sqrt(np.dot(vn,vn))
         # e1, e2 and e3 form a vectorbase
         e2 = np.cross(e3,e1)
         # find end index
@@ -441,12 +450,13 @@ class ArcMeasure(Arc):
     segments and an arrowhead attached to its end point. The arrowhead is not drawn explicitly,
     but added as an SVG marker object.
     '''
-    def __init__(self, p=ORIGIN, v1=EX, v2=EY, radius=1, id=None, linewidth=LINEWIDTH, shape='Arrow1Mend', scale=1, zorder=0, color='k', alpha=1, *args, **kwargs):
+    def __init__(self, p=ORIGIN, v1=EX, v2=EY, vn=EZ, radius=1, id=None, linewidth=LINEWIDTH, shape='Arrow1Mend', scale=1, zorder=0, color='k', alpha=1, *args, **kwargs):
         '''Constructor.
         Input
           p         : line starting point coordinates (absolute)
           v1        : arc starting vector, relative to p
           v2        : arc target vector, relative to p
+          vn        : arc normal vector (must be used when v1 and v2 are aligned!)
           radius    : radius of arc
           id        : name identifier
           linewidth : line width
@@ -459,7 +469,7 @@ class ArcMeasure(Arc):
         The computed unit vectors e1, e2 and e3 span a local vector base in which the
         discretized arc is computed.
         '''
-        super().__init__(p, v1, v2, radius, id, linewidth, scale, zorder, color, alpha, *args, **kwargs)
+        super().__init__(p, v1, v2, vn, radius, id, linewidth, scale, zorder, color, alpha, *args, **kwargs)
         super().add_marker(shape, color, color, None)
 
         # set unique gid
@@ -734,6 +744,7 @@ def save_svg(file='unnamed.svg'):
     # get current Axes instance and prepare axes for plotting
     ax = plt.gca()
     plot_radius = set_axes_equal(ax)
+    print('plot_radius = ', plot_radius)
     ax.set_box_aspect([1,1,1], zoom=ZOOM) # requires matplotlib 3.3.0
 
     # Remove margins
