@@ -62,9 +62,9 @@ l1 = Line(PO, Pk, linewidth=2, linestyle="solid")
 K  = Point(Pk, shape='Point1M', zorder=100, color='k')
 
 # Arc
-a1 = Arc(PO, Px, Px, -Py, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
+#a1 = Arc(PO, Px, -Px, -Py, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
 #a2 = Arc(PO, -Px, Px, -Py, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
-#a1 = Arc(PO, Px, Pz, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
+a1 = Arc(PO, Px, Pz, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
 
 # Arc measure
 am1 = ArcMeasure(PO, Px, Pk, 1, linewidth=3, shape='Arrow1Mend', scale=0.3, zorder=31, color='k')
@@ -111,35 +111,16 @@ plt.close()
 p=subprocess.call(['convert_tex.sh', fname+'_tex.svg'])
 display(Image(filename=fname+'.png'))
 
-# # New layer
-# reset()
+# > second plot
 
-# fig = plt.figure()
-# ax = fig.add_subplot(projection='3d', proj_type='ortho')
-
-# # Rendering options
-# #v3d.RAW_MATH = True
-# #v3d.FONTSIZE  = 20
-
-# # scale and position diagram in dataspace
-# #v3d.ZOOM      = 2
-# #v3d.XYZOFFSET = np.array([0, 0, -0.14])
-
-# ax.view_init(elev, azim)
-# #proj3d.persp_transformation = orthogonal_proj
-
-# pg1 = Polygon.rotated(Pk, file='planform.dat', e2=vkt, e3=er, voff=voff, facecolor='k', edgecolor='k', scale=4e-5, linewidth=1, alpha=0.1, edgecoloralpha=0.8)
-# pg2 = Polygon.rotated(Pk, file='tubeframe.dat', e2=vkt, e3=er, voff=voff, facecolor='k', edgecolor='k', scale=4e-5, linewidth=5, alpha=0, edgecoloralpha=1)
-# O   = Point(PO,shape='Point1M',zorder=51,color='k')
-# K   = Point(Pk, shape='Point1M', zorder=100, color='k')
-# vk  = Vector(Pk, Vk, shape='Arrow1Mend', zorder=55, linewidth=5, color='r')
-
-# #ax.set_axis_off()
-
+# a2 = Arc(PO, Px, -Px, -Py, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
 # fname='kite_kinematics_3d_a'
 # save_svg(fname+'_tex.svg')
+# p=subprocess.call(['convert_tex.sh', fname+'_tex.svg'])
+# display(Image(filename=fname+'.png'))
 # plt.close()
 
 # # Compile Latex code in diagram using inkscape > pdflatex > inkscape toolchain
 # p=subprocess.call(['convert_tex.sh', fname+'_tex.svg'])
 # display(Image(filename=fname+'.png'))
+
