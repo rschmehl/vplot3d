@@ -54,6 +54,7 @@ DEGREES   = np.arange(0, 362, 1)           # Discretization of circular objects
 COS       = np.cos(np.radians(DEGREES))
 SIN       = np.sin(np.radians(DEGREES))
 _FSCALE   = 7.547                          # Scaling factor for shortening
+
 plot_radius = 1
 
 # Lists for geometrical objects
@@ -134,7 +135,7 @@ def set_axes_equal(ax):
     ax.set_ylim3d([y_middle - plot_radius, y_middle + plot_radius])
     ax.set_zlim3d([z_middle - plot_radius, z_middle + plot_radius])
 
-    return plot_radius
+#    return plot_radius
 
 def projected_length(beta_deg, phi_deg, vec):
     '''Project a vector from 3D data space into the viewing plane and
@@ -354,14 +355,15 @@ class Vector(Line):
         super().__init__(p, v, id, linewidth, scale, zorder, color, alpha, *args, **kwargs)
         super().add_marker(shape, color, color, None)
 
-        # set unique gid
+        # Set unique gid
         self.gid = 'vector_' + str(len(vectors)+1)
         self.line.set_gid(self.gid)
-
-        # remove line from the list of lines
+        # Remove line from the list of lines
         lines.pop()
-
-        # add new vector to the list of vectors
+        # Shorten vector to fit arrowhead
+        ax = plt.gca()
+        self.adjust_length(plot_radius, ax.elev, ax.azim)
+        # Add new vector to the list of vectors
         vectors.append(self)
 
     def remove(self):
@@ -489,14 +491,15 @@ class ArcMeasure(Arc):
         super().__init__(p, v1, v2, vn, radius, id, linewidth, scale, zorder, color, alpha, *args, **kwargs)
         super().add_marker(shape, color, color, None)
 
-        # set unique gid
+        # Set unique gid
         self.gid = 'arcmeasure_' + str(len(arcmeasures)+1)
         self.arc.set_gid(self.gid)
-
-        # remove line from the list of lines
+        # Remove line from the list of lines
         arcs.pop()
-
-        # add new arc to the list of arcs
+        # Shorten arc to fit arrowhead
+        ax = plt.gca()
+        self.adjust_length(plot_radius, ax.elev, ax.azim)
+        # Add new arc to the list of arcs
         arcmeasures.append(self)
 
     def remove(self):
@@ -767,19 +770,10 @@ def save_svg(file='unnamed.svg'):
     '''
     # get current Axes instance and prepare axes for plotting
     ax = plt.gca()
-    plot_radius = set_axes_equal(ax)
     ax.set_box_aspect([1,1,1], zoom=ZOOM) # requires matplotlib 3.3.0
 
     # Remove margins
     plt.subplots_adjust(left=0, right=1, top=1, bottom=0)
-
-    # Shorten all vectors lines such that the marker tip coincides with the actual vector end point
-    for vec in vectors:
-        vec.adjust_length(plot_radius, ax.elev, ax.azim)
-
-    # Shorten all arcs such that the marker tip coincides with the actual vector end point
-    for arc in arcmeasures:
-        arc.adjust_length(plot_radius, ax.elev, ax.azim)
 
     # Save the figure as a byte string in SVG format
     f = io.BytesIO()

@@ -13,7 +13,7 @@ import matplotlib_inline
 import vplot3d as v3d
 import numpy as np
 from mpl_toolkits.mplot3d import proj3d
-from vplot3d import figsize, orthogonal_proj, Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg
+from vplot3d import figsize, set_axes_equal, orthogonal_proj, Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg
 import subprocess
 from IPython.display import display, Image
 
@@ -30,6 +30,7 @@ ax.set_xlim3d([-1, 1])
 ax.set_ylim3d([-1, 1.05])
 ax.set_zlim3d([-0.3, 1])
 v3d.ZOOM = 2.65
+set_axes_equal(ax)
 
 # Diagram perspective
 elev = 20   # default:  30
@@ -56,24 +57,6 @@ phi  = np.deg2rad(15)
 Pk   = r*np.array([np.cos(phi)*np.cos(beta), np.sin(phi)*np.cos(beta), np.sin(beta)])
 l1   = Line(PO, Pk, linewidth=2, linestyle="solid")
 K    = Point(Pk, shape='Point1M', zorder=100, color='k')
-
-# Spherical coordinates
-Px   = np.array([r, 0, 0])
-Py   = np.array([0, r, 0])
-Pz   = np.array([0, 0, r])
-Pkz  = np.array([0,     0,     Pk[2]])
-Pkxy = np.array([Pk[0], Pk[1], 0    ])
-Pxy  = r*np.array([np.cos(phi), np.sin(phi), 0])
-
-Z    = Point(Pz, shape='Point1M', zorder=100, color='k')
-l2   = Line(PO, Pxy, linewidth=2, linestyle="solid")
-am1  = ArcMeasure(PO, Pxy, Pk, radius=r, linewidth=2, zorder=31, color='k')
-
-# Arc
-a2 = Arc(PO, Px, -Px, -Py, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
-
-# Arc measure
-am2 = ArcMeasure(PO, Px, Pk, 1, linewidth=3, shape='Arrow1Mend', scale=0.3, zorder=31, color='r')
 
 # Wing
 voff  = np.array([0, 0, 0])
@@ -102,10 +85,9 @@ ax.annotate3D(r'$\vec{O}$', xyz=PO, xytext=(-0.5,-1.8))
 ax.annotate3D(r'$\vec{K}$', xyz=PO+Pk, xytext=(0.7,0.5))
 ax.annotate3D(r'$\xw$', xyz=Px, xytext=(-0.4,-1.2))
 ax.annotate3D(r'$\yw$', xyz=Py, xytext=(-0.8,-1.5))
-ax.annotate3D(r'$\zw$', xyz=1.25*Pz, xytext=(0.6,-0.9))
+ax.annotate3D(r'$\zw$', xyz=Pz, xytext=(0.6,-0.9))
 ax.annotate3D(r'$\vvk$', xyz=PO+Pk+Vk, xytext=(-1,-1.8))
 ax.annotate3D(r'$\vvw$', xyz=PO+Pk+Vw, xytext=(0,-1.6))
-ax.annotate3D(r'$\beta$', xyz=PO+0.3*Pk, xytext=(0,-2))
 
 ax.set_axis_off()
 
@@ -117,10 +99,28 @@ display(Image(filename=fname+'.png'))
 ###############################################################################
 # Second plot
 
-a2 = Arc(PO, Px, Px, Pz, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
-a3 = Arc(Pkz, Px, Px, Pz, np.cos(beta)*r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
 pg1.remove()
 pg2.remove()
+
+# Spherical coordinates
+Px   = np.array([r, 0, 0])
+Py   = np.array([0, r, 0])
+Pz   = np.array([0, 0, r])
+Pkz  = np.array([0,     0,     Pk[2]])
+Pkxy = np.array([Pk[0], Pk[1], 0    ])
+Pxy  = r*np.array([np.cos(phi), np.sin(phi), 0])
+
+a1 = Arc(PO, Px, -Px, -Py, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
+a2 = Arc(PO, Px, Px, Pz, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
+a3 = Arc(Pkz, Px, Px, Pz, np.cos(beta)*r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
+
+Z    = Point(Pz, shape='Point1M', zorder=100, color='k')
+l2   = Line(PO, Pxy, linewidth=2, linestyle="solid")
+am1  = ArcMeasure(PO, Pxy, Pk, radius=r, linewidth=3, zorder=31, color='k')
+am2  = ArcMeasure(PO, Px,  Pxy, radius=r, linewidth=3, zorder=31, color='k')
+
+ax.annotate3D(r'$\beta$', xyz=PO+Pk, xytext=(0.1,-3))
+ax.annotate3D(r'$\phi$', xyz=PO+Pxy, xytext=(-1.4,1))
 
 fname='kite_kinematics_3d_a'
 save_svg(fname+'_tex.svg')
