@@ -47,14 +47,14 @@ EZ        = np.array([0, 0, 1])
 EXYZ      = np.array([1, 1, 1])
 EPS       = 1e-5                           # Small number
 ZOOM      = 1                              # Scales drawing
-XYZOFFSET = np.array([0, 0, 0])            # Shifts drawing in data space
 LINEWIDTH = 3                              # Linewidth of line objects
 FONTSIZE  = 20                             # Fontsize for text objects
 XYOFF     = (0,0)                          # xy-offset of text objects
 DEGREES   = np.arange(0, 362, 1)           # Discretization of circular objects
 COS       = np.cos(np.radians(DEGREES))
 SIN       = np.sin(np.radians(DEGREES))
-_FSCALE   = 7.547               # Scaling factor for shortening
+_FSCALE   = 7.547                          # Scaling factor for shortening
+plot_radius = 1
 
 # Lists for geometrical objects
 lines       = []
@@ -120,11 +120,11 @@ def set_axes_equal(ax):
     z_limits = ax.get_zlim3d()
     # determine data rannge and offset origin
     x_range = abs(x_limits[1] - x_limits[0])
-    x_middle = np.mean(x_limits) - XYZOFFSET[0]
+    x_middle = np.mean(x_limits)
     y_range = abs(y_limits[1] - y_limits[0])
-    y_middle = np.mean(y_limits) - XYZOFFSET[1]
+    y_middle = np.mean(y_limits)
     z_range = abs(z_limits[1] - z_limits[0])
-    z_middle = np.mean(z_limits) - XYZOFFSET[2]
+    z_middle = np.mean(z_limits)
     #
     # The plot bounding box is a sphere in the sense of the infinity
     # norm, hence I call half the max range the plot radius.
@@ -816,8 +816,6 @@ def save_svg(file='unnamed.svg'):
 
     # insert the marker definition in the svg dom tree.
     tree.insert(0, ET.XML(defs))
-
-#> should be possible to process this as just one list!
 
     # process all vectors
     for v in vectors:
