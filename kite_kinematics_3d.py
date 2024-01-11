@@ -13,8 +13,7 @@ import matplotlib_inline
 import vplot3d as v3d
 import numpy as np
 from mpl_toolkits.mplot3d import proj3d
-from itertools import product, combinations
-from vplot3d import figsize, orthogonal_proj, Annotation3D, Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg
+from vplot3d import figsize, orthogonal_proj, Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg, reset
 import subprocess
 from IPython.display import display, Image
 
@@ -26,15 +25,11 @@ mpl.rcParams['figure.figsize'] = figsize(980, 700)
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d', proj_type='ortho')
 
-# Rendering options
-#v3d.RAW_MATH = True
-v3d.FONTSIZE  = 20
-
-# scale and position diagram in dataspace
+# Diagram layout
 v3d.ZOOM      = 2
-v3d.XYZOFFSET = np.array([0, 0, -0.2])
+v3d.XYZOFFSET = np.array([0, 0, -0.14])
 
-# elevation and azimuth angle -> 0,0 gives yz-perspective of coordinate system
+# Diagram perspective
 elev = 20   # default:  30
 azim = 30   # default: -60
 ax.view_init(elev, azim)
@@ -66,8 +61,12 @@ Pk = r*np.array([np.cos(beta), 0, np.sin(beta)])
 l1 = Line(PO, Pk, linewidth=2, linestyle="solid")
 K  = Point(Pk, shape='Point1M', zorder=100, color='k')
 
+# Arc
+a1 = Arc(PO, Px, Pz, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
+#a2 = Arc(PO, Pz, -Px, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
+
 # Arc measure
-am1 = ArcMeasure(PO, Px, Pk, 1, linewidth=2, shape='Arrow1Mend', scale=0.4, zorder=31, color='r')
+am1 = ArcMeasure(PO, Px, Pk, 1, linewidth=3, shape='Arrow1Mend', scale=0.3, zorder=31, color='k')
 
 # Wing
 voff  = np.array([0, 0, 0])
@@ -94,10 +93,12 @@ vk = Vector(Pk, Vk, shape='Arrow1Mend', zorder=55, linewidth=5, color='r')
 # Text labels
 ax.annotate3D(r'$\vec{O}$', xyz=PO, xytext=(-0.5,-1.8))
 ax.annotate3D(r'$\vec{K}$', xyz=PO+Pk, xytext=(0.7,0.5))
+ax.annotate3D(r'$\xw$', xyz=Px, xytext=(0,-1.2))
+ax.annotate3D(r'$\yw$', xyz=Py, xytext=(-0.8,-1.5))
+ax.annotate3D(r'$\zw$', xyz=Pz, xytext=(0.6,-0.9))
 ax.annotate3D(r'$\vvk$', xyz=PO+Pk+Vk, xytext=(-1,-1.8))
-ax.annotate3D(r'$\vvw$', xyz=PO+Pk+0.8*Vw, xytext=(0,0))
-ax.annotate3D(r'$\beta$', xyz=PO+0.4*Pk, xytext=(0,-2))
-ax.annotate3D(r'$\vec{M}$', xyz=PO+0.9*Py, xytext=(0,0))
+ax.annotate3D(r'$\vvw$', xyz=PO+Pk+Vw, xytext=(0,-1.6))
+ax.annotate3D(r'$\beta$', xyz=PO+0.3*Pk, xytext=(0,-2))
 
 ax.set_axis_off()
 
@@ -108,3 +109,36 @@ plt.close()
 # Compile Latex code in diagram using inkscape > pdflatex > inkscape toolchain
 p=subprocess.call(['convert_tex.sh', fname+'_tex.svg'])
 display(Image(filename=fname+'.png'))
+
+# # New layer
+# reset()
+
+# fig = plt.figure()
+# ax = fig.add_subplot(projection='3d', proj_type='ortho')
+
+# # Rendering options
+# #v3d.RAW_MATH = True
+# #v3d.FONTSIZE  = 20
+
+# # scale and position diagram in dataspace
+# #v3d.ZOOM      = 2
+# #v3d.XYZOFFSET = np.array([0, 0, -0.14])
+
+# ax.view_init(elev, azim)
+# #proj3d.persp_transformation = orthogonal_proj
+
+# pg1 = Polygon.rotated(Pk, file='planform.dat', e2=vkt, e3=er, voff=voff, facecolor='k', edgecolor='k', scale=4e-5, linewidth=1, alpha=0.1, edgecoloralpha=0.8)
+# pg2 = Polygon.rotated(Pk, file='tubeframe.dat', e2=vkt, e3=er, voff=voff, facecolor='k', edgecolor='k', scale=4e-5, linewidth=5, alpha=0, edgecoloralpha=1)
+# O   = Point(PO,shape='Point1M',zorder=51,color='k')
+# K   = Point(Pk, shape='Point1M', zorder=100, color='k')
+# vk  = Vector(Pk, Vk, shape='Arrow1Mend', zorder=55, linewidth=5, color='r')
+
+# #ax.set_axis_off()
+
+# fname='kite_kinematics_3d_a'
+# save_svg(fname+'_tex.svg')
+# plt.close()
+
+# # Compile Latex code in diagram using inkscape > pdflatex > inkscape toolchain
+# p=subprocess.call(['convert_tex.sh', fname+'_tex.svg'])
+# display(Image(filename=fname+'.png'))

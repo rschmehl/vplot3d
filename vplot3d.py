@@ -48,7 +48,7 @@ EXYZ      = np.array([1, 1, 1])
 ZOOM      = 1                              # Scales drawing
 XYZOFFSET = np.array([0, 0, 0])            # Shifts drawing in data space
 LINEWIDTH = 3                              # Linewidth of line objects
-FONTSIZE  = 12                             # Fontsize for text objects
+FONTSIZE  = 20                             # Fontsize for text objects
 XYOFF     = (0,0)                          # xy-offset of text objects
 DEGREES   = np.arange(0, 361, 1)           # Discretization of circular objects
 COS       = np.cos(np.radians(DEGREES))
@@ -206,8 +206,8 @@ class Object3D(ABC):
           scale     : scale of object, relative to p
           zorder    : parameter used for depth sorting
           edgecolor : stroke color of object
-          facecolor : fill color (foreground) of abject
-          bgcolor   : fill color (background) of abject
+          facecolor : fill color (foreground) of object
+          bgcolor   : fill color (background) of object
           alpha     : transparency of object
         '''
         # get current Axes instance
@@ -289,7 +289,7 @@ class Point(Object3D):
         # set unique gid
         self.gid = 'point_' + str(len(points)+1)
         # plot a point where the marker is placed later
-        line, = self.ax.plot([p[0], p[0]], [p[1], p[1]], [p[2], p[2]], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.edgecolor, alpha=self.alpha)
+        line, = self.ax.plot([p[0], p[0]], [p[1], p[1]], [p[2], p[2]], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.edgecolor, alpha=self.alpha, *args, **kwargs)
         line.set_gid(self.gid)
         self.line = line
         # add new point to the list of points
@@ -320,7 +320,7 @@ class Line(Object3D):
         q = p + v
 
         # plot the line
-        line, = self.ax.plot([p[0], q[0]], [p[1], q[1]], [p[2], q[2]], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.edgecolor, alpha=self.alpha)
+        line, = self.ax.plot([p[0], q[0]], [p[1], q[1]], [p[2], q[2]], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.edgecolor, alpha=self.alpha, *args, **kwargs)
         line.set_gid(self.gid)
         self.line = line
         # add new vector to the list of vectors
@@ -330,7 +330,7 @@ class Vector(Line):
     '''Class for vector objects, consisting of a line and an arrowhead attached to its end point.
     The arrowhead is not drawn explicitly, but added as an SVG marker object.
     '''
-    def __init__(self, p=ORIGIN, v=EXYZ, id=None, linewidth=LINEWIDTH, shape='Arrow1Mend', scale=1, zorder=0, color='k', alpha=1):
+    def __init__(self, p=ORIGIN, v=EXYZ, id=None, linewidth=LINEWIDTH, shape='Arrow1Mend', scale=1, zorder=0, color='k', alpha=1, *args, **kwargs):
         '''Constructor.
         Input
           p         : vector origin coordinates (absolute)
@@ -343,7 +343,7 @@ class Vector(Line):
           color     : color of line
           alpha     : transparency of line
         '''
-        super().__init__(p, v, id, linewidth, scale, zorder, color, alpha)
+        super().__init__(p, v, id, linewidth, scale, zorder, color, alpha, *args, **kwargs)
         super().add_marker(shape, color, color, None)
 
         # set unique gid
@@ -387,7 +387,7 @@ class Vector(Line):
 class Arc(Object3D):
     '''Class for circular arc objects, discretized by a number of equidistant line segments.
     '''
-    def __init__(self, p=ORIGIN, v1=EX, v2=EY, radius=1, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, color='k', alpha=1):
+    def __init__(self, p=ORIGIN, v1=EX, v2=EY, radius=1, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, color='k', alpha=1, *args, **kwargs):
         '''Constructor.
         Input
           p         : line starting point coordinates (absolute)
@@ -430,7 +430,7 @@ class Arc(Object3D):
         self.r = r
 
         # plot the line
-        arc, = self.ax.plot(r[0,:], r[1,:], r[2,:], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.edgecolor, alpha=self.alpha)
+        arc, = self.ax.plot(r[0,:], r[1,:], r[2,:], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.edgecolor, alpha=self.alpha, *args, **kwargs)
         arc.set_gid(self.gid)
         self.arc = arc
         # add new arc to the list of arcs
@@ -441,7 +441,7 @@ class ArcMeasure(Arc):
     segments and an arrowhead attached to its end point. The arrowhead is not drawn explicitly,
     but added as an SVG marker object.
     '''
-    def __init__(self, p=ORIGIN, v1=EX, v2=EY, radius=1, id=None, linewidth=LINEWIDTH, shape='Arrow1Mend', scale=1, zorder=0, color='k', alpha=1):
+    def __init__(self, p=ORIGIN, v1=EX, v2=EY, radius=1, id=None, linewidth=LINEWIDTH, shape='Arrow1Mend', scale=1, zorder=0, color='k', alpha=1, *args, **kwargs):
         '''Constructor.
         Input
           p         : line starting point coordinates (absolute)
@@ -459,7 +459,7 @@ class ArcMeasure(Arc):
         The computed unit vectors e1, e2 and e3 span a local vector base in which the
         discretized arc is computed.
         '''
-        super().__init__(p, v1, v2, radius, id, linewidth, scale, zorder, color, alpha)
+        super().__init__(p, v1, v2, radius, id, linewidth, scale, zorder, color, alpha, *args, **kwargs)
         super().add_marker(shape, color, color, None)
 
         # set unique gid
@@ -522,7 +522,7 @@ class ArcMeasure(Arc):
 class Polygon(Object3D):
     '''Class for polygon objects.
     '''
-    def __init__(self, p=ORIGIN, v=[[EXYZ]], id=None, linewidth=LINEWIDTH, scale=1, zorder=0, edgecolor='k', facecolor='w', alpha=1, edgecoloralpha=None):
+    def __init__(self, p=ORIGIN, v=[[EXYZ]], id=None, linewidth=LINEWIDTH, scale=1, zorder=0, edgecolor='k', facecolor='w', alpha=1, edgecoloralpha=None, *args, **kwargs):
         '''Constructor.
         Draws a polygon with nodal points v specified relative to a reference point p.
         Input
@@ -559,7 +559,7 @@ class Polygon(Object3D):
         self.r = r
 
         # plot the polygon
-        pg = art3d.Poly3DCollection(r, facecolors=self.facecolor, edgecolors=self.edgecolor, linewidths=self.linewidth, alpha=self.alpha, closed=False)
+        pg = art3d.Poly3DCollection(r, facecolors=self.facecolor, edgecolors=self.edgecolor, linewidths=self.linewidth, alpha=self.alpha, closed=False, *args, **kwargs)
         polygon = self.ax.add_collection3d(pg)
         polygon.set_gid(self.gid)
         self.polygon = polygon
@@ -808,3 +808,12 @@ def save_svg(file='unnamed.svg'):
 
     print(f"Saving '{file}'")
     ET.ElementTree(tree).write(file, encoding="utf-8")
+
+def reset():
+    lines.clear()
+    vectors.clear()
+    arcs.clear()
+    arcmeasures.clear()
+    polygons.clear()
+    points.clear()
+    markers.clear()
