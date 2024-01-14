@@ -30,7 +30,8 @@ postprocessing step.
 from abc import ABC, abstractmethod
 from mpl_toolkits.mplot3d import Axes3D, art3d, proj3d
 from matplotlib.text import Annotation
-from  matplotlib.colors import is_color_like
+from matplotlib.colors import is_color_like
+from pathlib import Path
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
@@ -38,6 +39,7 @@ import copy
 import io
 import xml.etree.ElementTree as ET
 import textwrap
+
 
 # Default values
 ORIGIN    = np.array([0, 0, 0])
@@ -66,8 +68,10 @@ polygons    = []
 points      = []
 markers     = []
 
+lib_path = Path(__file__).parent
+
 # Open file with marker definitions
-mtree = ET.parse('markers.svg')
+mtree = ET.parse(lib_path / 'markers.svg')
 mroot = mtree.getroot()
 
 # Raw Latex math - see https://github.com/matplotlib/matplotlib/issues/4938#issuecomment-783252908

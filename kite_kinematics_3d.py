@@ -10,12 +10,19 @@ Created on Thu Aug 11 11:03:50 2022
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib_inline
-import vplot3d as v3d
 import numpy as np
-from mpl_toolkits.mplot3d import proj3d
-from vplot3d import figsize, set_axes_equal, orthogonal_proj, Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg
 import subprocess
+import sys
+from pathlib import Path
+from mpl_toolkits.mplot3d import proj3d
 from IPython.display import display, Image
+
+# Set this with environment variable PYTHONPATH
+lib_path = Path('/home/rschmehl/projects/vplot3d')
+sys.path.append(str(lib_path))
+
+import vplot3d as v3d
+from vplot3d import figsize, set_axes_equal, orthogonal_proj, Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg
 
 matplotlib_inline.backend_inline.set_matplotlib_formats('svg')
 
@@ -71,8 +78,8 @@ er    = np.array([ cb*cp,  cb*sp, sb])
 ephi  = np.array([   -sp,     cp,  0])
 ebeta = np.array([-sb*cp, -sb*sp, cb])
 vkt   = cc*ebeta + sc*ephi
-pg1 = Polygon.rotated(Pk, file='planform.dat', e2=vkt, e3=er, voff=voff, zorder=52, facecolor='k', edgecolor='k', scale=4e-5, linewidth=1, alpha=0.1, edgecoloralpha=0.8)
-pg2 = Polygon.rotated(Pk, file='tubeframe.dat', e2=vkt, e3=er, voff=voff, zorder=52, facecolor='k', edgecolor='k', scale=4e-5, linewidth=5, alpha=0, edgecoloralpha=1)
+pg1 = Polygon.rotated(Pk, file=lib_path / 'planform.dat', e2=vkt, e3=er, voff=voff, zorder=52, facecolor='k', edgecolor='k', scale=4e-5, linewidth=1, alpha=0.1, edgecoloralpha=0.8)
+pg2 = Polygon.rotated(Pk, file=lib_path / 'tubeframe.dat', e2=vkt, e3=er, voff=voff, zorder=52, facecolor='k', edgecolor='k', scale=4e-5, linewidth=5, alpha=0, edgecoloralpha=1)
 
 # Velocity vectors
 Vw = np.array([0.5, 0, 0])
@@ -93,7 +100,7 @@ ax.set_axis_off()
 
 fname='kite_kinematics_3d'
 save_svg(fname+'_tex.svg')
-p=subprocess.call(['convert_tex.sh', fname+'_tex.svg'])
+p=subprocess.call([lib_path / 'convert_tex.sh', fname+'_tex.svg'])
 display(Image(filename=fname+'.png'))
 
 ###############################################################################
@@ -124,7 +131,7 @@ ax.annotate3D(r'$\phi$', xyz=PO+Pxy, xytext=(-1.4,1))
 
 fname='kite_kinematics_3d_a'
 save_svg(fname+'_tex.svg')
-p=subprocess.call(['convert_tex.sh', fname+'_tex.svg'])
+p=subprocess.call([lib_path / 'convert_tex.sh', fname+'_tex.svg'])
 display(Image(filename=fname+'.png'))
 
 ###############################################################################
