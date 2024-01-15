@@ -8,8 +8,7 @@ fname=$( basename -s _tex.svg $1 )
 # export svg to pdf and pdf_tex files
 inkscape --export-type=pdf --export-filename=$fname.pdf --export-latex --export-area-page $1
 
-# compile with latex
-#echo $fname.pdf_tex
+# compile with pdflatex
 export TEXINPUTS=$SCRIPT_DIR//:
 if test -f "$fname.tex"; then
   # use a custom Latex wrapper (e.g. to scale font)

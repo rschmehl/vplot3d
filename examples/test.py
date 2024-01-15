@@ -92,7 +92,7 @@ ez = np.array([0, 0, 1])
 pg1 = Polygon(p, [[q1, q2, q3, q4]], edgecolor='k', facecolor='g', scale=1, linewidth=1, alpha=0.5)
 pg2 = Polygon.rotated(np.array([0, 0.3, 0.2]), v=[[u1, u2, u3]], e1=ex, e3=ez, facecolor='r', edgecolor='k', scale=0.5, linewidth=1, alpha=0.3)
 voff = np.array([-0.25, 0, 0])
-pg3 = Polygon.rotated(p, file='clarky.dat', e1=ex, e3=ez, voff=voff, facecolor='k', edgecolor='k', scale=1, linewidth=1, alpha=0.1, edgecoloralpha=0.8)
+pg3 = Polygon.rotated(p, file='clarky-airfoil.dat', e1=ex, e3=ez, voff=voff, facecolor='k', edgecolor='k', scale=1, linewidth=1, alpha=0.1, edgecoloralpha=0.8)
 
 # add some text | does not work anymore (error message in renderer)
 t1 = Annotation3D('$P_1$',  xyz=q3, xytext=(10,10))

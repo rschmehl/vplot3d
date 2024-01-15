@@ -71,7 +71,7 @@ markers     = []
 lib_path = Path(__file__).parent
 
 # Open file with marker definitions
-mtree = ET.parse(lib_path / 'markers.svg')
+mtree = ET.parse(lib_path / 'data' / 'markers.svg')
 mroot = mtree.getroot()
 
 # Raw Latex math - see https://github.com/matplotlib/matplotlib/issues/4938#issuecomment-783252908
