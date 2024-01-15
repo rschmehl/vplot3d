@@ -78,8 +78,8 @@ er    = np.array([ cb*cp,  cb*sp, sb])
 ephi  = np.array([   -sp,     cp,  0])
 ebeta = np.array([-sb*cp, -sb*sp, cb])
 vkt   = cc*ebeta + sc*ephi
-pg1 = Polygon.rotated(Pk, file=lib_path / 'planform.dat', e2=vkt, e3=er, voff=voff, zorder=52, facecolor='k', edgecolor='k', scale=4e-5, linewidth=1, alpha=0.1, edgecoloralpha=0.8)
-pg2 = Polygon.rotated(Pk, file=lib_path / 'tubeframe.dat', e2=vkt, e3=er, voff=voff, zorder=52, facecolor='k', edgecolor='k', scale=4e-5, linewidth=5, alpha=0, edgecoloralpha=1)
+pg1 = Polygon.rotated(Pk, file=lib_path / 'data' / 'V3-planform.dat', e2=vkt, e3=er, voff=voff, zorder=52, facecolor='k', edgecolor='k', scale=4e-5, linewidth=1, alpha=0.1, edgecoloralpha=0.8)
+pg2 = Polygon.rotated(Pk, file=lib_path / 'data' / 'V3-tubeframe.dat', e2=vkt, e3=er, voff=voff, zorder=52, facecolor='k', edgecolor='k', scale=4e-5, linewidth=5, alpha=0, edgecoloralpha=1)
 
 # Velocity vectors
 Vw = np.array([0.5, 0, 0])
@@ -89,7 +89,7 @@ vk = Vector(Pk, Vk, shape='Arrow1Mend', zorder=55, linewidth=5, color='r')
 
 # Text labels
 ax.annotate3D(r'$\vec{O}$', xyz=PO, xytext=(-0.5,-1.8))
-ax.annotate3D(r'$\vec{K}$', xyz=PO+Pk, xytext=(0.7,0.5))
+ax.annotate3D(r'$\vec{K}$', xyz=PO+Pk, xytext=(0.6,0.7))
 ax.annotate3D(r'$\xw$', xyz=Px, xytext=(-0.4,-1.2))
 ax.annotate3D(r'$\yw$', xyz=Py, xytext=(-0.8,-1.5))
 ax.annotate3D(r'$\zw$', xyz=Pz, xytext=(0.6,-0.9))
@@ -100,7 +100,7 @@ ax.set_axis_off()
 
 fname='kite_kinematics_3d'
 save_svg(fname+'_tex.svg')
-p=subprocess.call([lib_path / 'convert_tex.sh', fname+'_tex.svg'])
+p=subprocess.call([lib_path / 'tex' / 'convert_tex.sh', fname+'_tex.svg'])
 display(Image(filename=fname+'.png'))
 
 ###############################################################################
@@ -117,9 +117,9 @@ Pkz  = np.array([0,     0,     Pk[2]])
 Pkxy = np.array([Pk[0], Pk[1], 0    ])
 Pxy  = r*np.array([np.cos(phi), np.sin(phi), 0])
 
-a1 = Arc(PO, Px, -Px, -Py, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
-a2 = Arc(PO, Px, Px, Pz, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
-a3 = Arc(Pkz, Px, Px, Pz, np.cos(beta)*r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
+a1 = Arc(PO,  Px, -Px, -Py, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
+a2 = Arc(PO,  Px,  Px,  Pz, r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
+a3 = Arc(Pkz, Px,  Px,  Pz, np.cos(beta)*r, linewidth=2, zorder=31, color='k', alpha=0.3, linestyle=(0,(6,6)))
 
 Z    = Point(Pz, shape='Point1M', zorder=100, color='k')
 l2   = Line(PO, Pxy, linewidth=2, linestyle="solid")
@@ -131,7 +131,7 @@ ax.annotate3D(r'$\phi$', xyz=PO+Pxy, xytext=(-1.4,1))
 
 fname='kite_kinematics_3d_a'
 save_svg(fname+'_tex.svg')
-p=subprocess.call([lib_path / 'convert_tex.sh', fname+'_tex.svg'])
+p=subprocess.call([lib_path / 'tex' / 'convert_tex.sh', fname+'_tex.svg'])
 display(Image(filename=fname+'.png'))
 
 ###############################################################################
