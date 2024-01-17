@@ -139,7 +139,7 @@ def set_axes_equal(ax):
     ax.set_ylim3d([y_middle - plot_radius, y_middle + plot_radius])
     ax.set_zlim3d([z_middle - plot_radius, z_middle + plot_radius])
 
-#    return plot_radius
+    return plot_radius
 
 def projected_length(beta_deg, phi_deg, vec):
     '''Project a vector from 3D data space into the viewing plane and

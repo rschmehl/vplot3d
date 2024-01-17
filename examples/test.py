@@ -28,24 +28,29 @@ from vplot3d import figsize, set_axes_equal, orthogonal_proj, Line, Vector, Poin
 matplotlib_inline.backend_inline.set_matplotlib_formats('svg')
 
 mpl.rcParams['svg.fonttype']   = 'none'
-mpl.rcParams['figure.figsize'] = figsize(400, 600) # reference size for perfect arrowhead positioning.
+mpl.rcParams['figure.figsize'] = figsize(800, 800)
 
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d', proj_type='ortho')
 
-# Set anticipated diagram range in data space
+# Set (anticipated) diagram range in data space
 ax.set_xlim3d([-0.1, 1])
 ax.set_ylim3d([-0.1, 1])
-ax.set_zlim3d([0, 3])
+ax.set_zlim3d([-2, 10])
 v3d.ZOOM = 2
-v3d.FONTSIZE = 20
-set_axes_equal(ax)
+v3d.FONTSIZE = 10
+v3d.plot_radius = set_axes_equal(ax)
 
 # Diagram perspective
 elev =  30   # default:  30
 azim = -60   # default: -60
 ax.view_init(elev, azim)
 proj3d.persp_transformation = orthogonal_proj
+
+#M = ax.get_proj()
+#print(M)
+#print(ax)
+print('plot_radius = ', v3d.plot_radius)
 
 # draw cube https://itecnote.com/tecnote/python-plotting-a-3d-cube-a-sphere-and-a-vector-in-matplotlib/
 r = [0, 1]

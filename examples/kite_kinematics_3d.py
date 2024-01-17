@@ -37,13 +37,15 @@ ax.set_xlim3d([-1, 1])
 ax.set_ylim3d([-1, 1.05])
 ax.set_zlim3d([-0.3, 1])
 v3d.ZOOM = 2.65
-set_axes_equal(ax)
+v3d.plot_radius = set_axes_equal(ax)
 
 # Diagram perspective
 elev = 20   # default:  30
 azim = 30   # default: -60
 ax.view_init(elev, azim)
 proj3d.persp_transformation = orthogonal_proj
+
+print('plot_radius = ', v3d.plot_radius)
 
 # Origin
 PO = np.array([0, 0, 0])
