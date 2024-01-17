@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:ns2="http://creativecommons.org/ns#" xmlns:ns4="http://www.w3.org/1999/xlink" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" width="980" height="700" viewBox="0 0 980 700" version="1.1">
+ <defs>
+  <marker id="Point1M-k:k:w" style="overflow:visible" refX="0" refY="0" orient="auto">
+  <path style="stroke:#000000;fill:#ffffff;stroke-width:3;opacity:1" d="M -2.5,-1.0 C -2.5,1.7600000 -4.7400000,4.0 -7.5,4.0 C -10.260000,4.0 -12.5,1.7600000 -12.5,-1.0 C -12.5,-3.7600000 -10.260000,-6.0 -7.5,-6.0 C -4.7400000,-6.0 -2.5,-3.7600000 -2.5,-1.0 z" transform="scale(0.35) translate(7.4, 1)" />
+  </marker>
+  <marker id="Arrow1Mend-k:k" style="overflow:visible" refX="0" refY="0" orient="auto">
+  <path style="stroke:#000000;fill:#000000;stroke-width:1pt;opacity:1;stroke-linejoin:miter" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z" transform="scale(0.4) rotate(180) translate(-0.9,0)" />
+  </marker>
+  <marker id="Arrow1Mend-r:r" style="overflow:visible" refX="0" refY="0" orient="auto">
+  <path style="stroke:#ff0000;fill:#ff0000;stroke-width:1pt;opacity:1;stroke-linejoin:miter" d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z" transform="scale(0.4) rotate(180) translate(-0.9,0)" />
+  </marker>
+</defs><metadata>
+  <rdf:RDF>
+   <ns2:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+    <dc:date>2024-01-17T08:10:36.026624</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <ns2:Agent>
+      <dc:title>Matplotlib v3.7.2, https://matplotlib.org/</dc:title>
+     </ns2:Agent>
+    </dc:creator>
+   </ns2:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 700  L 980 700  L 980 0  L 0 0  z " style="fill: #ffffff" />
+  </g>
+  <g id="patch_2">
+   <path d="M 140 700  L 840 700  L 840 0  L 140 0  z " style="fill: #ffffff" />
+  </g>
+  <g id="axes_1">
+   <g id="line_1">
+    <path d="M 488.274041 508.248264  L 395.634066 432.307079  " clip-path="url(#pb71dc1b350)" style="fill: none; stroke: #000000; stroke-width: 2" />
+   </g>
+   <g id="polygon_1">
+    <defs>
+     <path id="mb52cfe7677" d="M 358.045841 -344.951859  L 365.502991 -346.430804  L 372.20874 -347.410195  L 377.198746 -348.010008  L 382.718277 -348.427765  L 387.877129 -347.916156  L 389.766063 -346.02326  L 391.713161 -340.916594  L 394.43737 -332.200824  L 397.542395 -321.188971  L 400.228457 -309.215793  L 402.846282 -296.282433  L 404.973383 -283.233328  L 406.836959 -269.638767  L 408.487221 -256.007156  L 409.747808 -242.807545  L 410.509968 -229.551872  L 410.964472 -217.191092  L 410.775687 -205.607132  L 410.371343 -196.34796  L 409.79887 -190.803666  L 408.470651 -188.351978  L 403.667181 -186.109999  L 398.284096 -184.634066  L 393.361594 -183.512162  L 386.702637 -182.170218  L 379.199109 -181.050623  L 379.199109 -181.050623  L 375.686367 -183.95902  L 371.935931 -190.399627  L 370.368057 -193.647549  L 367.444993 -199.545593  L 366.511024 -207.23951  L 364.999977 -213.521614  L 362.372874 -222.192573  L 361.327678 -231.81681  L 360.485857 -237.6409  L 358.342802 -247.625986  L 357.688459 -256.373671  L 357.07932 -260.996294  L 356.494708 -265.623178  L 354.911893 -274.209595  L 354.440111 -284.484967  L 353.774653 -290.33969  L 352.344255 -299.897021  L 352.667064 -309.080354  L 352.525854 -315.600387  L 351.476441 -323.274252  L 352.78229 -329.906822  L 353.461433 -333.545032  L 355.421397 -340.977486  L 358.045841 -344.951859  L 382.718277 -348.427765  " style="stroke: #000000; stroke-opacity: 0.8" />
+    </defs>
+    <g clip-path="url(#pb71dc1b350)">
+     <use ns4:href="#mb52cfe7677" x="0" y="700" style="fill-opacity: 0.1; stroke: #000000; stroke-opacity: 0.8" />
+    </g>
+   </g>
+   <g id="text_1">
+    <g clip-path="url(#pb71dc1b350)">
+     <text style="font: 20px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="478.274041" y="544.248264" transform="rotate(-0 478.274041 544.248264)">$\vec{O}$</text>
+    </g>
+   </g>
+   <g id="text_2">
+    <g clip-path="url(#pb71dc1b350)">
+     <text style="font: 20px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="407.634066" y="418.307079" transform="rotate(-0 407.634066 418.307079)">$\vec{K}$</text>
+    </g>
+   </g>
+   <g id="text_3">
+    <g clip-path="url(#pb71dc1b350)">
+     <text style="font: 20px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="221.957875" y="685.273796" transform="rotate(-0 221.957875 685.273796)">$\xw$</text>
+    </g>
+   </g>
+   <g id="text_4">
+    <g clip-path="url(#pb71dc1b350)">
+     <text style="font: 20px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="919.690766" y="626.597596" transform="rotate(-0 919.690766 626.597596)">$\yw$</text>
+    </g>
+   </g>
+   <g id="text_5">
+    <g clip-path="url(#pb71dc1b350)">
+     <text style="font: 20px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="500.274041" y="40.772673" transform="rotate(-0 500.274041 40.772673)">$\zw$</text>
+    </g>
+   </g>
+   <g id="text_6">
+    <g clip-path="url(#pb71dc1b350)">
+     <text style="font: 20px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="775.09681" y="398.923844" transform="rotate(-0 775.09681 398.923844)">$\vvk$</text>
+    </g>
+   </g>
+   <g id="text_7">
+    <g clip-path="url(#pb71dc1b350)">
+     <text style="font: 20px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="266.475983" y="540.819845" transform="rotate(-0 266.475983 540.819845)">$\vvw$</text>
+    </g>
+   </g>
+   <g id="polygon_2">
+    <defs>
+     <path id="mc0b3a604c6" d="M 365.502991 -346.430804  L 358.045841 -344.951859  L 365.502991 -346.430804  L 372.20874 -347.410195  L 377.198626 -348.009987  L 382.718277 -348.427765  L 385.757741 -348.126341  L 387.877129 -347.916156  L 389.766063 -346.02326  L 394.374931 -331.890799  L 387.193082 -331.665107  L 351.375904 -323.205303  L 387.193082 -331.665107  L 394.374931 -331.890799  L 397.542395 -321.188971  L 400.106329 -308.388678  L 393.9876 -308.594392  L 352.192122 -299.607127  L 393.9876 -308.594392  L 400.106329 -308.388678  L 402.84654 -296.280431  L 404.889443 -283.067583  L 354.862681 -274.188217  L 404.889443 -283.067583  L 406.836959 -269.638767  L 406.836959 -269.638767  L 408.365118 -256.137113  L 358.290351 -247.629707  L 408.365118 -256.137113  L 409.747549 -242.809546  L 410.184379 -230.301222  L 404.385895 -228.025592  L 362.154225 -222.418065  L 404.385895 -228.025592  L 410.184379 -230.301222  L 410.964472 -217.191092  L 410.637716 -205.882347  L 403.713816 -203.657993  L 367.331458 -199.577359  L 403.713816 -203.657993  L 410.637716 -205.882347  L 410.371343 -196.34796  L 409.79887 -190.803666  L 408.470651 -188.351978  L 406.497264 -187.430913  L 375.652849 -183.952114  L 405.771414 -187.35473  L 403.667181 -186.109999  L 398.284096 -184.634066  L 393.361594 -183.512162  L 386.702637 -182.170218  L 379.199109 -181.050623  L 386.702637 -182.170218  " style="stroke: #000000; stroke-width: 5" />
+    </defs>
+    <g clip-path="url(#pb71dc1b350)">
+     <use ns4:href="#mc0b3a604c6" x="0" y="700" style="fill-opacity: 0; stroke: #000000; stroke-width: 5" />
+    </g>
+   </g>
+   <g id="vector_1" marker-end="url(#Arrow1Mend-k:k)">
+    <path d="M 488.274041 508.248264  L 257.183734 645.145299  " clip-path="url(#pb71dc1b350)" style="fill: none; stroke: #000000; stroke-width: 5" />
+   </g>
+   <g id="vector_2" marker-end="url(#Arrow1Mend-k:k)">
+    <path d="M 488.274041 508.248264  L 904.645719 590.467273  " clip-path="url(#pb71dc1b350)" style="fill: none; stroke: #000000; stroke-width: 5" />
+   </g>
+   <g id="vector_3" marker-end="url(#Arrow1Mend-k:k)">
+    <path d="M 488.274041 508.248264  L 488.274041 54.417196  " clip-path="url(#pb71dc1b350)" style="fill: none; stroke: #000000; stroke-width: 5" />
+   </g>
+   <g id="vector_4" marker-end="url(#Arrow1Mend-r:r)">
+    <path d="M 395.634066 432.307079  L 293.701842 492.691348  " clip-path="url(#pb71dc1b350)" style="fill: none; stroke: #ff0000; stroke-width: 5" />
+   </g>
+   <g id="vector_5" marker-end="url(#Arrow1Mend-r:r)">
+    <path d="M 395.634066 432.307079  L 763.919089 368.339145  " clip-path="url(#pb71dc1b350)" style="fill: none; stroke: #ff0000; stroke-width: 5" />
+   </g>
+   <g id="point_1" marker-start="url(#Point1M-k:k:w)">
+    <path d="M 488.274041 508.248264  L 488.274041 508.248264  " clip-path="url(#pb71dc1b350)" style="fill: none; stroke: #000000; stroke-width: 3" />
+   </g>
+   <g id="point_2" marker-start="url(#Point1M-k:k:w)">
+    <path d="M 395.634066 432.307079  L 395.634066 432.307079  " clip-path="url(#pb71dc1b350)" style="fill: none; stroke: #000000; stroke-width: 3" />
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pb71dc1b350">
+   <rect x="0" y="0" width="980" height="700" />
+  </clipPath>
+ </defs>
+</svg>

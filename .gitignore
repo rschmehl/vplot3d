@@ -1,5 +1,5 @@
-*.svg
-!markers.svg
+#*.svg
+#!markers.svg
 *.png
 
 # Byte-compiled / optimized / DLL files
