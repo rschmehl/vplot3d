@@ -33,8 +33,8 @@ The diagram will be generated as an SVG file. You have to specify the width and 
 
 When displaying the SVG file in a web browser or including it in html without explicit dimensions, these dimensions are used. But as a native vector format, SVG is also scalable to any dimensions without quality loss.
 
-[!TIP]
-Using constant size parameters across all diagrams of a document, while adjusting only the data range and figure size per diagram should lead to a uniform graphical representation.
+> [!TIP]
+> Using constant size parameters across all diagrams of a document, while adjusting only the data range and figure size per diagram should lead to a uniform graphical representation.
 
 At the start of your drawing you also need to define the anticipated 3D data range:
 
