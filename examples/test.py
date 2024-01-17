@@ -28,16 +28,16 @@ from vplot3d import figsize, set_axes_equal, orthogonal_proj, Line, Vector, Poin
 matplotlib_inline.backend_inline.set_matplotlib_formats('svg')
 
 mpl.rcParams['svg.fonttype']   = 'none'
-mpl.rcParams['figure.figsize'] = figsize(800, 800)
+mpl.rcParams['figure.figsize'] = figsize(600, 600)
 
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d', proj_type='ortho')
 
 # Set (anticipated) diagram range in data space
-ax.set_xlim3d([-0.1, 1])
-ax.set_ylim3d([-0.1, 1])
-ax.set_zlim3d([-2, 10])
-v3d.ZOOM = 2
+ax.set_xlim3d([0, 1])
+ax.set_ylim3d([0, 1])
+ax.set_zlim3d([-0.3, 1.5])
+v3d.ZOOM = 1.5
 v3d.FONTSIZE = 10
 v3d.plot_radius = set_axes_equal(ax)
 
@@ -67,7 +67,7 @@ v2 = Vector(np.array([0, 0, 0]),np.array([1, 1, 0]),shape='Arrow1Lend',zorder=12
 v3 = Vector(np.array([0, 0, 0]),np.array([0, 0, 0.2]),scale=3,zorder=13,color='b',alpha=0.2)
 v4 = Vector(np.array([0.5, 0.5, 0]),np.array([0, 0, 1.2]),scale=0.5,color='r')
 
-v5 = Vector(np.array([0, 0, 0]),np.array([1, 1, 3.]),shape='Arrow1Mend',zorder=11,color='r')
+v5 = Vector(np.array([0, 0, 0]),np.array([1, 1, 1.5]),shape='Arrow1Mend',zorder=11,color='r')
 
 # draw some points
 p1 = Point(np.array([0, 0, 0]),shape='CoG',scale=1.5,zorder=50,color='r')
@@ -107,7 +107,7 @@ voff = np.array([-0.25, 0, 0])
 pg3 = Polygon.rotated(p, file=lib_path / 'data' / 'clarky-airfoil.dat', e1=ex, e3=ez, voff=voff, facecolor='k', edgecolor='k', scale=1, linewidth=1, alpha=0.1, edgecoloralpha=0.8)
 
 # add some text | does not work anymore (error message in renderer)
-ax.annotate3D(r'$\beta$', xyz=np.array([0.5, 0.5, 2]), xytext=(0,0))
+ax.annotate3D(r'$\beta$', xyz=np.array([0.7, 0.7, 1.5]), xytext=(0,0))
 
 ax.set_axis_off()
 
