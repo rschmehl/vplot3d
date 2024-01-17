@@ -1,14 +1,13 @@
 # vplot3d
 
-This library extends the Python toolkit mplot3d to programmatically generate 3D vector diagrams for SVG output.
-The following diagram objects can be used
+This library extends the Python toolkit `mplot3d` to programmatically generate 3D vector diagrams in SVG format. The following diagram objects can be used
 
 - Points,
 - Lines and circular arcs,
-- Vectors and arc measures.
+- Vectors and arc measures,
+- Annotations.
 
-Points and arrowheads (for vectors and arc measures) are generated as SVG markers.
-Because Spyder's SVG renderer does not support markers, these are not drawn in the IPython console window. They do show in a webbrowser or in Inkscape.
+Points and arrowheads (for vectors and arc measures) are generated as native SVG markers to facilitate later postprocessing of the diagram in vector drawing tools, like Illustrator and Inkscape. 
 
 ## System requirements
 
@@ -33,9 +32,6 @@ The diagram will be generated as an SVG file. You have to specify the width and 
 
 When displaying the SVG file in a web browser or including it in html without explicit dimensions, these dimensions are used. But as a native vector format, SVG is also scalable to any dimensions without quality loss.
 
-> [!TIP]
-> Using constant size parameters across all diagrams of a document, while adjusting only the data range and figure size per diagram should lead to a uniform graphical representation.
-
 At the start of your drawing you also need to define the anticipated 3D data range:
 
     set_xlim3d([xmin, xmax])
@@ -48,10 +44,24 @@ The limiting values define the position of the 3D-diagram in the 2D SVG canvas. 
 
 where the default value of 1 depicts the original data range, a value > 1 zooms out and a value < 1 zooms in.
 
-The perspective of the 3D-diagram can be set by calling `view_init` with desired elevation and azimuth angle values:
+> [!TIP]
+> Using constant size parameters of graphical objects (line width, arrowhead size, etc) across all diagrams of a document, while adjusting only the data range, zoom value and figure size per diagram leads to a uniform graphical representation.
+
+The perspective of the 3D-diagram can be set in the usual way by calling `view_init` with desired elevation and azimuth angle values:
 
     elev =  30
     azim = -60
     view_init(elev, azim)
 
-I recommend using an orthographic projection of the 3D-diagram onto the 2D canvas (only tested the library for this).
+> [!CAUTION]
+> I tested the library only for orthographic projection.
+
+## Postprocessing
+
+Because Spyder's SVG renderer does not support markers, these are not drawn in the IPython console window. They do show in a webbrowser or in Inkscape. The included postprocessing with Inkscape, or Inscape-Latex-Inkscape generates a PNG file for output in the IDE's renderer.
+
+## Stepwise diagram buildup or animation
+
+To buildup a diagram in several steps, objects can be added, removed or updated and the current state of the diagram saved with a separate filename. 
+
+In this way , it should also be possible to create animations by updating the diagram in an animation look, updating, for example, the position of an object. The generated PNG files could then be easily converted to a video file, using ffmpeg.
