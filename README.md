@@ -7,13 +7,16 @@ This library extends the Python toolkit `mplot3d` to programmatically generate 3
 - Vectors and arc measures,
 - Annotations.
 
-Points and arrowheads (for vectors and arc measures) are generated as native SVG markers to facilitate later postprocessing of the diagram in vector drawing tools, like Illustrator and Inkscape. 
+Points and arrowheads (for vectors and arc measures) are generated as native SVG markers to facilitate later postprocessing of the diagram in vector drawing tools, like Illustrator and Inkscape. For precise positioning of arrowheads, the underlying line or polyline is shortened. This algorithm is one of the key contributions of `vplot3d`.
 
 ## System requirements
 
 - Matplotlib 3.3.0
 
-If you want to include Latex code
+Optional
+
+- Inkscape (to render the generated SVG in the IDE and for Latex postprocessing)
+- pdflatex (for Latex postprocessing, to include annotations and automatically render the Latex code)
 
 ## Installation
 
@@ -54,7 +57,7 @@ The perspective of the 3D-diagram can be set in the usual way by calling `view_i
     view_init(elev, azim)
 
 > [!CAUTION]
-> I tested the library only for orthographic projection.
+> The library has only been tested for orthographic projection so far. A different projection method could affect the shortening of arrowheads.
 
 ## Postprocessing
 
@@ -65,3 +68,9 @@ Because Spyder's SVG renderer does not support markers, these are not drawn in t
 To buildup a diagram in several steps, objects can be added, removed or updated and the current state of the diagram saved with a separate filename. 
 
 In this way , it should also be possible to create animations by updating the diagram in an animation look, updating, for example, the position of an object. The generated PNG files could then be easily converted to a video file, using ffmpeg.
+
+## Gallery
+
+![](examples/test.svg)
+![](examples/kite_kinematics_3d.svg)
+![](examples/kite_kinematics_3d_a.svg)
