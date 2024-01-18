@@ -69,6 +69,10 @@ To buildup a diagram in several steps, objects can be added, removed or updated 
 
 In this way , it should also be possible to create animations by updating the diagram in an animation look, updating, for example, the position of an object. The generated PNG files could then be easily converted to a video file, using ffmpeg.
 
+## Adding new markers
+
+New markers are added in the markers library `data/markers.svg` in the defs section, using a unique `id`. Only for arrowhead markers, the Marker class dictionary `deltas` needs to be expanded by the line-shortening value matching the new marker path.
+
 ## Gallery
 
 ![](examples/test.svg)

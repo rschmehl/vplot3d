@@ -7,15 +7,12 @@ Created on Thu Aug 11 11:03:50 2022
 @author: rschmehl
 """
 
-import matplotlib as mpl
 import matplotlib.pyplot as plt
-import matplotlib_inline
 import numpy as np
 import subprocess
 import sys
 from pathlib import Path
 from itertools import product, combinations
-from mpl_toolkits.mplot3d import proj3d
 from IPython.display import display, Image
 
 # Set this with environment variable PYTHONPATH
@@ -23,34 +20,18 @@ lib_path = Path('/home/rschmehl/projects/vplot3d')
 sys.path.append(str(lib_path))
 
 import vplot3d as v3d
-from vplot3d import figsize, set_axes_equal, orthogonal_proj, Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg
-
-matplotlib_inline.backend_inline.set_matplotlib_formats('svg')
-
-mpl.rcParams['svg.fonttype']   = 'none'
-mpl.rcParams['figure.figsize'] = figsize(600, 600)
+from vplot3d import Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg
 
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d', proj_type='ortho')
 
-# Set (anticipated) diagram range in data space
-ax.set_xlim3d([0, 1])
-ax.set_ylim3d([0, 1])
-ax.set_zlim3d([-0.3, 1.5])
-v3d.ZOOM = 1.5
-v3d.FONTSIZE = 10
-v3d.plot_radius = set_axes_equal(ax)
-
-# Diagram perspective
-elev =  30   # default:  30
-azim = -60   # default: -60
-ax.view_init(elev, azim)
-proj3d.persp_transformation = orthogonal_proj
-
-#M = ax.get_proj()
-#print(M)
-#print(ax)
-print('plot_radius = ', v3d.plot_radius)
+# Initialize vector diagram
+v3d.plot_zoom, v3d.plot_radius = v3d.init(width=600, height=600, \
+                                          xmin=0,    xmax=1,     \
+                                          ymin=0,    ymax=1,     \
+                                          zmin=-0.3, zmax=1.5,   \
+                                          zoom=1.5,              \
+                                          elev=30,   azim=-60    )
 
 # draw cube https://itecnote.com/tecnote/python-plotting-a-3d-cube-a-sphere-and-a-vector-in-matplotlib/
 r = [0, 1]

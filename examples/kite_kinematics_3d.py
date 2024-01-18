@@ -7,14 +7,11 @@ Created on Thu Aug 11 11:03:50 2022
 @author: rschmehl
 """
 
-import matplotlib as mpl
 import matplotlib.pyplot as plt
-import matplotlib_inline
 import numpy as np
 import subprocess
 import sys
 from pathlib import Path
-from mpl_toolkits.mplot3d import proj3d
 from IPython.display import display, Image
 
 # Set this with environment variable PYTHONPATH
@@ -22,30 +19,19 @@ lib_path = Path('/home/rschmehl/projects/vplot3d')
 sys.path.append(str(lib_path))
 
 import vplot3d as v3d
-from vplot3d import figsize, set_axes_equal, orthogonal_proj, Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg
+from vplot3d import Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg
 
-matplotlib_inline.backend_inline.set_matplotlib_formats('svg')
-
-mpl.rcParams['svg.fonttype']   = 'none'
-mpl.rcParams['figure.figsize'] = figsize(980, 700)
-
+# Setup figure and axes3d
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d', proj_type='ortho')
 
-# Set anticipated diagram range in data space
-ax.set_xlim3d([-1, 1])
-ax.set_ylim3d([-1, 1.05])
-ax.set_zlim3d([-0.3, 1])
-v3d.ZOOM = 2.65
-v3d.plot_radius = set_axes_equal(ax)
-
-# Diagram perspective
-elev = 20   # default:  30
-azim = 30   # default: -60
-ax.view_init(elev, azim)
-proj3d.persp_transformation = orthogonal_proj
-
-print('plot_radius = ', v3d.plot_radius)
+# Initialize vector diagram
+v3d.plot_zoom, v3d.plot_radius = v3d.init(width=980, height=700, \
+                                          xmin=-1,   xmax=1,     \
+                                          ymin=-1,   ymax=1.05,  \
+                                          zmin=-0.3, zmax=1,     \
+                                          zoom=2.65,             \
+                                          elev=20,   azim=30     )
 
 # Origin
 PO = np.array([0, 0, 0])
@@ -99,6 +85,12 @@ ax.annotate3D(r'$\vvk$', xyz=PO+Pk+Vk, xytext=(-1,-1.8))
 ax.annotate3D(r'$\vvw$', xyz=PO+Pk+Vw, xytext=(0,-1.6))
 
 ax.set_axis_off()
+
+# v3d.generate_svg(fname='kite_kinematics_3d')
+#
+# Remark: we need a way to modify the fontsize in the template.tex file
+# One way to do this is to simply write this file from here, on the fly, with
+# the proper font size
 
 fname='kite_kinematics_3d'
 save_svg(fname+'_tex.svg')

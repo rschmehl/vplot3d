@@ -34,6 +34,7 @@ from matplotlib.colors import is_color_like
 from pathlib import Path
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import matplotlib_inline
 import numpy as np
 import copy
 import io
@@ -48,7 +49,6 @@ EY        = np.array([0, 1, 0])
 EZ        = np.array([0, 0, 1])
 EXYZ      = np.array([1, 1, 1])
 EPS       = 1e-5                           # Small number
-ZOOM      = 1                              # Scales drawing
 LINEWIDTH = 3                              # Linewidth of line objects
 FONTSIZE  = 20                             # Fontsize for text objects
 XYOFF     = (0,0)                          # xy-offset of text objects
@@ -57,7 +57,9 @@ COS       = np.cos(np.radians(DEGREES))
 SIN       = np.sin(np.radians(DEGREES))
 _FSCALE   = 7.547                          # Scaling factor for shortening
 
-plot_radius = 1
+#
+plot_zoom   = 1                            # Scales drawing
+plot_radius = 1                            # Data radius
 
 # Lists for geometrical objects
 lines       = []
@@ -80,6 +82,54 @@ def _m(s):
     '''Helper method escaping backslash for raw math output
     '''
     return s.replace("$", r"\$") if RAW_MATH else s
+
+def init(width, height, \
+         xmin,  xmax,   \
+         ymin,  ymax,   \
+         zmin,  zmax,   \
+         zoom=None,     \
+         elev=30, azim=-60 ):
+    '''Boilerplate code to initialize the 3D vector diagram and set all
+    required properties. This is a convenience function to bundle the entire
+    setup of the diagram. The code below can also directly included in the
+    diagram program code, for example, to modify some additional properties.
+
+    Input
+      width:  width of 2D drawing cancas in pixels
+      height: height of 2D drawing cancas in pixels
+      xmin:   minimum expected x-value of all 3D data in digram
+      xmax:   maximum expected x-value of all 3D data in digram
+      ymin:   minimum expected y-value of all 3D data in digram
+      ymax:   maximum expected y-value of all 3D data in digram
+      zmin:   minimum expected z-value of all 3D data in digram
+      zmax:   maximum expected z-value of all 3D data in digram
+      zoom:   viewing distance to diagram
+      elev:   elevation angle of perspective
+      azim:   azimuth angle of perspective
+    Output
+      plot_zoom:   viewing distance to diagram (to be set in module scope)
+      plot_radius: radius of data in data space (to be set in module scope)
+    '''
+
+    matplotlib_inline.backend_inline.set_matplotlib_formats('svg')
+    mpl.rcParams['svg.fonttype']   = 'none'
+    mpl.rcParams['figure.figsize'] = figsize(width, height)
+
+    # Set anticipated diagram range in data space
+    ax = plt.gca()
+    ax.set_xlim3d([xmin, xmax])
+    ax.set_ylim3d([ymin, ymax])
+    ax.set_zlim3d([zmin, zmax])
+    plot_zoom = 1
+    if zoom is not None:
+        plot_zoom = zoom
+    plot_radius = set_axes_equal(ax)
+
+    # Diagram perspective
+    ax.view_init(elev, azim)
+    proj3d.persp_transformation = orthogonal_proj
+
+    return plot_zoom, plot_radius
 
 def figsize(figure_width_px, figure_height_px):
     ''' Sets figure size in inches, given a desired width and height in pixels.
@@ -394,7 +444,7 @@ class Vector(Line):
         # offset for the used marker
         delta = Marker.deltas[self.shape]*self.linewidth
         # correction with the minimum of figure width and height
-        delta = delta/(min(mpl.rcParams['figure.figsize'])/_FSCALE)/ZOOM
+        delta = delta/(min(mpl.rcParams['figure.figsize'])/_FSCALE)/plot_zoom
         # length of unit vector projected into display
         l = projected_length(elev, azim, e)
         # corrected endpoint
@@ -532,7 +582,7 @@ class ArcMeasure(Arc):
         # offset for the used marker
         delta = Marker.deltas[self.shape]*self.linewidth
         # correction with the minimum of figure width and height
-        delta = delta/(min(mpl.rcParams['figure.figsize'])/_FSCALE)/ZOOM
+        delta = delta/(min(mpl.rcParams['figure.figsize'])/_FSCALE)/plot_zoom
         # start at tip of arrowhead and walk back on arc
         for i, alpha in enumerate(DEGREES):
             if i == 0: continue                # i = 1, 2, 3, ...
@@ -774,7 +824,7 @@ def save_svg(file='unnamed.svg'):
     '''
     # get current Axes instance and prepare axes for plotting
     ax = plt.gca()
-    ax.set_box_aspect([1,1,1], zoom=ZOOM) # requires matplotlib 3.3.0
+    ax.set_box_aspect([1,1,1], zoom=plot_zoom) # requires matplotlib 3.3.0
 
     # Remove margins
     plt.subplots_adjust(left=0, right=1, top=1, bottom=0)
