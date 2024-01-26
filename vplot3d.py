@@ -883,7 +883,7 @@ def save_svg(file='unnamed.svg'):
     for p in points:
         pelement  = xmlid[p.gid]
         pelement.set('marker-start', 'url(#' + p.style + ')')
-        style = pelement.find('.//{'+ns+'}path').attrib['style'].replace('stroke-opacity', 'opacity')
+        style = pelement.find('.//{'+ns+'}p ath').attrib['style'].replace('stroke-opacity', 'opacity')
         pelement.find('.//{'+ns+'}path').attrib['style'] = style
 
     print(f"Saving '{file}'")
@@ -897,3 +897,20 @@ def reset():
     polygons.clear()
     points.clear()
     markers.clear()
+
+def print_latex_template:
+
+    \documentclass{standalone}
+    \usepackage{xcolor}
+    \usepackage{graphicx}
+    \usepackage{lmodern}
+    \usepackage[T1]{fontenc}
+    \usepackage{opensans}
+    \usepackage{transparent}
+    \usepackage{amsmath}
+    \input{macros.tex}
+    \begin{document}
+    \fosfamily
+    \fontsize{26px}{28px}\selectfont % See $mainFontSize:30px; in css/theme/source/aweonline.scss
+    \input{\filename}
+    \end{document}
