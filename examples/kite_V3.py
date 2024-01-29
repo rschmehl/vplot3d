@@ -64,11 +64,11 @@ class LineSystem():
         return cls(np.array(verts), np.array(segs)-1)
 
 fig = plt.figure()
-plt.rcParams['figure.figsize'] = [10, 10]
+plt.rcParams['figure.figsize'] = [12, 12]
 ax = fig.add_subplot(projection='3d', proj_type='ortho')
 
 elev = 0   # default:  30
-azim = 270   # default: -60
+azim = 0   # default: -60
 #ax.view_init(elev, azim)
 
 mesh1 = trimesh.load('../data/kite_V3_canopy.obj')
@@ -79,7 +79,7 @@ mesh5 = LineSystem.load('../data/kite_V3_bridle.obj')
 
 # Move KCU to correct position
 mesh4.vertices[:,2] = mesh4.vertices[:,2] - 5.7
-mesh4.vertices[:,1] = mesh4.vertices[:,1] + 0.2
+#mesh4.vertices[:,1] = mesh4.vertices[:,1] + 0.2
 
 mesh  = trimesh.util.concatenate((mesh1, mesh2, mesh3, mesh4))
 fc    = ['#dcdcdc4d']*len(mesh1.faces) + \
@@ -118,8 +118,8 @@ ax.plot([0,0], [0,0], [0,1], color='b')
 
 ax.set_xlim3d([-3, 3])
 ax.set_ylim3d([-3, 3])
-ax.set_zlim3d([-4, 2])
-ax.set_box_aspect([6,6,6], zoom=1)
+ax.set_zlim3d([-4.5, 1.5])
+ax.set_box_aspect([6,6,6], zoom=0.9)
 ax.set_axis_off()
 
 plt.savefig("kite_V3.svg", format="svg", dpi=300)
