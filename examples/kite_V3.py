@@ -101,6 +101,8 @@ ax.add_collection3d(pc)
 # Add bridle line system separately
 nodes = mesh5.vertices
 lines = mesh5.segments
+
+# Fix rotation of bridle line system
 m = axangle2mat([1, 0, 0], np.radians(90))
 for i in range(len(nodes)):
     nodes[i] = m.dot(nodes[i])
