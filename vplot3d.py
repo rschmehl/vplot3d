@@ -69,6 +69,7 @@ arcmeasures = []
 polygons    = []
 points      = []
 markers     = []
+meshes      = []
 
 lib_path = Path(__file__).parent
 
@@ -83,12 +84,12 @@ def _m(s):
     '''
     return s.replace("$", r"\$") if RAW_MATH else s
 
-def init(width, height, \
-         xmin,  xmax,   \
-         ymin,  ymax,   \
-         zmin,  zmax,   \
-         zoom=None,     \
-         elev=30, azim=-60 ):
+def init(width, height,
+         xmin,  xmax,
+         ymin,  ymax,
+         zmin,  zmax,
+         zoom=None,
+         elev=30, azim=-60):
     '''Boilerplate code to initialize the 3D vector diagram and set all
     required properties. This is a convenience function to bundle the entire
     setup of the diagram. The code below can also directly included in the
@@ -627,8 +628,6 @@ class Polygon(Object3D):
         '''
         super().__init__(p, id, linewidth, scale, zorder, edgecolor, facecolor, None, alpha)
 
-#    def __init__(self, p=ORIGIN, id=None, linewidth=LINEWIDTH, shape='Point1M', zorder=0, edgecolor=None, facecolor=None, bgcolor=None, alpha=1):
-
         # set unique gid
         self.gid = 'polygon_' + str(len(polygons)+1)
         # colors
@@ -883,7 +882,7 @@ def save_svg(file='unnamed.svg'):
     for p in points:
         pelement  = xmlid[p.gid]
         pelement.set('marker-start', 'url(#' + p.style + ')')
-        style = pelement.find('.//{'+ns+'}p ath').attrib['style'].replace('stroke-opacity', 'opacity')
+        style = pelement.find('.//{'+ns+'}path').attrib['style'].replace('stroke-opacity', 'opacity')
         pelement.find('.//{'+ns+'}path').attrib['style'] = style
 
     print(f"Saving '{file}'")
@@ -898,19 +897,21 @@ def reset():
     points.clear()
     markers.clear()
 
-def print_latex_template:
+#def print_latex_template:
 
-    \documentclass{standalone}
-    \usepackage{xcolor}
-    \usepackage{graphicx}
-    \usepackage{lmodern}
-    \usepackage[T1]{fontenc}
-    \usepackage{opensans}
-    \usepackage{transparent}
-    \usepackage{amsmath}
-    \input{macros.tex}
-    \begin{document}
-    \fosfamily
-    \fontsize{26px}{28px}\selectfont % See $mainFontSize:30px; in css/theme/source/aweonline.scss
-    \input{\filename}
-    \end{document}
+# function to generate Latex template with adjustable font size
+
+    # \documentclass{standalone}
+    # \usepackage{xcolor}
+    # \usepackage{graphicx}
+    # \usepackage{lmodern}
+    # \usepackage[T1]{fontenc}
+    # \usepackage{opensans}
+    # \usepackage{transparent}
+    # \usepackage{amsmath}
+    # \input{macros.tex}
+    # \begin{document}
+    # \fosfamily
+    # \fontsize{26px}{28px}\selectfont % See $mainFontSize:30px; in css/theme/source/aweonline.scss
+    # \input{\filename}
+    # \end{document}
