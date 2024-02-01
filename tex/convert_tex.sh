@@ -19,7 +19,8 @@ else
 fi
 
 # Convert generated pdf back to svg
-inkscape tmp.pdf --pdf-poppler --export-type=svg --export-filename=$fname'.svg' &>/dev/null
+inkscape tmp.pdf --pdf-poppler --export-type=svg --export-filename=tmp.svg &>/dev/null
+scour -i tmp.svg -o $fname'.svg'
 
 # clean up
 rm -f tmp.* $fname.pdf $fname.pdf_tex

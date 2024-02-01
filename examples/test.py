@@ -26,6 +26,7 @@ fig = plt.figure()
 ax = fig.add_subplot(projection='3d', proj_type='ortho')
 
 # Initialize vector diagram
+# See also https://matplotlib.org/stable/api/toolkits/mplot3d/view_angles.html
 v3d.plot_zoom, v3d.plot_radius = v3d.init(width=600, height=600, \
                                           xmin=0,    xmax=1,     \
                                           ymin=0,    ymax=1,     \

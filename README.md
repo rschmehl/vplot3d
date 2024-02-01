@@ -16,6 +16,7 @@ Points and arrowheads (for vectors and arc measures) are generated as native SVG
 Optional
 
 - Inkscape (to render the generated SVG in the IDE and for Latex postprocessing)
+- Scour (to optimize SVG output)
 - pdflatex (for Latex postprocessing, to include annotations and automatically render the Latex code)
 
 ## Installation
@@ -41,7 +42,7 @@ At the start of your drawing you also need to define the anticipated 3D data ran
     set_ylim3d([ymin, ymax])
     set_zlim3d([zmin, zmax])
 
-The limiting values define the position of the 3D-diagram in the 2D SVG canvas. For the convenience of the user, the distance of the viewer to the object can be modified by 
+The limiting values define the position of the 3D-diagram in the 2D SVG canvas. For the convenience of the user, the distance of the viewer to the object can be modified by
 
     ZOOM = value
 
@@ -65,7 +66,7 @@ Because Spyder's SVG renderer does not support markers, these are not drawn in t
 
 ## Stepwise diagram buildup or animation
 
-To buildup a diagram in several steps, objects can be added, removed or updated and the current state of the diagram saved with a separate filename. 
+To buildup a diagram in several steps, objects can be added, removed or updated and the current state of the diagram saved with a separate filename.
 
 In this way , it should also be possible to create animations by updating the diagram in an animation look, updating, for example, the position of an object. The generated PNG files could then be easily converted to a video file, using ffmpeg.
 

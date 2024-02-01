@@ -842,13 +842,16 @@ def save_svg(file='unnamed.svg'):
     tree.attrib['width']  = tree.attrib['width'].removesuffix('pt')
     tree.attrib['height'] = tree.attrib['height'].removesuffix('pt')
 
-    # Set clipPath to SVG viewbox
+    # Erase the matplotlib clipPath and all references to it from the SVG
     clipPath = tree.find('.//{'+ns+'}clipPath')
-    rect = clipPath.find('.//{'+ns+'}rect')
-    rect.set('x', '0')
-    rect.set('y', '0')
-    rect.set('width',  tree.attrib['width'])
-    rect.set('height', tree.attrib['height'])
+    clip_path_id = clipPath.attrib['id']
+
+    for defs in tree.findall('{'+ns+'}defs'):
+        for cp in defs.findall('.//{'+ns+'}clipPath'):
+            defs.remove(cp)
+
+    for el in tree.findall(".//*[@clip-path=\"url(#" + clip_path_id + ")\"]"):
+        el.attrib.pop('clip-path')
 
     # remove the defs element with matplotlib's default css style
 #    for defs in tree.findall('{'+ns+'}defs'):

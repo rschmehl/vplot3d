@@ -93,7 +93,7 @@ faces = mesh.faces
 ls = LightSource(azdeg=225.0, altdeg=40.0)
 
 pc = Poly3DCollection([nodes[faces[i,:]] for i in range(len(faces))],
-                       edgecolor=fc, facecolors=fc, \
+                       edgecolor=fc, facecolors=fc,
                        linewidths=0, shade=True, lightsource=ls)
 
 ax.add_collection3d(pc)
