@@ -79,3 +79,4 @@ New markers are added in the markers library `data/markers.svg` in the defs sect
 ![](examples/test.svg)
 ![](examples/kite_kinematics_3d.svg)
 ![](examples/kite_kinematics_3d_a.svg)
+![](examples/kite.svg)
