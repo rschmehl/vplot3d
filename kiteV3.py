@@ -32,8 +32,8 @@ class KiteV3(Object3D):
     bridle line system. The wing is composed of a canopy, a leading edge tube
     and several strut tubes.
     '''
-    def __init__(self, p=ORIGIN, e1=None, e2=None, e3=None, voff=ORIGIN,
-                 v=[[EXYZ]], id=None, linewidth=LINEWIDTH,
+    def __init__(self, p=ORIGIN, e1=EX, e2=EY, e3=EZ, voff=ORIGIN,
+                 id=None, linewidth=LINEWIDTH,
                  canopycolor='#dcdcdc4d', tubecolor='#000000',
                  kcucolor='#484848b3', scale=1, zorder=0, alpha=1,
                  azdeg=225.0, altdeg=40.0):
@@ -81,6 +81,11 @@ class KiteV3(Object3D):
         # Translate and scale entire mesh
         nodes = (nodes - bp) * scale
 
+        # Recalculate nodes in (e1,e2,e3) base
+        for i in range(len(nodes)):
+            nodes[i] = nodes[i,0]*e1 + nodes[i,1]*e2 + nodes[i,2]*e3
+
+
         self.polyline_nodes = nodes
         self.polyline_lines = lines
 
@@ -108,6 +113,10 @@ class KiteV3(Object3D):
         nodes = nodes * scale
         faces = mesh.faces
 
+        # Recalculate nodes in (e1,e2,e3) base
+        for i in range(len(nodes)):
+            nodes[i] = nodes[i,0]*e1 + nodes[i,1]*e2 + nodes[i,2]*e3
+
         self.mesh_nodes = nodes
         self.mesh_faces = faces
 
@@ -126,6 +135,51 @@ class KiteV3(Object3D):
         self.ax.plot([0,1], [0,0], [0,0], color='r')
         self.ax.plot([0,0], [0,1], [0,0], color='g')
         self.ax.plot([0,0], [0,0], [0,1], color='b')
+
+    @classmethod
+    def rotated(cls, p=ORIGIN, e1=None, e2=None, e3=None, voff=ORIGIN, id=None,
+                linewidth=LINEWIDTH, canopycolor='k', tubecolor='k', kcucolor='k', scale=1,
+                zorder=1, alpha=1, azdeg=0, altdeg=0):
+        '''Simulated constructor.
+        The kite is plotted in a vector base (e1, e2, e3), of which at least two axis-diections must be specified.
+        The vectors e1, e2 and e3 do not need to be normalized.
+
+        Input
+          p         : polygon reference point coordinates, absolute
+          v         : polygon nodal point coordinates in (e1, e2, e3) relative to p
+          file      : name of file with polygon nodal point coordinates in (e1, e2, e3) relative to p
+          e1        : x-direction new vector base
+          e2        : y-direction new vector base
+          e3        : z-direction new vector base
+          voff      : offset applied to nodal points, relative to p
+          id        : name identifier
+          linewidth : line width
+          scale     : scale of polygon, relative to p
+          zorder    : parameter used for depth sorting
+          facecolor : fill color of polygon
+          edgecolor : line color of polygon
+          alpha     : transparency of line
+        '''
+        # Check if at least two base vectors are specified
+        if [e1 is None, e2 is None, e3 is None].count(True) > 1:
+            print('*** Error in Polygon.rotated: need 2 or 3 base vectors')
+
+        # Complete the vector base
+        if e1 is None:
+            e1 = np.cross(e2, e3)
+        e1abs = np.sqrt(e1.dot(e1))
+        e1    = e1/e1abs
+        if e2 is None:
+            e2 = np.cross(e3, e1)
+        e2abs = np.sqrt(e2.dot(e2))
+        e2    = e2/e2abs
+        if e3 is None:
+            e3 = np.cross(e1, e2)
+        e3abs = np.sqrt(e3.dot(e3))
+        e3    = e3/e3abs
+
+        return cls(p, e1, e2, e3, voff, id, linewidth, canopycolor, tubecolor,
+                   kcucolor, scale, zorder, alpha, azdeg, altdeg)
 
 class LineSystem():
     '''Class for line system objects.

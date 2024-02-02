@@ -681,7 +681,7 @@ class Polygon(Object3D):
         '''
         # Check if at least two base vectors are specified
         if [e1 is None, e2 is None, e3 is None].count(True) > 1:
-            print('*** Error in Polygon.rotated: need at least two (of three) base vectors')
+            print('*** Error in Polygon.rotated: need 2 or 3 base vectors')
 
         # Complete the vector base
         if e1 is None:
