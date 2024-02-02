@@ -57,11 +57,39 @@ class KiteV3(Object3D):
         # set unique gid
         self.gid = 'kiteV3_' + str(len(kiteV3)+1)
 
+        # Read all meshes from obj-files
         mesh1 = trimesh.load('../data/kite_V3_canopy.obj')
         mesh2 = trimesh.load('../data/kite_V3_LE.obj')
         mesh3 = trimesh.load('../data/kite_V3_struts.obj')
         mesh4 = trimesh.load('../data/kite_V3_KCU.obj')
         mesh5 = LineSystem.load('../data/kite_V3_bridle.obj')
+
+        # Add bridle line system separately
+        nodes = mesh5.vertices
+        lines = mesh5.segments
+
+        # Fix rotation of bridle line system
+        m = axangle2mat([1, 0, 0], np.radians(90))
+        for i in range(len(nodes)):
+            nodes[i] = m.dot(nodes[i])
+
+        # Get coordinates of bridle point from bridle line system
+        bp = nodes[np.argmin(nodes[:,2]),:]
+
+        # Translate and scale entire mesh
+        nodes = (nodes - bp) * scale
+
+        self.polyline_nodes = nodes
+        self.polyline_lines = lines
+
+        lc = Line3DCollection([nodes[lines[i,:]] for i in range(len(lines))],
+                               edgecolor='k', linewidths=1, linestyles='solid')
+
+        ln = self.ax.add_collection3d(lc)
+        ln.set_gid(self.gid + '_bridle')
+        self.lines = ln
+
+        kiteV3.append(self)
 
         # Move KCU to correct position
         mesh4.vertices[:,2] = mesh4.vertices[:,2] - 5.7
@@ -73,8 +101,13 @@ class KiteV3(Object3D):
                 ['#000000']*len(mesh3.faces) + \
                 ['#484848b3']*len(mesh4.faces)
 
-        nodes = mesh.vertices * scale
+        # Translate and scale entire mesh
+        nodes = mesh.vertices - bp
+        nodes = nodes * scale
         faces = mesh.faces
+
+        self.mesh_nodes = nodes
+        self.mesh_faces = faces
 
         ls = LightSource(azdeg=225.0, altdeg=40.0)
 
@@ -85,24 +118,6 @@ class KiteV3(Object3D):
         ms = self.ax.add_collection3d(pc)
         ms.set_gid(self.gid + '_wing_and_kcu')
         self.mesh = ms
-
-        # Add bridle line system separately
-        nodes = mesh5.vertices * scale
-        lines = mesh5.segments
-
-        # Fix rotation of bridle line system
-        m = axangle2mat([1, 0, 0], np.radians(90))
-        for i in range(len(nodes)):
-            nodes[i] = m.dot(nodes[i])
-
-        lc = Line3DCollection([nodes[lines[i,:]] for i in range(len(lines))],
-                               edgecolor='k', linewidths=1, linestyles='solid')
-
-        ln = self.ax.add_collection3d(lc)
-        ln.set_gid(self.gid + '_bridle')
-        self.lines = ln
-
-        kiteV3.append(self)
 
         # Cartesian unit vectors
         self.ax.scatter(0, 0, 0, color='k')
