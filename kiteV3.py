@@ -32,7 +32,8 @@ class KiteV3(Object3D):
     bridle line system. The wing is composed of a canopy, a leading edge tube
     and several strut tubes.
     '''
-    def __init__(self, p=ORIGIN, v=[[EXYZ]], id=None, linewidth=LINEWIDTH,
+    def __init__(self, p=ORIGIN, e1=None, e2=None, e3=None, voff=ORIGIN,
+                 v=[[EXYZ]], id=None, linewidth=LINEWIDTH,
                  canopycolor='#dcdcdc4d', tubecolor='#000000',
                  kcucolor='#484848b3', scale=1, zorder=0, alpha=1,
                  azdeg=225.0, altdeg=40.0):
@@ -40,7 +41,8 @@ class KiteV3(Object3D):
         Draws the kite with nodal points v specified relative to a reference point p.
         Input
           p              : polygon reference point coordinates, absolute
-          v              : polygon nodal point coordinates, relative to p
+          e1, e2, e3     : Vector base in which to plot, anchored in p
+          voff           : Offset relative to p
           id             : name identifier
           linewidth      : line width for the bridle lines
           canopycolor    : color of the canopy

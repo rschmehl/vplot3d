@@ -679,7 +679,11 @@ class Polygon(Object3D):
           edgecolor : line color of polygon
           alpha     : transparency of line
         '''
-        # complete the vector base
+        # Check if at least two base vectors are specified
+        if [e1 is None, e2 is None, e3 is None].count(True) > 1:
+            print('*** Error in Polygon.rotated: need at least two (of three) base vectors')
+
+        # Complete the vector base
         if e1 is None:
             e1 = np.cross(e2, e3)
         e1abs = np.sqrt(e1.dot(e1))
