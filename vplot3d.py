@@ -658,7 +658,7 @@ class Polygon(Object3D):
         polygons.remove(self)
 
     @classmethod
-    def rotated(cls, p=ORIGIN, v=None, file=None, e1=None, e2=None, e3=None, voff=ORIGIN, d=None, linewidth=LINEWIDTH, scale=1, zorder=0, facecolor='w', edgecolor='k', alpha=1, edgecoloralpha=None):
+    def rotated(cls, p=ORIGIN, v=None, file=None, e1=None, e2=None, e3=None, voff=ORIGIN, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, facecolor='w', edgecolor='k', alpha=1, edgecoloralpha=None):
         '''Simulated constructor.
         The polygon is plotted in a vector base (e1, e2, e3), of which at least two axis-diections must be specified.
         The vectors e1, e2 and e3 do not need to be normalized.

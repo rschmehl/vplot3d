@@ -21,7 +21,7 @@ sys.path.append(str(lib_path))
 
 import vplot3d as v3d
 from kiteV3 import KiteV3
-from vplot3d import save_svg
+from vplot3d import Point, Line, save_svg
 
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d', proj_type='ortho')
@@ -44,19 +44,18 @@ v3d.plot_zoom, v3d.plot_radius = v3d.init(width=600, height=600, \
 #         ax.plot3D(*zip(s, e), color="b")
 
 PO = np.array([0, 0, 0])
-kv3 = KiteV3(PO, scale=0.1)
+O  = Point(PO, shape='Point1M', zorder=100, color='k')
+#kv3 = KiteV3(PO, scale=0.1)
 
 # Cartesian unit vectors
-ax.scatter(0, 0, 0, color='k')
 ax.plot([0,1], [0,0], [0,0], color='r')
 ax.plot([0,0], [0,1], [0,0], color='g')
 ax.plot([0,0], [0,0], [0,1], color='b')
 
 # Wing
 beta = np.deg2rad(30)
-phi  = np.deg2rad(0)
-voff  = np.array([0, 0, 0])
-chi   = np.deg2rad(-90)
+phi  = np.deg2rad(15)
+chi   = np.deg2rad(0)
 cb    = np.cos(beta)
 sb    = np.sin(beta)
 cp    = np.cos(phi)
@@ -67,7 +66,8 @@ er    = np.array([ cb*cp,  cb*sp, sb])
 ephi  = np.array([   -sp,     cp,  0])
 ebeta = np.array([-sb*cp, -sb*sp, cb])
 vkt   = cc*ebeta + sc*ephi
-#kv3   = KiteV3.rotated(PO, e2=vkt, e3=er, voff=voff, scale=0.05)
+lt    = Line(PO, er, linewidth=1, linestyle="solid")
+kv3   = KiteV3.rotated(PO, e2=vkt, e3=er, voff=er, scale=0.05)
 
 ax.set_axis_off()
 

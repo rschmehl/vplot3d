@@ -86,8 +86,7 @@ class KiteV3(Object3D):
 
         # Recalculate nodes in (e1,e2,e3) base
         for i in range(len(nodes)):
-            nodes[i] = nodes[i,0]*e1 + nodes[i,1]*e2 + nodes[i,2]*e3
-
+            nodes[i] = nodes[i,0]*e1 + nodes[i,1]*e2 + nodes[i,2]*e3 + voff
 
         self.polyline_nodes = nodes
         self.polyline_lines = lines
@@ -126,7 +125,7 @@ class KiteV3(Object3D):
 
         # Recalculate nodes in (e1,e2,e3) base
         for i in range(len(nodes)):
-            nodes[i] = nodes[i,0]*e1 + nodes[i,1]*e2 + nodes[i,2]*e3
+            nodes[i] = nodes[i,0]*e1 + nodes[i,1]*e2 + nodes[i,2]*e3 + voff
 
         self.mesh_nodes = nodes
         self.mesh_faces = faces
