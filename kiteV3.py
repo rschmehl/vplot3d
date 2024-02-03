@@ -191,7 +191,7 @@ class KiteV3(Object3D):
         e3abs = np.sqrt(e3.dot(e3))
         e3    = e3/e3abs
 
-        return cls(p, e1, e2, e3, voff, id, linewidth, canopycolor, tubecolor,
+        return cls(p, e1, e2, e3, voff, linewidth, canopycolor, tubecolor,
                    kcucolor, scale, zorder, azdeg, altdeg)
 
 class LineSystem():

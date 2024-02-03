@@ -827,7 +827,6 @@ def save_svg(file='unnamed.svg'):
     # Save the figure as a byte string in SVG format
     f = io.BytesIO()
     plt.savefig(f, format="svg")
-#   plt.savefig(f, format="svg", transparent=True)
 
     # Read in the saved SVG and define the SVG namespace
     ns = 'http://www.w3.org/2000/svg'
@@ -848,11 +847,6 @@ def save_svg(file='unnamed.svg'):
 
     for el in tree.findall(".//*[@clip-path=\"url(#" + clip_path_id + ")\"]"):
         el.attrib.pop('clip-path')
-
-    # remove the defs element with matplotlib's default css style
-#    for defs in tree.findall('{'+ns+'}defs'):
-#        if defs.findall('{'+ns+'}style'):
-#            tree.remove(defs)
 
     # create the defs section with previously generated marker elements
     defs = '<defs>' + '\n'
@@ -895,22 +889,3 @@ def reset():
     polygons.clear()
     points.clear()
     markers.clear()
-
-#def print_latex_template:
-
-# function to generate Latex template with adjustable font size
-
-    # \documentclass{standalone}
-    # \usepackage{xcolor}
-    # \usepackage{graphicx}
-    # \usepackage{lmodern}
-    # \usepackage[T1]{fontenc}
-    # \usepackage{opensans}
-    # \usepackage{transparent}
-    # \usepackage{amsmath}
-    # \input{macros.tex}
-    # \begin{document}
-    # \fosfamily
-    # \fontsize{26px}{28px}\selectfont % See $mainFontSize:30px; in css/theme/source/aweonline.scss
-    # \input{\filename}
-    # \end{document}
