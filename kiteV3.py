@@ -139,6 +139,11 @@ class KiteV3(Object3D):
         ms.set_gid(self.gid + '_wing_and_kcu')
         self.mesh = ms
 
+    def remove(self):
+        self.lines.remove()
+        self.mesh.remove()
+        kiteV3.remove(self)
+
     @classmethod
     def rotated(cls, p=ORIGIN, e1=None, e2=None, e3=None, voff=ORIGIN, id=None,
                 linewidth=LINEWIDTH, canopycolor='k', tubecolor='k', kcucolor='k', scale=1,
