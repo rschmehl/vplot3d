@@ -12,7 +12,6 @@ import numpy as np
 import subprocess
 import sys
 from pathlib import Path
-from itertools import product, combinations
 from IPython.display import display, Image
 
 # Set this with environment variable PYTHONPATH

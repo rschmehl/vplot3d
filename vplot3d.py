@@ -250,7 +250,7 @@ class Object3D(ABC):
     The specific meaning may vary per child class.
     '''
     @abstractmethod
-    def __init__(self, p=ORIGIN, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, edgecolor=None, facecolor=None, bgcolor=None, alpha=1):
+    def __init__(self, p=ORIGIN, linewidth=LINEWIDTH, scale=1, zorder=0, edgecolor=None, facecolor=None, bgcolor=None, alpha=1):
         '''Constructor.
 
         The three colors edgecolor, facecolor and bgcolor can be used to set different color regions in the Object3D,
@@ -259,7 +259,6 @@ class Object3D(ABC):
 
         Input
           p         : reference point coordinates
-          id        : name identifier
           linewidth : line width
           scale     : scale of object, relative to p
           zorder    : parameter used for depth sorting
@@ -272,8 +271,6 @@ class Object3D(ABC):
         self.ax = plt.gca()
         # reference point coordinates
         self.p = p
-        # name identifier
-        self.id = id
         # linewidth
         self.linewidth=linewidth
         # scaling factor wrt reference point p
@@ -322,11 +319,10 @@ class Point(Object3D):
     Markers scale with linewidth of the line they are attached to. We use this linewidth for scaling the Point obkects.
     Default values of colors are taken from SVG file.
     '''
-    def __init__(self, p=ORIGIN, id=None, scale=1, shape='Point1M', zorder=0, color=None, edgecolor=None, facecolor=None, bgcolor=None, alpha=1, *args, **kwargs):
+    def __init__(self, p=ORIGIN, scale=1, shape='Point1M', zorder=0, color=None, edgecolor=None, facecolor=None, bgcolor=None, alpha=1, *args, **kwargs):
         '''Constructor.
         Input
           p         : point coordinates
-          id        : name identifier
           scale     : scaling factor
           shape     : type of marker to be added
           zorder    : parameter used for depth sorting
@@ -341,7 +337,7 @@ class Point(Object3D):
             if facecolor is None: facecolor = color
             if bgcolor is None: bgcolor = 'w'
 
-        super().__init__(p, id, scale*LINEWIDTH, 1, zorder, edgecolor, facecolor, bgcolor, alpha)
+        super().__init__(p, scale*LINEWIDTH, 1, zorder, edgecolor, facecolor, bgcolor, alpha)
         super().add_marker(shape, edgecolor, facecolor, bgcolor)
 
         # set unique gid
@@ -359,19 +355,18 @@ class Point(Object3D):
 class Line(Object3D):
     '''Class for line objects.
     '''
-    def __init__(self, p=ORIGIN, v=EXYZ, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, color='k', alpha=1, *args, **kwargs):
+    def __init__(self, p=ORIGIN, v=EXYZ, linewidth=LINEWIDTH, scale=1, zorder=0, color='k', alpha=1, *args, **kwargs):
         '''Constructor.
         Input
           p         : line starting point coordinates (absolute)
           v         : line end point coordinates, relative to p
-          id        : name identifier
           linewidth : line width
           scale     : scale of line, relative to p
           zorder    : parameter used for depth sorting
           color     : color of line
           alpha     : transparency of line
         '''
-        super().__init__(p, id, linewidth, scale, zorder, color, None, None, alpha)
+        super().__init__(p, linewidth, scale, zorder, color, None, None, alpha)
 
         # set unique gid
         self.gid = 'line_' + str(len(lines)+1)
@@ -395,12 +390,11 @@ class Vector(Line):
     '''Class for vector objects, consisting of a line and an arrowhead attached to its end point.
     The arrowhead is not drawn explicitly, but added as an SVG marker object.
     '''
-    def __init__(self, p=ORIGIN, v=EXYZ, id=None, linewidth=LINEWIDTH, shape='Arrow1Mend', scale=1, zorder=0, color='k', alpha=1, *args, **kwargs):
+    def __init__(self, p=ORIGIN, v=EXYZ, linewidth=LINEWIDTH, shape='Arrow1Mend', scale=1, zorder=0, color='k', alpha=1, *args, **kwargs):
         '''Constructor.
         Input
           p         : vector origin coordinates (absolute)
           v         : vector target coordinates, relative to p
-          id        : name identifier
           linewidth : line width
           shape     : type of marker to be added
           scale     : scale of line, relative to p
@@ -457,7 +451,7 @@ class Vector(Line):
 class Arc(Object3D):
     '''Class for circular arc objects, discretized by concatenated equidistant line segments.
     '''
-    def __init__(self, p=ORIGIN, v1=EX, v2=EY, vn=None, radius=1, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, color='k', alpha=1, *args, **kwargs):
+    def __init__(self, p=ORIGIN, v1=EX, v2=EY, vn=None, radius=1, linewidth=LINEWIDTH, scale=1, zorder=0, color='k', alpha=1, *args, **kwargs):
         '''Constructor.
         Input
           p         : line starting point coordinates (absolute)
@@ -465,7 +459,6 @@ class Arc(Object3D):
           v2        : arc target vector, relative to p (complete circle for v2=v1)
           vn        : arc normal vector (must be used when v1 and v2 are aligned!)
           radius    : radius of arc
-          id        : name identifier
           linewidth : line width
           scale     : scale of line, relative to p
           zorder    : parameter used for depth sorting
@@ -475,7 +468,7 @@ class Arc(Object3D):
         The computed unit vectors e1, e2 and e3 span a local vector base in which the
         discretized arc is computed.
         '''
-        super().__init__(p, id, linewidth, 1, zorder, color, None, None, alpha)
+        super().__init__(p, linewidth, 1, zorder, color, None, None, alpha)
 
         # set unique gid
         self.gid = 'arc_' + str(len(arcs)+1)
@@ -525,7 +518,7 @@ class ArcMeasure(Arc):
     segments and an arrowhead attached to its end point. The arrowhead is not drawn explicitly,
     but added as an SVG marker object.
     '''
-    def __init__(self, p=ORIGIN, v1=EX, v2=EY, vn=EZ, radius=1, id=None, linewidth=LINEWIDTH, shape='Arrow1Mend', scale=1, zorder=0, color='k', alpha=1, *args, **kwargs):
+    def __init__(self, p=ORIGIN, v1=EX, v2=EY, vn=EZ, radius=1, linewidth=LINEWIDTH, shape='Arrow1Mend', scale=1, zorder=0, color='k', alpha=1, *args, **kwargs):
         '''Constructor.
         Input
           p         : line starting point coordinates (absolute)
@@ -533,7 +526,6 @@ class ArcMeasure(Arc):
           v2        : arc target vector, relative to p
           vn        : arc normal vector (must be used when v1 and v2 are aligned!)
           radius    : radius of arc
-          id        : name identifier
           linewidth : line width
           shape     : type of marker to be added
           scale     : scale of line, relative to p
@@ -544,7 +536,7 @@ class ArcMeasure(Arc):
         The computed unit vectors e1, e2 and e3 span a local vector base in which the
         discretized arc is computed.
         '''
-        super().__init__(p, v1, v2, vn, radius, id, linewidth, scale, zorder, color, alpha, *args, **kwargs)
+        super().__init__(p, v1, v2, vn, radius, linewidth, scale, zorder, color, alpha, *args, **kwargs)
         super().add_marker(shape, color, color, None)
 
         # Set unique gid
@@ -612,13 +604,12 @@ class ArcMeasure(Arc):
 class Polygon(Object3D):
     '''Class for polygon objects.
     '''
-    def __init__(self, p=ORIGIN, v=[[EXYZ]], id=None, linewidth=LINEWIDTH, scale=1, zorder=0, edgecolor='k', facecolor='w', alpha=1, edgecoloralpha=None, *args, **kwargs):
+    def __init__(self, p=ORIGIN, v=[[EXYZ]], linewidth=LINEWIDTH, scale=1, zorder=0, edgecolor='k', facecolor='w', alpha=1, edgecoloralpha=None, *args, **kwargs):
         '''Constructor.
         Draws a polygon with nodal points v specified relative to a reference point p.
         Input
           p              : polygon reference point coordinates, absolute
           v              : polygon nodal point coordinates, relative to p
-          id             : name identifier
           linewidth      : line width
           scale          : scale of polygon, relative to p
           zorder         : parameter used for depth sorting
@@ -627,7 +618,7 @@ class Polygon(Object3D):
           alpha          : transparency of polygon line and fill colors
           edgecoloralpha : different transparency of polygon line color
         '''
-        super().__init__(p, id, linewidth, scale, zorder, edgecolor, facecolor, None, alpha)
+        super().__init__(p, linewidth, scale, zorder, edgecolor, facecolor, None, alpha)
 
         # set unique gid
         self.gid = 'polygon_' + str(len(polygons)+1)
@@ -659,7 +650,7 @@ class Polygon(Object3D):
         polygons.remove(self)
 
     @classmethod
-    def rotated(cls, p=ORIGIN, v=None, file=None, e1=None, e2=None, e3=None, voff=ORIGIN, id=None, linewidth=LINEWIDTH, scale=1, zorder=0, facecolor='w', edgecolor='k', alpha=1, edgecoloralpha=None):
+    def rotated(cls, p=ORIGIN, v=None, file=None, e1=None, e2=None, e3=None, voff=ORIGIN, linewidth=LINEWIDTH, scale=1, zorder=0, facecolor='w', edgecolor='k', alpha=1, edgecoloralpha=None):
         '''Simulated constructor.
         The polygon is plotted in a vector base (e1, e2, e3), of which at least two axis-diections must be specified.
         The vectors e1, e2 and e3 do not need to be normalized.
@@ -672,7 +663,6 @@ class Polygon(Object3D):
           e2        : y-direction new vector base
           e3        : z-direction new vector base
           voff      : offset applied to nodal points, relative to p
-          id        : name identifier
           linewidth : line width
           scale     : scale of polygon, relative to p
           zorder    : parameter used for depth sorting

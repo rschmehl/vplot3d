@@ -18,7 +18,6 @@ considerations, which works well together with the semi-transparent surfaces.
 from vplot3d import *
 from sys import exit
 import numpy as np
-import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection, Line3DCollection
 import trimesh
 from matplotlib.colors import LightSource
@@ -41,7 +40,7 @@ class KiteV3(Object3D):
     and several strut tubes.
     '''
     def __init__(self, p=ORIGIN, e1=EX, e2=EY, e3=EZ, voff=ORIGIN,
-                 id=None, linewidth=LINEWIDTH,
+                 linewidth=LINEWIDTH,
                  canopycolor=CANOPY_COLOR, tubecolor=TUBE_COLOR,
                  kcucolor=KCU_COLOR, scale=1, zorder=0,
                  azdeg=AZ_DEG, altdeg=ALT_DEG):
@@ -51,7 +50,6 @@ class KiteV3(Object3D):
           p              : polygon reference point coordinates, absolute
           e1, e2, e3     : Vector base in which to plot, anchored in p
           voff           : Offset relative to p
-          id             : name identifier
           linewidth      : line width for the bridle lines
           canopycolor    : color of the canopy
           tubecolor      : color of the tubes
@@ -152,7 +150,7 @@ class KiteV3(Object3D):
         kiteV3.remove(self)
 
     @classmethod
-    def rotated(cls, p=ORIGIN, e1=None, e2=None, e3=None, voff=ORIGIN, id=None,
+    def rotated(cls, p=ORIGIN, e1=None, e2=None, e3=None, voff=ORIGIN,
                 linewidth=LINEWIDTH, canopycolor=CANOPY_COLOR,
                 tubecolor=TUBE_COLOR, kcucolor=KCU_COLOR, scale=1,
                 zorder=1, azdeg=AZ_DEG, altdeg=ALT_DEG):
@@ -168,7 +166,6 @@ class KiteV3(Object3D):
           e2        : y-direction new vector base
           e3        : z-direction new vector base
           voff      : offset applied to nodal points, relative to p
-          id        : name identifier
           linewidth : line width
           scale     : scale of polygon, relative to p
           zorder    : parameter used for depth sorting
