@@ -32,6 +32,7 @@ from mpl_toolkits.mplot3d import Axes3D, art3d, proj3d
 from matplotlib.text import Annotation
 from matplotlib.colors import is_color_like
 from pathlib import Path
+from sys import exit
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib_inline
@@ -682,6 +683,7 @@ class Polygon(Object3D):
         # Check if at least two base vectors are specified
         if [e1 is None, e2 is None, e3 is None].count(True) > 1:
             print('*** Error in Polygon.rotated: need 2 or 3 base vectors')
+            exit(1)
 
         # Complete the vector base
         if e1 is None:

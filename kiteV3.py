@@ -16,12 +16,20 @@ considerations, which works well together with the semi-transparent surfaces.
 """
 
 from vplot3d import *
+from sys import exit
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection, Line3DCollection
 import trimesh
 from matplotlib.colors import LightSource
 from transforms3d.axangles import axangle2mat
+
+
+CANOPY_COLOR = '#dcdcdc4d'
+TUBE_COLOR = '#000000'
+KCU_COLOR = '#484848b3'
+AZ_DEG = 225
+ALT_DEG = 40
 
 # Lists for geometrical objects
 kiteV3 = []
@@ -34,9 +42,9 @@ class KiteV3(Object3D):
     '''
     def __init__(self, p=ORIGIN, e1=EX, e2=EY, e3=EZ, voff=ORIGIN,
                  id=None, linewidth=LINEWIDTH,
-                 canopycolor='#dcdcdc4d', tubecolor='#000000',
-                 kcucolor='#484848b3', scale=1, zorder=0, alpha=1,
-                 azdeg=225.0, altdeg=40.0):
+                 canopycolor=CANOPY_COLOR, tubecolor=TUBE_COLOR,
+                 kcucolor=KCU_COLOR, scale=1, zorder=0,
+                 azdeg=AZ_DEG, altdeg=ALT_DEG):
         '''Constructor.
         Draws the kite with nodal points v specified relative to a reference point p.
         Input
@@ -50,11 +58,10 @@ class KiteV3(Object3D):
           kcucolor       : color of the KCU
           scale          : scale of polygon, relative to p
           zorder         : parameter used for depth sorting
-          alpha          : transparency of polygon line and fill colors
           azdeg          : azimuth (0-360, degrees clockwise from North) of the light source
           altdeg         : altitude (0-90, degrees up from horizontal) of the light source
         '''
-        super().__init__(p, id, linewidth, scale, zorder, alpha)
+        super().__init__(p, id, linewidth, scale, zorder, alpha=1)
 
         # set unique gid
         self.gid = 'kiteV3_' + str(len(kiteV3)+1)
@@ -108,10 +115,10 @@ class KiteV3(Object3D):
 
         #Cluster component meshes into one mesh
         mesh  = trimesh.util.concatenate((mesh1, mesh2, mesh3, mesh4))
-        fc    = ['#dcdcdc4d']*len(mesh1.faces) + \
-                ['#000000']*len(mesh2.faces) + \
-                ['#000000']*len(mesh3.faces) + \
-                ['#484848b3']*len(mesh4.faces)
+        fc    = [canopycolor]*len(mesh1.faces) + \
+                [tubecolor]*len(mesh2.faces) + \
+                [tubecolor]*len(mesh3.faces) + \
+                [kcucolor]*len(mesh4.faces)
 
         nodes = mesh.vertices
         faces = mesh.faces
@@ -146,8 +153,9 @@ class KiteV3(Object3D):
 
     @classmethod
     def rotated(cls, p=ORIGIN, e1=None, e2=None, e3=None, voff=ORIGIN, id=None,
-                linewidth=LINEWIDTH, canopycolor='k', tubecolor='k', kcucolor='k', scale=1,
-                zorder=1, alpha=1, azdeg=0, altdeg=0):
+                linewidth=LINEWIDTH, canopycolor=CANOPY_COLOR,
+                tubecolor=TUBE_COLOR, kcucolor=KCU_COLOR, scale=1,
+                zorder=1, azdeg=AZ_DEG, altdeg=ALT_DEG):
         '''Simulated constructor.
         The kite is plotted in a vector base (e1, e2, e3), of which at least two axis-diections must be specified.
         The vectors e1, e2 and e3 do not need to be normalized.
@@ -164,13 +172,13 @@ class KiteV3(Object3D):
           linewidth : line width
           scale     : scale of polygon, relative to p
           zorder    : parameter used for depth sorting
-          facecolor : fill color of polygon
-          edgecolor : line color of polygon
-          alpha     : transparency of line
+          facecolor : fill color of mesh faces
+          edgecolor : line color of mesh faces
         '''
         # Check if at least two base vectors are specified
         if [e1 is None, e2 is None, e3 is None].count(True) > 1:
-            print('*** Error in Polygon.rotated: need 2 or 3 base vectors')
+            print('*** Error in KiteV3.rotated: need 2 or 3 base vectors')
+            exit(1)
 
         # Complete the vector base
         if e1 is None:
@@ -187,7 +195,7 @@ class KiteV3(Object3D):
         e3    = e3/e3abs
 
         return cls(p, e1, e2, e3, voff, id, linewidth, canopycolor, tubecolor,
-                   kcucolor, scale, zorder, alpha, azdeg, altdeg)
+                   kcucolor, scale, zorder, azdeg, altdeg)
 
 class LineSystem():
     '''Class for line system objects.
