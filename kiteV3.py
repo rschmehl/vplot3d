@@ -66,19 +66,22 @@ class KiteV3(Object3D):
         mesh4 = trimesh.load('../data/kite_V3_KCU.obj')
         mesh5 = LineSystem.load('../data/kite_V3_bridle.obj')
 
-        # Add bridle line system separately
+        #######################################################################
+        # Bridle line system (line segments)
+        #######################################################################
         nodes = mesh5.vertices
         lines = mesh5.segments
 
         # Fix rotation of bridle line system
-        m = axangle2mat([1, 0, 0], np.radians(90))
+        m1 = axangle2mat([1, 0, 0], np.radians(90))
+        m2 = axangle2mat([0, 0, 3], np.radians(90))
         for i in range(len(nodes)):
-            nodes[i] = m.dot(nodes[i])
+            nodes[i] = m2.dot(m1.dot(nodes[i]))
 
         # Get coordinates of bridle point from bridle line system
         bp = nodes[np.argmin(nodes[:,2]),:]
 
-        # Translate and scale entire mesh
+        # Translate mesh to (0,0,0) at bridle point and scale mesh
         nodes = (nodes - bp) * scale
 
         # Recalculate nodes in (e1,e2,e3) base
@@ -98,20 +101,28 @@ class KiteV3(Object3D):
 
         kiteV3.append(self)
 
+        #######################################################################
+        # Wing and KCU (surface meshes)
+        #######################################################################
         # Move KCU to correct position
         mesh4.vertices[:,2] = mesh4.vertices[:,2] - 5.7
-        #mesh4.vertices[:,1] = mesh4.vertices[:,1] + 0.2
 
+        #Cluster component meshes into one mesh
         mesh  = trimesh.util.concatenate((mesh1, mesh2, mesh3, mesh4))
         fc    = ['#dcdcdc4d']*len(mesh1.faces) + \
                 ['#000000']*len(mesh2.faces) + \
                 ['#000000']*len(mesh3.faces) + \
                 ['#484848b3']*len(mesh4.faces)
 
-        # Translate and scale entire mesh
-        nodes = mesh.vertices - bp
-        nodes = nodes * scale
+        nodes = mesh.vertices
         faces = mesh.faces
+
+        # Fix rotation of the cluster mesh
+        for i in range(len(nodes)):
+            nodes[i] = m2.dot(nodes[i])
+
+        # Translate to (0,0,0) at bridle point and scale entire mesh
+        nodes = (nodes - bp) * scale
 
         # Recalculate nodes in (e1,e2,e3) base
         for i in range(len(nodes)):
@@ -121,7 +132,6 @@ class KiteV3(Object3D):
         self.mesh_faces = faces
 
         ls = LightSource(azdeg=225.0, altdeg=40.0)
-
         pc = Poly3DCollection([nodes[faces[i,:]] for i in range(len(faces))],
                                edgecolor=fc, facecolors=fc,
                                linewidths=0, shade=True, lightsource=ls)
@@ -129,12 +139,6 @@ class KiteV3(Object3D):
         ms = self.ax.add_collection3d(pc)
         ms.set_gid(self.gid + '_wing_and_kcu')
         self.mesh = ms
-
-        # Cartesian unit vectors
-        self.ax.scatter(0, 0, 0, color='k')
-        self.ax.plot([0,1], [0,0], [0,0], color='r')
-        self.ax.plot([0,0], [0,1], [0,0], color='g')
-        self.ax.plot([0,0], [0,0], [0,1], color='b')
 
     @classmethod
     def rotated(cls, p=ORIGIN, e1=None, e2=None, e3=None, voff=ORIGIN, id=None,
