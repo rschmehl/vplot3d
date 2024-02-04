@@ -63,6 +63,7 @@ _FSCALE   = 7.547                          # Scaling factor for shortening
 #
 plot_zoom   = 1                            # Scales drawing
 plot_radius = 1                            # Data radius
+rasterize_dpi = 600                        # Rasterization dpi (mesh objects)
 
 # Lists for geometrical objects
 lines       = []
@@ -830,7 +831,7 @@ def save_svg(file='unnamed'):
 
     # Save the figure as a byte string in SVG format
     f = io.BytesIO()
-    plt.savefig(f, format="svg")
+    plt.savefig(f, format="svg", dpi=rasterize_dpi)
 
     # Read in the saved SVG and define the SVG namespace
     ns = 'http://www.w3.org/2000/svg'

@@ -43,21 +43,22 @@ class KiteV3(Object3D):
                  linewidth=LINEWIDTH,
                  canopycolor=CANOPY_COLOR, tubecolor=TUBE_COLOR,
                  kcucolor=KCU_COLOR, scale=1, zorder=0,
-                 azdeg=AZ_DEG, altdeg=ALT_DEG):
+                 azdeg=AZ_DEG, altdeg=ALT_DEG, rasterized=False):
         '''Constructor.
         Draws the kite with nodal points v specified relative to a reference point p.
         Input
-          p              : polygon reference point coordinates, absolute
-          e1, e2, e3     : Vector base in which to plot, anchored in p
-          voff           : Offset relative to p
-          linewidth      : line width for the bridle lines
-          canopycolor    : color of the canopy
-          tubecolor      : color of the tubes
-          kcucolor       : color of the KCU
-          scale          : scale of polygon, relative to p
-          zorder         : parameter used for depth sorting
-          azdeg          : azimuth (0-360, degrees clockwise from North) of the light source
-          altdeg         : altitude (0-90, degrees up from horizontal) of the light source
+          p          : polygon reference point coordinates, absolute
+          e1, e2, e3 : vector base in which to plot, anchored in p
+          voff       : offset applied to nodal points, relative to p
+          linewidth  : line width
+          canopycolor: color of canopy
+          tubecolor  : color of tubes
+          kcucolor   : color of kite control unit
+          scale      : scale of polygon, relative to p
+          zorder     : parameter used for depth sorting
+          azdeg      : azimuth (0-360 degrees cw from North) of light source
+          altdeg     : altitude (0-90 degrees up from horizontal) of light source
+          rasterized : generate bitmap of mesh components
         '''
         super().__init__(p, id, linewidth, scale, zorder, alpha=1)
 
@@ -138,7 +139,8 @@ class KiteV3(Object3D):
         ls = LightSource(azdeg=225.0, altdeg=40.0)
         pc = Poly3DCollection([nodes[faces[i,:]] for i in range(len(faces))],
                                edgecolor=fc, facecolors=fc,
-                               linewidths=0, shade=True, lightsource=ls)
+                               linewidths=0, shade=True, lightsource=ls,
+                               rasterized=rasterized)
 
         ms = self.ax.add_collection3d(pc)
         ms.set_gid(self.gid + '_wing_and_kcu')
@@ -153,24 +155,24 @@ class KiteV3(Object3D):
     def rotated(cls, p=ORIGIN, e1=None, e2=None, e3=None, voff=ORIGIN,
                 linewidth=LINEWIDTH, canopycolor=CANOPY_COLOR,
                 tubecolor=TUBE_COLOR, kcucolor=KCU_COLOR, scale=1,
-                zorder=1, azdeg=AZ_DEG, altdeg=ALT_DEG):
+                zorder=1, azdeg=AZ_DEG, altdeg=ALT_DEG, rasterized=False):
         '''Simulated constructor.
         The kite is plotted in a vector base (e1, e2, e3), of which at least two axis-diections must be specified.
         The vectors e1, e2 and e3 do not need to be normalized.
 
         Input
-          p         : polygon reference point coordinates, absolute
-          v         : polygon nodal point coordinates in (e1, e2, e3) relative to p
-          file      : name of file with polygon nodal point coordinates in (e1, e2, e3) relative to p
-          e1        : x-direction new vector base
-          e2        : y-direction new vector base
-          e3        : z-direction new vector base
-          voff      : offset applied to nodal points, relative to p
-          linewidth : line width
-          scale     : scale of polygon, relative to p
-          zorder    : parameter used for depth sorting
-          facecolor : fill color of mesh faces
-          edgecolor : line color of mesh faces
+          p          : polygon reference point coordinates, absolute
+          e1, e2, e3 : vector base in which to plot, anchored in p
+          voff       : offset applied to nodal points, relative to p
+          linewidth  : line width
+          canopycolor: color of canopy
+          tubecolor  : color of tubes
+          kcucolor   : color of kite control unit
+          scale      : scale of polygon, relative to p
+          zorder     : parameter used for depth sorting
+          azdeg      : azimuth (0-360 degrees cw from North) of light source
+          altdeg     : altitude (0-90 degrees up from horizontal) of light source
+          rasterized : generate bitmap of mesh components
         '''
         # Check if at least two base vectors are specified
         if [e1 is None, e2 is None, e3 is None].count(True) > 1:
@@ -192,7 +194,7 @@ class KiteV3(Object3D):
         e3    = e3/e3abs
 
         return cls(p, e1, e2, e3, voff, linewidth, canopycolor, tubecolor,
-                   kcucolor, scale, zorder, azdeg, altdeg)
+                   kcucolor, scale, zorder, azdeg, altdeg, rasterized)
 
 class LineSystem():
     '''Class for line system objects.

@@ -19,6 +19,17 @@ sys.path.append(str(lib_path))
 import vplot3d as v3d
 from vplot3d import Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg_tex
 
+def sph_vector_base(beta, phi):
+    '''Spherical vector base.
+    '''
+    cb    = np.cos(beta)
+    sb    = np.sin(beta)
+    cp    = np.cos(phi)
+    sp    = np.sin(phi)
+    return np.array([ cb*cp,  cb*sp, sb]), \
+           np.array([   -sp,     cp,  0]), \
+           np.array([-sb*cp, -sb*sp, cb])
+
 # Setup figure and axes3d
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d', proj_type='ortho')
@@ -54,20 +65,11 @@ l1   = Line(PO, Pk, linewidth=2, linestyle="solid")
 K    = Point(Pk, shape='Point1M', zorder=100, color='k')
 
 # Wing
-voff  = np.array([0, 0, 0])
+er, ephi, ebeta = sph_vector_base(beta = np.deg2rad(30), phi = np.deg2rad(15))
 chi   = np.deg2rad(75)
-cb    = np.cos(beta)
-sb    = np.sin(beta)
-cp    = np.cos(phi)
-sp    = np.sin(phi)
-cc    = np.cos(chi)
-sc    = np.sin(chi)
-er    = np.array([ cb*cp,  cb*sp, sb])
-ephi  = np.array([   -sp,     cp,  0])
-ebeta = np.array([-sb*cp, -sb*sp, cb])
-vkt   = cc*ebeta + sc*ephi
-pg1 = Polygon.rotated(Pk, file=lib_path / 'data' / 'V3-planform.dat', e2=vkt, e3=er, voff=voff, zorder=52, facecolor='k', edgecolor='k', scale=4e-5, linewidth=1, alpha=0.1, edgecoloralpha=0.8)
-pg2 = Polygon.rotated(Pk, file=lib_path / 'data' / 'V3-tubeframe.dat', e2=vkt, e3=er, voff=voff, zorder=52, facecolor='k', edgecolor='k', scale=4e-5, linewidth=5, alpha=0, edgecoloralpha=1)
+vkt   = np.cos(chi)*ebeta + np.sin(chi)*ephi
+pg1 = Polygon.rotated(Pk, file=lib_path / 'data' / 'V3-planform.dat', e2=vkt, e3=er, zorder=52, facecolor='k', edgecolor='k', scale=4e-5, linewidth=1, alpha=0.1, edgecoloralpha=0.8)
+pg2 = Polygon.rotated(Pk, file=lib_path / 'data' / 'V3-tubeframe.dat', e2=vkt, e3=er, zorder=52, facecolor='k', edgecolor='k', scale=4e-5, linewidth=5, alpha=0, edgecoloralpha=1)
 
 # Velocity vectors
 Vw = np.array([0.5, 0, 0])
