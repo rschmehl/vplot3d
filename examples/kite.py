@@ -9,10 +9,8 @@ Created on Thu Aug 11 11:03:50 2022
 
 import matplotlib.pyplot as plt
 import numpy as np
-import subprocess
 import sys
 from pathlib import Path
-from IPython.display import display, Image
 
 # Set this with environment variable PYTHONPATH
 lib_path = Path('/home/rschmehl/projects/vplot3d')
@@ -20,7 +18,7 @@ sys.path.append(str(lib_path))
 
 import vplot3d as v3d
 from kiteV3 import KiteV3
-from vplot3d import Point, Line, save_svg, print_latex_template
+from vplot3d import Point, Line, save_svg_tex
 
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d', proj_type='ortho')
@@ -70,9 +68,6 @@ kv3   = KiteV3.rotated(PO, e2=vkt, e3=er, voff=er, scale=0.05)
 
 ax.set_axis_off()
 
-fname='kite'
-save_svg(fname+'_tex.svg')
-print_latex_template()
-p=subprocess.call([lib_path / 'tex' / 'convert_tex.sh', fname+'_tex.svg'])
-display(Image(filename=fname+'.png'))
+save_svg_tex('kite')   # Save svg, post-process and display
+
 plt.close()

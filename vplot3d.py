@@ -812,8 +812,8 @@ class Marker:
         marker_end   = '</marker>'
         self.svg = marker_start + '\n' + svg + marker_end
 
-def save_svg(file='unnamed.svg'):
-    '''Function for modifying the generated SVG code.
+def save_svg(file='unnamed'):
+    '''Generate, customize and save the figure's SVG code.
 
     Inspired by https://matplotlib.org/stable/gallery/misc/svg_filter_line.html and other sources.
 
@@ -821,7 +821,7 @@ def save_svg(file='unnamed.svg'):
     See also https://stackoverflow.com/a/50797203
 
     '''
-    # get current Axes instance and prepare axes for plotting
+    # Get current Axes instance and prepare axes for plotting
     ax = plt.gca()
     ax.set_box_aspect([1,1,1], zoom=plot_zoom) # requires matplotlib 3.3.0
 
@@ -882,8 +882,8 @@ def save_svg(file='unnamed.svg'):
         style = pelement.find('.//{'+ns+'}path').attrib['style'].replace('stroke-opacity', 'opacity')
         pelement.find('.//{'+ns+'}path').attrib['style'] = style
 
-    print(f"Saving '{file}'")
-    ET.ElementTree(tree).write(file, encoding="utf-8")
+    print(f"Saving '{file}_tex.svg'")
+    ET.ElementTree(tree).write(file+'_tex.svg', encoding="utf-8")
 
 def print_latex_template(font_size=FONT_SIZE, baseline_skip=BSLN_SKIP):
     '''Generates the Latex driver file for post-processing.
@@ -892,7 +892,6 @@ def print_latex_template(font_size=FONT_SIZE, baseline_skip=BSLN_SKIP):
       font_size     : Font size in pixels
       baseline_skip : Baseline skip in pixels
     '''
-
     template = r"""\documentclass{standalone}
 \usepackage{xcolor}
 \usepackage{graphicx}
@@ -911,3 +910,23 @@ def print_latex_template(font_size=FONT_SIZE, baseline_skip=BSLN_SKIP):
     f = open("template.tex","w+")
     f.writelines(template)
     f.close()
+
+def save_svg_tex(file='unnamed', font_size=FONT_SIZE, baseline_skip=BSLN_SKIP):
+    '''Save SVG and post-process it using inkscape, latex and scour.
+    '''
+    import subprocess
+    from IPython.display import display, Image
+
+    # Generate, customize and save the figure's SVG code.
+    save_svg(file)
+
+    # Postprocessing toolchain
+    print_latex_template(font_size=font_size, baseline_skip=baseline_skip)
+    p=subprocess.call([lib_path / 'tex' / 'convert_tex.sh', file+'_tex.svg'])
+    display(Image(filename=file+'.png'))
+
+
+
+
+
+

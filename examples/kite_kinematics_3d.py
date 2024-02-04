@@ -9,17 +9,15 @@ Created on Thu Aug 11 11:03:50 2022
 
 import matplotlib.pyplot as plt
 import numpy as np
-import subprocess
 import sys
 from pathlib import Path
-from IPython.display import display, Image
 
 # Set this with environment variable PYTHONPATH
 lib_path = Path('/home/rschmehl/projects/vplot3d')
 sys.path.append(str(lib_path))
 
 import vplot3d as v3d
-from vplot3d import Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg, print_latex_template
+from vplot3d import Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg_tex
 
 # Setup figure and axes3d
 fig = plt.figure()
@@ -93,11 +91,7 @@ ax.set_axis_off()
 # One way to do this is to simply write this file from here, on the fly, with
 # the proper font size
 
-fname='kite_kinematics_3d'
-save_svg(fname+'_tex.svg')
-print_latex_template()
-p=subprocess.call([lib_path / 'tex' / 'convert_tex.sh', fname+'_tex.svg'])
-display(Image(filename=fname+'.png'))
+save_svg_tex('kite_kinematics_3d')
 
 ###############################################################################
 # Second plot
@@ -125,11 +119,7 @@ am2  = ArcMeasure(PO, Px,  Pxy, radius=r, linewidth=3, zorder=31, color='k')
 ax.annotate3D(r'$\beta$', xyz=PO+Pk, xytext=(0.1,-3))
 ax.annotate3D(r'$\phi$', xyz=PO+Pxy, xytext=(-1.4,1))
 
-fname='kite_kinematics_3d_a'
-save_svg(fname+'_tex.svg')
-print_latex_template()
-p=subprocess.call([lib_path / 'tex' / 'convert_tex.sh', fname+'_tex.svg'])
-display(Image(filename=fname+'.png'))
+save_svg_tex('kite_kinematics_3d_a')
 
 ###############################################################################
 plt.close()

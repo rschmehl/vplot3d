@@ -20,7 +20,7 @@ fi
 
 # Convert generated pdf back to svg
 inkscape tmp.pdf --pdf-poppler --export-type=svg --export-filename=tmp.svg &>/dev/null
-scour -i tmp.svg -o $fname'.svg' --enable-viewboxing --enable-id-stripping \
+scour -q -i tmp.svg -o $fname'.svg' --enable-viewboxing --enable-id-stripping \
   --enable-comment-stripping --shorten-ids --indent=none
 
 # clean up

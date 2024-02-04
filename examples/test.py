@@ -9,18 +9,16 @@ Created on Thu Aug 11 11:03:50 2022
 
 import matplotlib.pyplot as plt
 import numpy as np
-import subprocess
 import sys
 from pathlib import Path
 from itertools import product, combinations
-from IPython.display import display, Image
 
 # Set this with environment variable PYTHONPATH
 lib_path = Path('/home/rschmehl/projects/vplot3d')
 sys.path.append(str(lib_path))
 
 import vplot3d as v3d
-from vplot3d import Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg, print_latex_template
+from vplot3d import Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg_tex
 
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d', proj_type='ortho')
@@ -93,9 +91,5 @@ ax.annotate3D(r'$\beta$', xyz=np.array([0.7, 0.7, 1.5]), xytext=(0,0))
 
 ax.set_axis_off()
 
-fname='test'
-save_svg(fname+'_tex.svg')
-print_latex_template(font_size=20)
-p=subprocess.call([lib_path / 'tex' / 'convert_tex.sh', fname+'_tex.svg'])
-display(Image(filename=fname+'.png'))
+save_svg_tex('test', font_size=20)
 plt.close()
