@@ -5,6 +5,8 @@ This library extends the Python toolkit `mplot3d` to programmatically generate 3
 - Points,
 - Lines and circular arcs,
 - Vectors and arc measures,
+- Polygons,
+- Surface meshes,
 - Annotations.
 
 Points and arrowheads (for vectors and arc measures) are generated as native SVG markers to facilitate later postprocessing of the diagram in vector drawing tools, like Illustrator and Inkscape. For precise positioning of arrowheads, the underlying line or polyline is shortened. This algorithm is one of the key contributions of `vplot3d`.
