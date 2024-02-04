@@ -22,6 +22,7 @@ from vplot3d import Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg_tex
 # Setup figure and axes3d
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d', proj_type='ortho')
+ax.set_axis_off()
 
 # Initialize vector diagram
 # See also https://matplotlib.org/stable/api/toolkits/mplot3d/view_angles.html
@@ -82,14 +83,6 @@ ax.annotate3D(r'$\yw$', xyz=Py, xytext=(-0.8,-1.5))
 ax.annotate3D(r'$\zw$', xyz=Pz, xytext=(0.6,-0.9))
 ax.annotate3D(r'$\vvk$', xyz=PO+Pk+Vk, xytext=(-1,-1.8))
 ax.annotate3D(r'$\vvw$', xyz=PO+Pk+Vw, xytext=(0,-1.6))
-
-ax.set_axis_off()
-
-# v3d.generate_svg(fname='kite_kinematics_3d')
-#
-# Remark: we need a way to modify the fontsize in the template.tex file
-# One way to do this is to simply write this file from here, on the fly, with
-# the proper font size
 
 save_svg_tex('kite_kinematics_3d')
 

@@ -22,6 +22,7 @@ from vplot3d import Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg_tex
 
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d', proj_type='ortho')
+ax.set_axis_off()
 
 # Initialize vector diagram
 # See also https://matplotlib.org/stable/api/toolkits/mplot3d/view_angles.html
@@ -88,8 +89,6 @@ pg3 = Polygon.rotated(p, file=lib_path / 'data' / 'clarky-airfoil.dat', e1=ex, e
 
 # add some text | does not work anymore (error message in renderer)
 ax.annotate3D(r'$\beta$', xyz=np.array([0.7, 0.7, 1.5]), xytext=(0,0))
-
-ax.set_axis_off()
 
 save_svg_tex('test', font_size=20)
 plt.close()

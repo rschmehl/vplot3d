@@ -22,6 +22,7 @@ from vplot3d import Point, Line, save_svg_tex
 
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d', proj_type='ortho')
+ax.set_axis_off()
 
 # Initialize vector diagram
 # See also https://matplotlib.org/stable/api/toolkits/mplot3d/view_angles.html
@@ -66,8 +67,5 @@ vkt   = cc*ebeta + sc*ephi
 lt    = Line(PO, er, linewidth=1, linestyle="solid")
 kv3   = KiteV3.rotated(PO, e2=vkt, e3=er, voff=er, scale=0.05)
 
-ax.set_axis_off()
-
 save_svg_tex('kite')   # Save svg, post-process and display
-
 plt.close()
