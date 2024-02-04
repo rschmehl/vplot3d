@@ -20,7 +20,7 @@ sys.path.append(str(lib_path))
 
 import vplot3d as v3d
 from kiteV3 import KiteV3
-from vplot3d import Point, Line, save_svg
+from vplot3d import Point, Line, save_svg, print_latex_template
 
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d', proj_type='ortho')
@@ -72,6 +72,7 @@ ax.set_axis_off()
 
 fname='kite'
 save_svg(fname+'_tex.svg')
+print_latex_template()
 p=subprocess.call([lib_path / 'tex' / 'convert_tex.sh', fname+'_tex.svg'])
 display(Image(filename=fname+'.png'))
 plt.close()

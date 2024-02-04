@@ -51,11 +51,13 @@ EZ        = np.array([0, 0, 1])
 EXYZ      = np.array([1, 1, 1])
 EPS       = 1e-5                           # Small number
 LINEWIDTH = 3                              # Linewidth of line objects
-FONTSIZE  = 20                             # Fontsize for text objects
 XYOFF     = (0,0)                          # xy-offset of text objects
 DEGREES   = np.arange(0, 362, 1)           # Discretization of circular objects
 COS       = np.cos(np.radians(DEGREES))
 SIN       = np.sin(np.radians(DEGREES))
+FONTSIZE  = 20                             # Fontsize before post-processing
+FONT_SIZE = 26                             # Fontsize (px) after Latex post-processing
+BSLN_SKIP = 28                             # Baseline skip (px) after Latex post-processing
 _FSCALE   = 7.547                          # Scaling factor for shortening
 
 #
@@ -350,6 +352,7 @@ class Point(Object3D):
         points.append(self)
 
     def remove(self):
+        self.line.remove()
         points.remove(self)
 
 class Line(Object3D):
@@ -402,7 +405,7 @@ class Vector(Line):
           color     : color of line
           alpha     : transparency of line
         '''
-        super().__init__(p, v, id, linewidth, scale, zorder, color, alpha, *args, **kwargs)
+        super().__init__(p, v, linewidth, scale, zorder, color, alpha, *args, **kwargs)
         super().add_marker(shape, color, color, None)
 
         # Set unique gid
@@ -701,7 +704,7 @@ class Polygon(Object3D):
             v = [list(data)]
         # calculate polygon nodal point coordinates, relative to p
         r = [[(vn[0]+voff[0])*e1 + (vn[1]+voff[1])*e2 + (vn[2]+voff[2])*e3 for vn in v[0]]]
-        return cls(p, r, id, linewidth, scale, zorder, facecolor, edgecolor, alpha, edgecoloralpha)
+        return cls(p, r, linewidth, scale, zorder, facecolor, edgecolor, alpha, edgecoloralpha)
 
 class Marker:
     '''Class for marker objects for use as
@@ -751,6 +754,7 @@ class Marker:
 
     def __init__(self, shape=None, style=None, edgecolor=None, facecolor=None, bgcolor=None, css_style='overflow:visible', refX=0, refY=0, orient='auto'):
         '''Constructor.
+
         Input
           shape     : type of marker to be added
           style     : marker id composed of path + (edge)color
@@ -881,11 +885,29 @@ def save_svg(file='unnamed.svg'):
     print(f"Saving '{file}'")
     ET.ElementTree(tree).write(file, encoding="utf-8")
 
-def reset():
-    lines.clear()
-    vectors.clear()
-    arcs.clear()
-    arcmeasures.clear()
-    polygons.clear()
-    points.clear()
-    markers.clear()
+def print_latex_template(font_size=FONT_SIZE, baseline_skip=BSLN_SKIP):
+    '''Generates the Latex driver file for post-processing.
+
+    Input
+      font_size     : Font size in pixels
+      baseline_skip : Baseline skip in pixels
+    '''
+
+    template = r"""\documentclass{standalone}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage{opensans}
+\usepackage{transparent}
+\usepackage{amsmath}
+\input{macros.tex}
+\begin{document}
+\fosfamily
+\fontsize{""" + str(font_size) + r"px}{" + str(baseline_skip) + r"""px}\selectfont
+\input{\filename}
+\end{document}"""
+
+    f = open("template.tex","w+")
+    f.writelines(template)
+    f.close()

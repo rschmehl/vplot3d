@@ -19,7 +19,7 @@ lib_path = Path('/home/rschmehl/projects/vplot3d')
 sys.path.append(str(lib_path))
 
 import vplot3d as v3d
-from vplot3d import Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg
+from vplot3d import Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg, print_latex_template
 
 # Setup figure and axes3d
 fig = plt.figure()
@@ -95,6 +95,7 @@ ax.set_axis_off()
 
 fname='kite_kinematics_3d'
 save_svg(fname+'_tex.svg')
+print_latex_template()
 p=subprocess.call([lib_path / 'tex' / 'convert_tex.sh', fname+'_tex.svg'])
 display(Image(filename=fname+'.png'))
 
@@ -126,6 +127,7 @@ ax.annotate3D(r'$\phi$', xyz=PO+Pxy, xytext=(-1.4,1))
 
 fname='kite_kinematics_3d_a'
 save_svg(fname+'_tex.svg')
+print_latex_template()
 p=subprocess.call([lib_path / 'tex' / 'convert_tex.sh', fname+'_tex.svg'])
 display(Image(filename=fname+'.png'))
 

@@ -15,7 +15,7 @@ if test -f "$fname.tex"; then
   pdflatex --interaction=batchmode -jobname=tmp "\def\filename{$fname.pdf_tex}\input{$fname.tex}" 2>&1 > /dev/null
 else
   # Standard Latex wrapper
-  pdflatex --interaction=batchmode -jobname=tmp "\def\filename{$fname.pdf_tex}\input{$SCRIPT_DIR/template.tex}" 2>&1 > /dev/null
+  pdflatex --interaction=batchmode -jobname=tmp "\def\filename{$fname.pdf_tex}\input{template.tex}" 2>&1 > /dev/null
 fi
 
 # Convert generated pdf back to svg
@@ -24,6 +24,6 @@ scour -i tmp.svg -o $fname'.svg' --enable-viewboxing --enable-id-stripping \
   --enable-comment-stripping --shorten-ids --indent=none
 
 # clean up
-rm -f tmp.* $fname.pdf $fname.pdf_tex
+rm -f tmp.* $fname.pdf $fname.pdf_tex template.tex
 
 inkscape --export-type=png --export-filename=$fname'.png' $fname'.svg'
