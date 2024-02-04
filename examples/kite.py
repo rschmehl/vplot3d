@@ -13,8 +13,8 @@ import sys
 from pathlib import Path
 
 # Set this with environment variable PYTHONPATH
-lib_path = Path('/home/rschmehl/projects/vplot3d')
-sys.path.append(str(lib_path))
+#lib_path = Path('/home/rschmehl/projects/vplot3d')
+#sys.path.append(str(lib_path))
 
 import vplot3d as v3d
 from kiteV3 import KiteV3

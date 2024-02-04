@@ -923,7 +923,7 @@ def save_svg_tex(file='unnamed', font_size=FONT_SIZE, baseline_skip=BSLN_SKIP):
 
     # Postprocessing toolchain
     print_latex_template(font_size=font_size, baseline_skip=baseline_skip)
-    p=subprocess.call([lib_path / 'tex' / 'convert_tex.sh', file+'_tex.svg'])
+    subprocess.call([lib_path / 'tex' / 'convert_tex.sh', file+'_tex.svg'])
     display(Image(filename=file+'.png'))
 
 
