@@ -19,7 +19,7 @@ sys.path.append(str(lib_path))
 import vplot3d as v3d
 from vplot3d import Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg_tex
 
-def sph_vector_base(beta, phi):
+def spherical_vector_base(beta, phi):
     '''Spherical vector base.
     '''
     cb    = np.cos(beta)
@@ -65,7 +65,7 @@ l1   = Line(PO, Pk, linewidth=2, linestyle="solid")
 K    = Point(Pk, shape='Point1M', zorder=100, color='k')
 
 # Wing
-er, ephi, ebeta = sph_vector_base(beta = np.deg2rad(30), phi = np.deg2rad(15))
+er, ephi, ebeta = spherical_vector_base(beta=np.deg2rad(30), phi=np.deg2rad(15))
 chi   = np.deg2rad(75)
 vkt   = np.cos(chi)*ebeta + np.sin(chi)*ephi
 pg1 = Polygon.rotated(Pk, file=lib_path / 'data' / 'V3-planform.dat', e2=vkt, e3=er, zorder=52, facecolor='k', edgecolor='k', scale=4e-5, linewidth=1, alpha=0.1, edgecoloralpha=0.8)

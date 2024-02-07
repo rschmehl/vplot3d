@@ -20,7 +20,7 @@ import vplot3d as v3d
 from kiteV3 import KiteV3
 from vplot3d import Point, Line, save_svg_tex
 
-def sph_vector_base(beta, phi):
+def spherical_vector_base(beta, phi):
     '''Spherical vector base.
     '''
     cb    = np.cos(beta)
@@ -57,7 +57,7 @@ ax.plot([0,0], [0,1], [0,0], color='g')
 ax.plot([0,0], [0,0], [0,1], color='b')
 
 # Wing
-er, ephi, ebeta = sph_vector_base(beta = np.deg2rad(30), phi = np.deg2rad(15))
+er, ephi, ebeta = spherical_vector_base(beta=np.deg2rad(30), phi=np.deg2rad(15))
 chi = np.deg2rad(0)
 vkt = np.cos(chi)*ebeta + np.sin(chi)*ephi
 lt  = Line(PO, er, linewidth=1, linestyle="solid")
