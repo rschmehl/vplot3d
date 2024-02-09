@@ -9,7 +9,7 @@ The library extends the Python toolkit `mplot3d` to programmatically generate 3D
 - Surface meshes,
 - Annotations.
 
-Points and arrowheads (for vectors and arc measures) are generated as native SVG markers to facilitate later postprocessing of the diagram in vector drawing tools, like Illustrator and Inkscape. For precise positioning of arrowheads, the underlying line or polyline is shortened. This algorithm is one of the key contributions of `vplot3d`.
+Points and arrowheads (for vectors and arc measures) are generated as native SVG markers to facilitate later postprocessing of the diagram in vector drawing tools, like Illustrator and Inkscape. For the precise positioning of arrowheads, the underlying line or polyline is shortened. This algorithm is one of the key contributions of `vplot3d`.
 
 ## System requirements
 
@@ -23,12 +23,18 @@ Optional post-processing toolchain
 
 ## Installation
 
-To use the library for sketching a vector diagram, set the variable `lib_path` at the start of your code to the directory where you have placed `vplot3d.py`.
+I have not created a package yet to install `vplot3d` via git. For the time being, set the variable `lib_path` to the directory where `vplot3d.py` resides:
 
     lib_path = Path('/home/user/projects/vplot3d')
     sys.path.append(str(lib_path))
 
-The installation path `lib_path` is also needed for the later postprocessing and display of the diagram.
+Following this, we can import the library:
+
+    import vplot3d
+
+
+> [!TIP]
+> The installation path `lib_path` is also needed for the later postprocessing and display of the diagram.
 
 ## Diagram layout and 3D perspective
 
