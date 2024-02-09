@@ -42,6 +42,7 @@ v3d.plot_zoom, v3d.plot_radius = v3d.init(width=600, height=600, \
                                           zoom=1.5,              \
                                           elev=20,   azim=30    )
 
+# Origin
 PO = np.array([0, 0, 0])
 O  = Point(PO, shape='Point1M', zorder=100, color='k')
 
@@ -53,14 +54,16 @@ e1 = Vector(PO, Px, shape='Arrow1Mend', linewidth=3, zorder=50, color='k')
 e2 = Vector(PO, Py, shape='Arrow1Mend', linewidth=3, zorder=50, color='k')
 e3 = Vector(PO, Pz, shape='Arrow1Mend', linewidth=3, zorder=50, color='k')
 
-# Wing
+# Spherical vector base
 er, ephi, ebeta = spherical_vector_base(beta=np.deg2rad(30), phi=np.deg2rad(15))
-chi = np.deg2rad(0)
-vkt = np.cos(chi)*ebeta + np.sin(chi)*ephi
+
+# Tether
 lt  = Line(PO, er, linewidth=1, linestyle="solid")
 
+# Kite
+chi = np.deg2rad(0)
+vkt = np.cos(chi)*ebeta + np.sin(chi)*ephi
 kv3 = KiteV3.rotated(PO, e2=vkt, e3=er, voff=er, scale=0.05)
-
 # Rasterized output of meshes
 #v3d.rasterize_dpi = 72
 #kv3 = KiteV3.rotated(PO, e2=vkt, e3=er, voff=er, scale=0.05, rasterized=True)

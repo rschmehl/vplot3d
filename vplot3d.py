@@ -913,7 +913,8 @@ def print_latex_template(font_size=FONT_SIZE, baseline_skip=BSLN_SKIP):
     f.close()
 
 def save_svg_tex(file='unnamed', font_size=FONT_SIZE, baseline_skip=BSLN_SKIP):
-    '''Save SVG and post-process it using inkscape, latex and scour.
+    '''Wrapper for save_svg to add post-processing with inkscape, latex, scour
+    and display PNG-file generated from the SVG-file.
     '''
     import subprocess
     from IPython.display import display, Image

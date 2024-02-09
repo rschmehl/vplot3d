@@ -1,6 +1,6 @@
-# vplot3d
+# vplot3d - 3D vector diagrams in SVG format
 
-This library extends the Python toolkit `mplot3d` to programmatically generate 3D vector diagrams in SVG format. The following diagram objects can be used
+The library extends the Python toolkit `mplot3d` to programmatically generate 3D vector diagrams in SVG format with a minimum of drawing-related commands. The user can focus on the geometrical or physical problem instead of takling its visualization, delegating the bulk of drawing-related code to the library. The following 3D objects can be instantiated:
 
 - Points,
 - Lines and circular arcs,
@@ -15,11 +15,11 @@ Points and arrowheads (for vectors and arc measures) are generated as native SVG
 
 - Matplotlib 3.3.0
 
-Optional
+Optional post-processing toolchain
 
-- Inkscape (to render the generated SVG in the IDE and for Latex postprocessing)
-- Scour (to optimize SVG output)
-- pdflatex (for Latex postprocessing, to include annotations and automatically render the Latex code)
+- [Inkscape](https://inkscape.org/) (render generated SVG in the IDE and for Latex postprocessing)
+- [Scour](https://github.com/scour-project/scour) (optimize SVG output)
+- [pdflatex](https://www.tug.org/texlive/) (for Latex postprocessing, to include annotations and automatically render the Latex code)
 
 ## Installation
 
