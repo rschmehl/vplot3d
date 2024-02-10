@@ -92,8 +92,7 @@ def init(width, height,
          xmin,  xmax,
          ymin,  ymax,
          zmin,  zmax,
-         zoom=None,
-         elev=30, azim=-60):
+         zoom=None, elev=30, azim=-60):
     '''Boilerplate code to initialize the 3D vector diagram and set all
     required properties. This is a convenience function to bundle the entire
     setup of the diagram. The code below can also directly included in the

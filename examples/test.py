@@ -26,12 +26,11 @@ ax.set_axis_off()
 
 # Initialize vector diagram
 # See also https://matplotlib.org/stable/api/toolkits/mplot3d/view_angles.html
-v3d.plot_zoom, v3d.plot_radius = v3d.init(width=600, height=600, \
-                                          xmin=0,    xmax=1,     \
-                                          ymin=0,    ymax=1,     \
-                                          zmin=-0.3, zmax=1.5,   \
-                                          zoom=1.5,              \
-                                          elev=30,   azim=-60    )
+v3d.plot_zoom, v3d.plot_radius = v3d.init(width=600, height=600,
+                                          xmin=0,    xmax=1,
+                                          ymin=0,    ymax=1,
+                                          zmin=-0.3, zmax=1.5,
+                                          zoom=1.5,  elev=30,   azim=-60)
 
 # draw cube https://itecnote.com/tecnote/python-plotting-a-3d-cube-a-sphere-and-a-vector-in-matplotlib/
 r = [0, 1]
