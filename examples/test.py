@@ -17,8 +17,7 @@ from itertools import product, combinations
 lib_path = Path('/home/rschmehl/projects/vplot3d')
 sys.path.append(str(lib_path))
 
-import vplot3d as v3d
-from vplot3d import Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg_tex
+from vplot3d import init_view, Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg_tex
 
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d', proj_type='ortho')
@@ -26,11 +25,9 @@ ax.set_axis_off()
 
 # Initialize vector diagram
 # See also https://matplotlib.org/stable/api/toolkits/mplot3d/view_angles.html
-v3d.plot_zoom, v3d.plot_radius = v3d.init(width=600, height=600,
-                                          xmin=0,    xmax=1,
-                                          ymin=0,    ymax=1,
-                                          zmin=-0.3, zmax=1.5,
-                                          zoom=1.5,  elev=30,   azim=-60)
+init_view(width=600, height=600,
+          xmin=0, xmax=1, ymin=0, ymax=1, zmin=-0.3, zmax=1.5,
+          zoom=1.5, elev=30, azim=-60)
 
 # draw cube https://itecnote.com/tecnote/python-plotting-a-3d-cube-a-sphere-and-a-vector-in-matplotlib/
 r = [0, 1]

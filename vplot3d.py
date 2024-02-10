@@ -88,11 +88,9 @@ def _m(s):
     '''
     return s.replace("$", r"\$") if RAW_MATH else s
 
-def init(width, height,
-         xmin,  xmax,
-         ymin,  ymax,
-         zmin,  zmax,
-         zoom=None, elev=30, azim=-60):
+def init_view(width, height,
+              xmin,  xmax, ymin,  ymax, zmin,  zmax,
+              zoom=None, elev=30, azim=-60):
     '''Boilerplate code to initialize the 3D vector diagram and set all
     required properties. This is a convenience function to bundle the entire
     setup of the diagram. The code below can also directly included in the
@@ -110,9 +108,6 @@ def init(width, height,
       zoom:   viewing distance to diagram
       elev:   elevation angle of perspective
       azim:   azimuth angle of perspective
-    Output
-      plot_zoom:   viewing distance to diagram (to be set in module scope)
-      plot_radius: radius of data in data space (to be set in module scope)
     '''
 
     matplotlib_inline.backend_inline.set_matplotlib_formats('svg')
@@ -124,7 +119,8 @@ def init(width, height,
     ax.set_xlim3d([xmin, xmax])
     ax.set_ylim3d([ymin, ymax])
     ax.set_zlim3d([zmin, zmax])
-    plot_zoom = 1
+
+    global plot_zoom, plot_radius
     if zoom is not None:
         plot_zoom = zoom
     plot_radius = set_axes_equal(ax)
@@ -132,8 +128,6 @@ def init(width, height,
     # Diagram perspective
     ax.view_init(elev, azim)
     proj3d.persp_transformation = orthogonal_proj
-
-    return plot_zoom, plot_radius
 
 def figsize(figure_width_px, figure_height_px):
     ''' Sets figure size in inches, given a desired width and height in pixels.

@@ -16,8 +16,7 @@ from pathlib import Path
 lib_path = Path('/home/rschmehl/projects/vplot3d')
 sys.path.append(str(lib_path))
 
-import vplot3d as v3d
-from vplot3d import Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg_tex
+from vplot3d import init_view, Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg_tex
 
 def spherical_vector_base(beta, phi):
     '''Spherical vector base.
@@ -37,11 +36,9 @@ ax.set_axis_off()
 
 # Initialize vector diagram
 # See also https://matplotlib.org/stable/api/toolkits/mplot3d/view_angles.html
-v3d.plot_zoom, v3d.plot_radius = v3d.init(width=980, height=700,
-                                          xmin=-1,   xmax=1,
-                                          ymin=-1,   ymax=1.05,
-                                          zmin=-0.3, zmax=1,
-                                          zoom=2.65, elev=20,   azim=30)
+init_view(width=980, height=700,
+          xmin=-1, xmax=1, ymin=-1, ymax=1.05, zmin=-0.3, zmax=1,
+          zoom=2.65, elev=20, azim=30)
 
 # Origin
 PO = np.array([0, 0, 0])
