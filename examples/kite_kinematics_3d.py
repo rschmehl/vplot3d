@@ -64,8 +64,12 @@ K    = Point(Pk, shape='Point1M', zorder=100, color='k')
 er, ephi, ebeta = spherical_vector_base(beta=np.deg2rad(30), phi=np.deg2rad(15))
 chi   = np.deg2rad(75)
 vkt   = np.cos(chi)*ebeta + np.sin(chi)*ephi
-pg1 = Polygon.rotated(Pk, file=lib_path / 'data' / 'kite_V3_planform.dat', e2=vkt, e3=er, zorder=52, facecolor='k', edgecolor='k', scale=4e-5, linewidth=1, alpha=0.1, edgecoloralpha=0.8)
-pg2 = Polygon.rotated(Pk, file=lib_path / 'data' / 'kite_V3_tubeframe.dat', e2=vkt, e3=er, zorder=52, facecolor='k', edgecolor='k', scale=4e-5, linewidth=5, alpha=0, edgecoloralpha=1)
+pg1 = Polygon.rotated(Pk, file=lib_path / 'data' / 'kite_V3_planform.dat',
+                      e2=vkt, e3=er, zorder=52, facecolor='k', edgecolor='k',
+                      scale=4e-5, linewidth=1, alpha=0.1, edgecoloralpha=0.8)
+pg2 = Polygon.rotated(Pk, file=lib_path / 'data' / 'kite_V3_tubeframe.dat',
+                      e2=vkt, e3=er, zorder=52, facecolor='k', edgecolor='k',
+                      scale=4e-5, linewidth=5, alpha=0, edgecoloralpha=1)
 
 # Velocity vectors
 Vw = np.array([0.5, 0, 0])

@@ -43,27 +43,30 @@ import xml.etree.ElementTree as ET
 import textwrap
 
 
-# Default values
-ORIGIN    = np.array([0, 0, 0])
-EX        = np.array([1, 0, 0])
-EY        = np.array([0, 1, 0])
-EZ        = np.array([0, 0, 1])
-EXYZ      = np.array([1, 1, 1])
-EPS       = 1e-5                           # Small number
-LINEWIDTH = 3                              # Linewidth of line objects
-XYOFF     = (0,0)                          # xy-offset of text objects
-DEGREES   = np.arange(0, 362, 1)           # Discretization of circular objects
-COS       = np.cos(np.radians(DEGREES))
-SIN       = np.sin(np.radians(DEGREES))
-FONTSIZE  = 20                             # Fontsize before post-processing
-FONT_SIZE = 26                             # Fontsize (px) after Latex post-processing
-BSLN_SKIP = 28                             # Baseline skip (px) after Latex post-processing
-_FSCALE   = 7.547                          # Scaling factor for shortening
+# Constants
+ORIGIN       = np.array([0, 0, 0])
+EX           = np.array([1, 0, 0])
+EY           = np.array([0, 1, 0])
+EZ           = np.array([0, 0, 1])
+EXYZ         = np.array([1, 1, 1])
+EPS          = 1e-5                   # Small number
+XYOFF        = (0,0)                  # xy-offset of text objects
+DEGREES      = np.arange(0, 362, 1)   # Discretization of circular objects
+COS          = np.cos(np.radians(DEGREES))
+SIN          = np.sin(np.radians(DEGREES))
+
+# Default values (can be changed)
+LINEWIDTH    = 3                      # Linewidth of line objects
+FONTSIZE_RAW = 20                     # Fontsize before post-processing
+FONTFAMILY   = 'opensans'             # Fontfamily for Latex post-processing
+FONTSIZE     = 26                     # Fontsize (px) for Latex post-processing
+BASELINESKIP = 28                     # Baseline skip (px) for Latex post-processing
+_FSCALE      = 7.547                  # Scaling factor for shortening
 
 #
-plot_zoom   = 1                            # Scales drawing
-plot_radius = 1                            # Data radius
-rasterize_dpi = 600                        # Rasterization dpi (mesh objects)
+plot_zoom    = 1                      # Scales drawing
+plot_radius  = 1                      # Data radius
+rasterize_dpi = 600                   # Rasterization dpi (mesh objects)
 
 # Lists for geometrical objects
 lines       = []
@@ -128,6 +131,10 @@ def init_view(width, height,
     # Diagram perspective
     ax.view_init(elev, azim)
     proj3d.persp_transformation = orthogonal_proj
+
+def set_font_size(size):
+    ''' Sets
+    '''
 
 def figsize(figure_width_px, figure_height_px):
     ''' Sets figure size in inches, given a desired width and height in pixels.
@@ -230,7 +237,7 @@ class Annotation3D(Annotation):
         if xytext is None:
             xytext = XYOFF
         if fontsize is None:
-            fontsize = FONTSIZE
+            fontsize = FONTSIZE_RAW
         super().__init__(_m(s), xy=(0,0), xytext=xytext, fontsize=fontsize, textcoords='offset fontsize', annotation_clip=False, *args, **kwargs)
         self._verts3d = xyz
 
@@ -601,17 +608,18 @@ class ArcMeasure(Arc):
 class Polygon(Object3D):
     '''Class for polygon objects.
     '''
-    def __init__(self, p=ORIGIN, v=[[EXYZ]], linewidth=LINEWIDTH, scale=1, zorder=0, edgecolor='k', facecolor='w', alpha=1, edgecoloralpha=None, *args, **kwargs):
+    def __init__(self, p=ORIGIN, v=[[EXYZ]], voff=ORIGIN, linewidth=LINEWIDTH, scale=1, zorder=0, edgecolor='k', facecolor='w', alpha=1, edgecoloralpha=None, *args, **kwargs):
         '''Constructor.
         Draws a polygon with nodal points v specified relative to a reference point p.
         Input
           p              : polygon reference point coordinates, absolute
           v              : polygon nodal point coordinates, relative to p
+          voff           : offset applied to nodal points, relative to p
           linewidth      : line width
           scale          : scale of polygon, relative to p
           zorder         : parameter used for depth sorting
-          facecolor      : fill color of polygon
           edgecolor      : line color of polygon
+          facecolor      : fill color of polygon
           alpha          : transparency of polygon line and fill colors
           edgecoloralpha : different transparency of polygon line color
         '''
@@ -635,7 +643,7 @@ class Polygon(Object3D):
         self.r = r
 
         # plot the polygon
-        pg = art3d.Poly3DCollection(r, facecolors=self.facecolor, edgecolors=self.edgecolor, linewidths=self.linewidth, alpha=self.alpha, closed=False, *args, **kwargs)
+        pg = art3d.Poly3DCollection(r, edgecolors=self.edgecolor, facecolors=self.facecolor, linewidths=self.linewidth, alpha=self.alpha, closed=False, *args, **kwargs)
         polygon = self.ax.add_collection3d(pg)
         polygon.set_gid(self.gid)
         self.polygon = polygon
@@ -647,7 +655,7 @@ class Polygon(Object3D):
         polygons.remove(self)
 
     @classmethod
-    def rotated(cls, p=ORIGIN, v=None, file=None, e1=None, e2=None, e3=None, voff=ORIGIN, linewidth=LINEWIDTH, scale=1, zorder=0, facecolor='w', edgecolor='k', alpha=1, edgecoloralpha=None):
+    def rotated(cls, p=ORIGIN, v=None, file=None, e1=None, e2=None, e3=None, voff=ORIGIN, linewidth=LINEWIDTH, scale=1, zorder=0, edgecolor='k', facecolor='w', alpha=1, edgecoloralpha=None):
         '''Simulated constructor.
         The polygon is plotted in a vector base (e1, e2, e3), of which at least two axis-diections must be specified.
         The vectors e1, e2 and e3 do not need to be normalized.
@@ -663,8 +671,8 @@ class Polygon(Object3D):
           linewidth : line width
           scale     : scale of polygon, relative to p
           zorder    : parameter used for depth sorting
-          facecolor : fill color of polygon
           edgecolor : line color of polygon
+          facecolor : fill color of polygon
           alpha     : transparency of line
         '''
         # Check if at least two base vectors are specified
@@ -697,8 +705,9 @@ class Polygon(Object3D):
                 data = np.append(data, col, axis=1)
             v = [list(data)]
         # calculate polygon nodal point coordinates, relative to p
-        r = [[(vn[0]+voff[0])*e1 + (vn[1]+voff[1])*e2 + (vn[2]+voff[2])*e3 for vn in v[0]]]
-        return cls(p, r, linewidth, scale, zorder, facecolor, edgecolor, alpha, edgecoloralpha)
+        r = [[(vn[0]*scale+voff[0])*e1 + (vn[1]*scale+voff[1])*e2 + (vn[2]*scale+voff[2])*e3 for vn in v[0]]]
+        scale = 1
+        return cls(p, r, voff, linewidth, scale, zorder, edgecolor, facecolor, alpha, edgecoloralpha)
 
 class Marker:
     '''Class for marker objects for use as
@@ -879,25 +888,26 @@ def save_svg(file='unnamed'):
     print(f"Saving '{file}_tex.svg'")
     ET.ElementTree(tree).write(file+'_tex.svg', encoding="utf-8")
 
-def print_latex_template(font_size=FONT_SIZE, baseline_skip=BSLN_SKIP):
+def print_latex_template(fontsize=FONTSIZE, baselineskip=BASELINESKIP, fontfamily=FONTFAMILY):
     '''Generates the Latex driver file for post-processing.
 
     Input
-      font_size     : Font size in pixels
-      baseline_skip : Baseline skip in pixels
+      fontsize     : Font size in pixels
+      baselineskip : Baseline skip in pixels
+      fontfamily   : Font family
     '''
     template = r"""\documentclass{standalone}
 \usepackage{xcolor}
 \usepackage{graphicx}
 \usepackage{lmodern}
 \usepackage[T1]{fontenc}
-\usepackage{opensans}
+\usepackage{""" + str(fontfamily) + r"""}
 \usepackage{transparent}
 \usepackage{amsmath}
 \input{macros.tex}
 \begin{document}
 \fosfamily
-\fontsize{""" + str(font_size) + r"px}{" + str(baseline_skip) + r"""px}\selectfont
+\fontsize{""" + str(fontsize) + r"px}{" + str(baselineskip) + r"""px}\selectfont
 \input{\filename}
 \end{document}"""
 
@@ -905,7 +915,7 @@ def print_latex_template(font_size=FONT_SIZE, baseline_skip=BSLN_SKIP):
     f.writelines(template)
     f.close()
 
-def save_svg_tex(file='unnamed', font_size=FONT_SIZE, baseline_skip=BSLN_SKIP):
+def save_svg_tex(file='unnamed', fontsize=FONTSIZE, baselineskip=BASELINESKIP):
     '''Wrapper for save_svg to add post-processing with inkscape, latex, scour
     and display PNG-file generated from the SVG-file.
     '''
@@ -916,7 +926,7 @@ def save_svg_tex(file='unnamed', font_size=FONT_SIZE, baseline_skip=BSLN_SKIP):
     save_svg(file)
 
     # Postprocessing toolchain
-    print_latex_template(font_size=font_size, baseline_skip=baseline_skip)
+    print_latex_template(fontsize=fontsize, baselineskip=baselineskip)
     subprocess.call([lib_path / 'tex' / 'convert_tex.sh', file+'_tex.svg'])
     display(Image(filename=file+'.png'))
 

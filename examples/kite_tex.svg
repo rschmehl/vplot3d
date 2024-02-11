@@ -10,7 +10,7 @@
   <rdf:RDF>
    <ns2:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-    <dc:date>2024-02-10T14:41:41.529794</dc:date>
+    <dc:date>2024-02-11T10:26:18.330639</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <ns2:Agent>
@@ -97,22 +97,22 @@
    </g>
    <g id="text_1">
     <g>
-     <text style="font: 20px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="245.863345" y="422.15759" transform="rotate(-0 245.863345 422.15759)">$\vec{O}$</text>
+     <text style="font: 20px 'Open Sans'; text-anchor: start" x="245.863345" y="422.15759" transform="rotate(-0 245.863345 422.15759)">$\vec{O}$</text>
     </g>
    </g>
    <g id="text_2">
     <g>
-     <text style="font: 20px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="105.127997" y="494.713477" transform="rotate(-0 105.127997 494.713477)">$\xw$</text>
+     <text style="font: 20px 'Open Sans'; text-anchor: start" x="105.127997" y="494.713477" transform="rotate(-0 105.127997 494.713477)">$\xw$</text>
     </g>
    </g>
    <g id="text_3">
     <g>
-     <text style="font: 20px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="487.088219" y="464.975954" transform="rotate(-0 487.088219 464.975954)">$\yw$</text>
+     <text style="font: 20px 'Open Sans'; text-anchor: start" x="487.088219" y="464.975954" transform="rotate(-0 487.088219 464.975954)">$\yw$</text>
     </g>
    </g>
    <g id="text_4">
     <g>
-     <text style="font: 20px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="267.863345" y="135.902884" transform="rotate(-0 267.863345 135.902884)">$\zw$</text>
+     <text style="font: 20px 'Open Sans'; text-anchor: start" x="267.863345" y="135.902884" transform="rotate(-0 267.863345 135.902884)">$\zw$</text>
     </g>
    </g>
    <g id="kiteV3_1_wing_and_kcu">

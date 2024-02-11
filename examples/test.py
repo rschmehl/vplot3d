@@ -81,10 +81,10 @@ ez = np.array([0, 0, 1])
 pg1 = Polygon(p, [[q1, q2, q3, q4]], edgecolor='k', facecolor='g', scale=1, linewidth=1, alpha=0.5)
 pg2 = Polygon.rotated(np.array([0, 0.3, 0.2]), v=[[u1, u2, u3]], e1=ex, e3=ez, facecolor='r', edgecolor='k', scale=0.5, linewidth=1, alpha=0.3)
 voff = np.array([-0.25, 0, 0])
-pg3 = Polygon.rotated(p, file=lib_path / 'data' / 'clarky-airfoil.dat', e1=ex, e3=ez, voff=voff, facecolor='k', edgecolor='k', scale=1, linewidth=1, alpha=0.1, edgecoloralpha=0.8)
+pg3 = Polygon.rotated(p, file=lib_path / 'data' / 'clark_y_airfoil.dat', e1=ex, e3=ez, voff=voff, facecolor='k', edgecolor='k', scale=1, linewidth=1, alpha=0.1, edgecoloralpha=0.8)
 
 # add some text | does not work anymore (error message in renderer)
 ax.annotate3D(r'$\beta$', xyz=np.array([0.7, 0.7, 1.5]), xytext=(0,0))
 
-save_svg_tex('test', font_size=20)
+save_svg_tex('test', fontsize=20)
 plt.close()

@@ -36,7 +36,7 @@
 <path transform="matrix(1.0001 0 0 1.0001 0 -.027)" d="m270.27 403.29 107.05-92.709" fill="none" stroke="#00f" stroke-linecap="square" stroke-linejoin="round" stroke-width="1.125"/>
 <path transform="matrix(1.0001 0 0 1.0001 0 -.027)" d="m270.27 217.87 107.05-92.705" fill="none" stroke="#00f" stroke-linecap="square" stroke-linejoin="round" stroke-width="1.125"/>
 <path transform="matrix(1.0001 0 0 1.0001 0 -.027)" d="m377.32 310.58v-185.42" fill="none" stroke="#00f" stroke-linecap="square" stroke-linejoin="round" stroke-width="1.125"/>
-<path transform="matrix(1.0001 0 0 1.0001 0 -.027)" d="m263.2 265.27-92.705-119.47 92.705 26.764" fill-opacity=".3" stroke="#f00" stroke-linejoin="round" stroke-opacity=".3" stroke-width=".75"/>
+<path transform="matrix(1.0001 0 0 1.0001 0 -.027)" d="m263.2 265.27-92.705-119.47 92.705 26.764" fill="#f00" fill-opacity=".3" stroke="#000" stroke-linejoin="round" stroke-opacity=".3" stroke-width=".75"/>
 </g>
 <mask id="g">
 <g filter="url(#a)">
