@@ -54,6 +54,7 @@ XYOFF        = (0,0)                  # xy-offset of text objects
 DEGREES      = np.arange(0, 362, 1)   # Discretization of circular objects
 COS          = np.cos(np.radians(DEGREES))
 SIN          = np.sin(np.radians(DEGREES))
+_FSCALE      = 7.547                  # Scaling factor for line shortening
 
 # Default values (can be changed)
 LINEWIDTH    = 3                      # Linewidth of line objects
@@ -61,14 +62,12 @@ FONTSIZE_RAW = 20                     # Fontsize before post-processing
 FONTFAMILY   = 'opensans'             # Fontfamily for Latex post-processing
 FONTSIZE     = 26                     # Fontsize (px) for Latex post-processing
 BASELINESKIP = 28                     # Baseline skip (px) for Latex post-processing
-_FSCALE      = 7.547                  # Scaling factor for shortening
-
 #
 plot_zoom    = 1                      # Scales drawing
 plot_radius  = 1                      # Data radius
 rasterize_dpi = 600                   # Rasterization dpi (mesh objects)
 
-# Lists for geometrical objects
+# Lists for geometrical objects -> private
 lines       = []
 vectors     = []
 arcs        = []
@@ -91,9 +90,15 @@ def _m(s):
     '''
     return s.replace("$", r"\$") if RAW_MATH else s
 
+def set_defaults(linewidth=LINEWIDTH):
+    ''' Set global default values
+    '''
+    global LINEWIDTH
+    LINEWIDTH = linewidth
+
 def init_view(width, height,
               xmin,  xmax, ymin,  ymax, zmin,  zmax,
-              zoom=None, elev=30, azim=-60):
+              zoom=1, elev=30, azim=-60):
     '''Boilerplate code to initialize the 3D vector diagram and set all
     required properties. This is a convenience function to bundle the entire
     setup of the diagram. The code below can also directly included in the
@@ -124,17 +129,12 @@ def init_view(width, height,
     ax.set_zlim3d([zmin, zmax])
 
     global plot_zoom, plot_radius
-    if zoom is not None:
-        plot_zoom = zoom
+    plot_zoom = zoom
     plot_radius = set_axes_equal(ax)
 
     # Diagram perspective
     ax.view_init(elev, azim)
     proj3d.persp_transformation = orthogonal_proj
-
-def set_font_size(size):
-    ''' Sets
-    '''
 
 def figsize(figure_width_px, figure_height_px):
     ''' Sets figure size in inches, given a desired width and height in pixels.
@@ -915,11 +915,18 @@ def print_latex_template(fontsize=FONTSIZE, baselineskip=BASELINESKIP, fontfamil
     f.writelines(template)
     f.close()
 
+def is_tool(name):
+    '''Check whether `name` is on PATH and marked as executable. 
+    See https://stackoverflow.com/a/34177358
+    '''
+    from shutil import which
+    return which(name) is not None
+
 def save_svg_tex(file='unnamed', fontsize=FONTSIZE, baselineskip=BASELINESKIP):
     '''Wrapper for save_svg to add post-processing with inkscape, latex, scour
     and display PNG-file generated from the SVG-file.
     '''
-    import subprocess
+    import subprocess, sys
     from IPython.display import display, Image
 
     # Generate, customize and save the figure's SVG code.
@@ -927,7 +934,16 @@ def save_svg_tex(file='unnamed', fontsize=FONTSIZE, baselineskip=BASELINESKIP):
 
     # Postprocessing toolchain
     print_latex_template(fontsize=fontsize, baselineskip=baselineskip)
-    subprocess.call([lib_path / 'tex' / 'convert_tex.sh', file+'_tex.svg'])
+#   subprocess.call([lib_path / 'tex' / 'convert_tex.sh', file+'_tex.svg'])
+
+    # Export svg to pdf and pdf_tex files
+    if is_tool('nkscape'):
+        subprocess.call(['inkscape', file+'_tex.svg', '--export-type=pdf',
+                         '--export-filename='+file+'.pdf', '--export-latex',
+                         '--export-area-page'])
+    else:
+        sys.exit('Inkscape executable not found.')
+    
     display(Image(filename=file+'.png'))
 
 
