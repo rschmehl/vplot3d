@@ -38,6 +38,15 @@ Following this, we can import the library:
 
 ## Diagram layout and 3D perspective
 
+To setup the vector drawing `vplot3d` provides an `init` method.
+
+    v3d.plot_zoom, v3d.plot_radius = v3d.init(width, height,
+                                              xmin,  xmax,
+                                              ymin,  ymax,
+                                              zmin,  zmax,
+                                              zoom,  elev,  azim )
+
+### Low-level setup
 The diagram will be generated as an SVG file. You have to specify the width and height of this SVG diagram in pixels using the `figsize` function of `vplot3d`:
 
     rcParams['figure.figsize'] = figsize(width_in_pixels, height_in_pixels)

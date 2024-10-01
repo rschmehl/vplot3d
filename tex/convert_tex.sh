@@ -1,5 +1,5 @@
 #!/bin/bash
-# converts Latex code in original document file.svg into outline font in new document file_tex.svg
+# converts Latex code in original document file_tex.svg into outline font in new document file.svg
 
 SCRIPT_DIR=$(dirname "$0")
 

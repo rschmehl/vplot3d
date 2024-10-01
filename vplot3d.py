@@ -922,7 +922,7 @@ def is_tool(name):
     from shutil import which
     return which(name) is not None
 
-def save_svg_tex(file='unnamed', fontsize=FONTSIZE, baselineskip=BASELINESKIP):
+def save_svg_tex(file='unnamed', fontsize=FONTSIZE, baselineskip=BASELINESKIP, fontfamily=FONTFAMILY):
     '''Wrapper for save_svg to add post-processing with inkscape, latex, scour
     and display PNG-file generated from the SVG-file.
     '''
@@ -937,13 +937,41 @@ def save_svg_tex(file='unnamed', fontsize=FONTSIZE, baselineskip=BASELINESKIP):
 #   subprocess.call([lib_path / 'tex' / 'convert_tex.sh', file+'_tex.svg'])
 
     # Export svg to pdf and pdf_tex files
-    if is_tool('nkscape'):
-        subprocess.call(['inkscape', file+'_tex.svg', '--export-type=pdf',
+    if is_tool('inkscape'):
+        subprocess.run(['inkscape', file+'_tex.svg', '--export-type=pdf',
                          '--export-filename='+file+'.pdf', '--export-latex',
                          '--export-area-page'])
     else:
         sys.exit('Inkscape executable not found.')
+        
+    # Generates the Latex driver file for post-processing.
+    template = r"""\documentclass{standalone}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage{""" + str(fontfamily) + r"""}
+\usepackage{transparent}
+\usepackage{amsmath}
+\input{../tex/macros.tex}
+\begin{document}
+\fosfamily
+\fontsize{""" + str(fontsize) + r"px}{" + str(baselineskip) + r"""px}\selectfont
+\input{""" + file + """.pdf_tex}
+\end{document}"""
+
+    with open("template.tex","w+") as f:
+        f.writelines(template)
+
+    # Compile generated file with pdflatex
+    subprocess.run(['pdflatex', 'template.tex', '--interaction=batchmode'])
     
+    # if is_tool('pdflatex'):   
+    #     subprocess.call(['pdflatex', template.tex', '--interaction=batchmode',
+    #                      '-jobname=tmp'])
+          
+#   pdflatex --interaction=batchmode -jobname=tmp "\def\filename{$fname.pdf_tex}\input{$fname.tex}" 2>&1 > /dev/null         
+
     display(Image(filename=file+'.png'))
 
 
