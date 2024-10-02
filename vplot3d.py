@@ -888,33 +888,6 @@ def save_svg(file='unnamed'):
     print(f"Saving '{file}_tex.svg'")
     ET.ElementTree(tree).write(file+'_tex.svg', encoding="utf-8")
 
-def print_latex_template(fontsize=FONTSIZE, baselineskip=BASELINESKIP, fontfamily=FONTFAMILY):
-    '''Generates the Latex driver file for post-processing.
-
-    Input
-      fontsize     : Font size in pixels
-      baselineskip : Baseline skip in pixels
-      fontfamily   : Font family
-    '''
-    template = r"""\documentclass{standalone}
-\usepackage{xcolor}
-\usepackage{graphicx}
-\usepackage{lmodern}
-\usepackage[T1]{fontenc}
-\usepackage{""" + str(fontfamily) + r"""}
-\usepackage{transparent}
-\usepackage{amsmath}
-\input{macros.tex}
-\begin{document}
-\fosfamily
-\fontsize{""" + str(fontsize) + r"px}{" + str(baselineskip) + r"""px}\selectfont
-\input{\filename}
-\end{document}"""
-
-    f = open("template.tex","w+")
-    f.writelines(template)
-    f.close()
-
 def is_tool(name):
     '''Check whether `name` is on PATH and marked as executable. 
     See https://stackoverflow.com/a/34177358
@@ -932,10 +905,6 @@ def save_svg_tex(file='unnamed', fontsize=FONTSIZE, baselineskip=BASELINESKIP, f
     # Generate, customize and save the figure's SVG code.
     save_svg(file)
 
-    # Postprocessing toolchain
-    print_latex_template(fontsize=fontsize, baselineskip=baselineskip)
-#   subprocess.call([lib_path / 'tex' / 'convert_tex.sh', file+'_tex.svg'])
-
     # Export svg to pdf and pdf_tex files
     if is_tool('inkscape'):
         subprocess.run(['inkscape', file+'_tex.svg', '--export-type=pdf',
@@ -943,9 +912,11 @@ def save_svg_tex(file='unnamed', fontsize=FONTSIZE, baselineskip=BASELINESKIP, f
                          '--export-area-page'])
     else:
         sys.exit('Inkscape executable not found.')
-        
-    # Generates the Latex driver file for post-processing.
-    template = r"""\documentclass{standalone}
+
+    # Write temporary Latex file to file system 
+    macro_file_path = lib_path / 'tex' / 'macros.tex'  
+    with open("template.tex","w+") as f:
+        f.writelines(r"""\documentclass{standalone}
 \usepackage{xcolor}
 \usepackage{graphicx}
 \usepackage{lmodern}
@@ -953,25 +924,16 @@ def save_svg_tex(file='unnamed', fontsize=FONTSIZE, baselineskip=BASELINESKIP, f
 \usepackage{""" + str(fontfamily) + r"""}
 \usepackage{transparent}
 \usepackage{amsmath}
-\input{../tex/macros.tex}
+\input{""" + str(macro_file_path) + r"""}
 \begin{document}
 \fosfamily
 \fontsize{""" + str(fontsize) + r"px}{" + str(baselineskip) + r"""px}\selectfont
-\input{""" + file + """.pdf_tex}
-\end{document}"""
-
-    with open("template.tex","w+") as f:
-        f.writelines(template)
+\input{""" + file + r""".pdf_tex}
+\end{document}""")
 
     # Compile generated file with pdflatex
     subprocess.run(['pdflatex', 'template.tex', '--interaction=batchmode'])
     
-    # if is_tool('pdflatex'):   
-    #     subprocess.call(['pdflatex', template.tex', '--interaction=batchmode',
-    #                      '-jobname=tmp'])
-          
-#   pdflatex --interaction=batchmode -jobname=tmp "\def\filename{$fname.pdf_tex}\input{$fname.tex}" 2>&1 > /dev/null         
-
     display(Image(filename=file+'.png'))
 
 
