@@ -917,7 +917,7 @@ def save_svg_tex(file='unnamed', fontsize=FONTSIZE, baselineskip=BASELINESKIP, f
         sys.exit('Inkscape executable not found.')
 
     # Write temporary Latex file to file system 
-    macro_file_path = lib_path / 'tex' / 'macros.tex'  
+    macro_file_path = lib_path / 'data' / 'macros.tex'  
     with open("tmp.tex","w+") as f:
         f.writelines(r"""\documentclass{standalone}
 \usepackage{xcolor}
