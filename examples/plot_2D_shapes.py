@@ -53,7 +53,7 @@ a3_1 = Polygon.rotated(PO, file=lib_path / 'data' / 'kite_V3_tubeframe.dat',
                        scale=1e-4, zorder=10, linewidth=10, alpha=0, edgecoloralpha=1)
 a3_2 = Polygon.rotated(PO, file=lib_path / 'data' / 'kite_V3_planform.dat',
                        e2=Py, e3=Pz, voff=voff, edgecolor='k', facecolor='w',
-                       scale=1e-4, zorder=0, linewidth=2, alpha=0.8, edgecoloralpha=0.8)
+                       scale=1e-4, zorder=0, linewidth=2, alpha=0.5, edgecoloralpha=0.8)
 ax.annotate3D('TU Delft V3 kite  planform', xyz=0.27*Px+0.34*Py)
 
 save_svg_tex('plot_2D_shapes', fontsize=14)

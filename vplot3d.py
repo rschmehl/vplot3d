@@ -907,15 +907,18 @@ def save_svg_tex(file='unnamed', fontsize=FONTSIZE, baselineskip=BASELINESKIP, f
 
     # Export svg to pdf and pdf_tex files
     if is_tool('inkscape'):
-        subprocess.run(['inkscape', file+'_tex.svg', '--export-type=pdf',
-                         '--export-filename='+file+'.pdf', '--export-latex',
-                         '--export-area-page'])
+        run = subprocess.run(['inkscape', file+'_tex.svg', '--export-type=pdf',
+                              '--export-filename='+file+'.pdf', '--export-latex',
+                              '--export-area-page'], 
+                             capture_output=True, text=True)
+        if run.returncode > 0:
+            sys.exit(run.stdout)
     else:
         sys.exit('Inkscape executable not found.')
 
     # Write temporary Latex file to file system 
     macro_file_path = lib_path / 'tex' / 'macros.tex'  
-    with open("template.tex","w+") as f:
+    with open("tmp.tex","w+") as f:
         f.writelines(r"""\documentclass{standalone}
 \usepackage{xcolor}
 \usepackage{graphicx}
@@ -932,11 +935,49 @@ def save_svg_tex(file='unnamed', fontsize=FONTSIZE, baselineskip=BASELINESKIP, f
 \end{document}""")
 
     # Compile generated file with pdflatex
-    subprocess.run(['pdflatex', 'template.tex', '--interaction=batchmode'])
-    
+    if is_tool('pdflatex'):
+        run = subprocess.run(['pdflatex', 'tmp.tex', '--interaction=batchmode'], 
+                             capture_output=True, text=True)
+        if run.returncode > 0:
+            sys.exit(run.stdout)
+    else:
+        sys.exit('Pdflatex executable not found.')
+        
+    # Convert generated pdf back to svg-file
+    run = subprocess.run(['inkscape', 'tmp.pdf', '--pdf-poppler',
+                          '--export-type=svg', '--export-filename=tmp.svg'],
+                         capture_output=True, text=True)
+    if run.returncode > 0:
+        sys.exit(run.stdout)
+        
+    # Optimize the svg-file
+    if is_tool('scour'):
+        run = subprocess.run(['scour', 'tmp.svg', file+'.svg', '-q', 
+                              '--enable-viewboxing', '--enable-id-stripping',
+                              '--enable-comment-stripping', '--shorten-ids',
+                              '--indent=none'],
+                             capture_output=True, text=True)
+        if run.returncode > 0:
+            sys.exit(run.stdout)
+    else:
+        sys.exit('Scour executable not found.')
+
+    # Generate png-file for display purposes
+    run = subprocess.run(['inkscape', file+'.svg', '--export-type=png', 
+                          '--export-filename='+file+'.png'],
+                         capture_output=True, text=True)
+    if run.returncode > 0:
+        sys.exit(run.stdout)
+
+    # Display the png-file generated from the svg-file
     display(Image(filename=file+'.png'))
 
-
+    # Remove temporary files
+    Path(file+'.pdf').unlink()
+    Path(file+'.pdf_tex').unlink()
+    Path(file+'.png').unlink()
+    for p in Path(".").glob("tmp.*"):
+        p.unlink()
 
 
 
