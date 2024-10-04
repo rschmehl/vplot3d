@@ -83,7 +83,9 @@ classifiers = [
 dependencies = [
   "numpy", 
   "matplotlib>=3.3.0",
-  "transforms3d"
+  "transforms3d",
+  "matplotlib-inline",
+  "IPython",
 ]
 
 # You can define additional groups of dependencies here (e.g., development dependencies).
