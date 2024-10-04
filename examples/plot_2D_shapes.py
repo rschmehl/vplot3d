@@ -12,7 +12,7 @@ import numpy as np
 import sys
 from pathlib import Path
 import vplot3d
-from vplot3d import init_view, Polygon, save_svg_tex 
+from vplot3d import init_view, Polygon, save_svg_tex
 
 # Set this with environment variable PYTHONPATH
 lib_path = Path(vplot3d.__file__).parent

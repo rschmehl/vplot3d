@@ -30,7 +30,7 @@ requires-python = ">=3.8"
 # and prevent installation if the Python version does not match.
 # Check https://endoflife.date/python for Python versions that are still supported.
 
-license = {file = "MIT License"}
+license = {file = "LICENSE"}
 # This specifies the license.
 # It can be a text (e.g. license = {text = "MIT License"}) or a reference to a file with the license text as shown above.
 
@@ -104,5 +104,8 @@ dev = [
 # List of relevant URLs for your project. These are displayed on the left sidebar of your PyPI page.
 # This can include links to the homepage, source code, changelog, funding, etc.
 
+# To grab all the files from the src folders of installed packages, not only the .py files
+[tool.setuptools.packages.find]
+where = ["src"]
 
 # This [project] example was adopted from https://github.com/pypa/sampleproject/blob/main/pyproject.toml
