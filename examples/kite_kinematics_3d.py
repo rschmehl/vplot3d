@@ -11,11 +11,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 from pathlib import Path
-import vplot3d
-from vplot3d import init_view, Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg_tex
+import vplot3d.vplot3d as vplot3d_file
+from vplot3d.vplot3d import init_view, Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg_tex
 
 # Set this with environment variable PYTHONPATH
-lib_path = Path(vplot3d.__file__).parent
+lib_path = Path(vplot3d_file.__file__).parent
 sys.path.append(str(lib_path))
 
 def spherical_vector_base(beta, phi):

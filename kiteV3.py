@@ -15,7 +15,7 @@ considerations, which works well together with the semi-transparent surfaces.
 @author: Roland Schmehl
 """
 
-from vplot3d import *
+from vplot3d.vplot3d import *
 from sys import exit
 import numpy as np
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection, Line3DCollection

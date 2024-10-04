@@ -12,12 +12,12 @@ import numpy as np
 import sys
 from pathlib import Path
 from itertools import product, combinations
+import vplot3d.vplot3d as vplot3d_file
+from vplot3d.vplot3d import init_view, Polygon, save_svg_tex
 
 # Set this with environment variable PYTHONPATH
-lib_path = Path('/home/rschmehl/projects/vplot3d')
+lib_path = Path(vplot3d_file.__file__).parent
 sys.path.append(str(lib_path))
-
-from vplot3d import init_view, Polygon, save_svg_tex
 
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d', proj_type='ortho')
