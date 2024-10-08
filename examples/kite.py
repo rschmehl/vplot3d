@@ -16,8 +16,11 @@ import vplot3d.vplot3d as vplot3d_file
 from vplot3d.vplot3d import init_view, Point, Line, Vector, save_svg_tex
 
 # Set this with environment variable PYTHONPATH
-lib_path = Path(vplot3d_file.__file__).parent
-sys.path.append(str(lib_path))
+#lib_path = Path(vplot3d_file.__file__).parent
+#sys.path.append(str(lib_path))
+
+# Folder with shared data
+dat_path = Path.cwd().parent / 'data'
 
 def spherical_vector_base(beta, phi):
     '''Spherical vector base.

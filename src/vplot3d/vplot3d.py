@@ -122,7 +122,7 @@ def init_view(width, height,
     matplotlib_inline.backend_inline.set_matplotlib_formats('svg')
     mpl.rcParams['svg.fonttype']   = 'none'
     mpl.rcParams['figure.figsize'] = figsize(width, height)
-    #
+
     # Without the following statement, figure size is not set correctly
     plt.gcf().set_size_inches(figsize(width, height), forward=True)
     
@@ -938,7 +938,6 @@ def save_svg_tex(file='unnamed', fontsize=FONTSIZE, baselineskip=BASELINESKIP, f
 \fontsize{""" + str(fontsize) + r"px}{" + str(baselineskip) + r"""px}\selectfont
 \input{""" + file + r""".pdf_tex}
 \end{document}""")
-    f.close()
 
     # Compile generated file with pdflatex
     if is_tool('pdflatex'):

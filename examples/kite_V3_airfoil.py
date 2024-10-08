@@ -16,8 +16,11 @@ import vplot3d.vplot3d as vplot3d_file
 from vplot3d.vplot3d import init_view, Polygon, save_svg_tex
 
 # Set this with environment variable PYTHONPATH
-lib_path = Path(vplot3d_file.__file__).parent
-sys.path.append(str(lib_path))
+#lib_path = Path(vplot3d_file.__file__).parent
+#sys.path.append(str(lib_path))
+
+# Folder with shared data
+dat_path = Path.cwd().parent / 'data'
 
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d', proj_type='ortho')
@@ -41,7 +44,7 @@ ex = np.array([1, 0, 0])
 ey = np.array([0, 1, 0])
 ez = np.array([0, 0, 1])
 voff = np.array([0, 0, 0])
-pg = Polygon.rotated(p, file=lib_path / 'data' / 'kite_V3_airfoil.dat', e1=ex, e2=ey, voff=voff, facecolor='k', edgecolor='k', scale=1, linewidth=2, alpha=0.5, edgecoloralpha=0.8)
+pg = Polygon.rotated(p, file=dat_path / 'kite_V3_airfoil.dat', e1=ex, e2=ey, voff=voff, facecolor='k', edgecolor='k', scale=1, linewidth=2, alpha=0.5, edgecoloralpha=0.8)
 
 save_svg_tex('kite_V3_airfoil')
 plt.close()
