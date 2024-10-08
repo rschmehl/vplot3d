@@ -78,6 +78,7 @@ markers     = []
 meshes      = []
 
 lib_path = Path(__file__).parent
+dat_path = Path.cwd().parent / 'data'
 
 # Open file with marker definitions
 mtree = ET.parse(lib_path / 'data' / 'markers.svg')
@@ -121,9 +122,13 @@ def init_view(width, height,
     matplotlib_inline.backend_inline.set_matplotlib_formats('svg')
     mpl.rcParams['svg.fonttype']   = 'none'
     mpl.rcParams['figure.figsize'] = figsize(width, height)
-
+    #
+    # Without the following statement, figure size is not set correctly
+    plt.gcf().set_size_inches(figsize(width, height), forward=True)
+    
     # Set anticipated diagram range in data space
     ax = plt.gca()
+
     ax.set_xlim3d([xmin, xmax])
     ax.set_ylim3d([ymin, ymax])
     ax.set_zlim3d([zmin, zmax])
@@ -917,8 +922,8 @@ def save_svg_tex(file='unnamed', fontsize=FONTSIZE, baselineskip=BASELINESKIP, f
         sys.exit('Inkscape executable not found.')
 
     # Write temporary Latex file to file system 
-    macro_file_path = lib_path / 'data' / 'tex_macros.tex'  
-    with open("tmp.tex","w+") as f:
+    macro_file_path = dat_path / 'macros.tex'  
+    with open("tmp.tex","w") as f:
         f.writelines(r"""\documentclass{standalone}
 \usepackage{xcolor}
 \usepackage{graphicx}
@@ -933,6 +938,7 @@ def save_svg_tex(file='unnamed', fontsize=FONTSIZE, baselineskip=BASELINESKIP, f
 \fontsize{""" + str(fontsize) + r"px}{" + str(baselineskip) + r"""px}\selectfont
 \input{""" + file + r""".pdf_tex}
 \end{document}""")
+    f.close()
 
     # Compile generated file with pdflatex
     if is_tool('pdflatex'):
@@ -975,7 +981,7 @@ def save_svg_tex(file='unnamed', fontsize=FONTSIZE, baselineskip=BASELINESKIP, f
     # Remove temporary files
     Path(file+'.pdf').unlink()
     Path(file+'.pdf_tex').unlink()
-    Path(file+'.png').unlink()
+#   Path(file+'.png').unlink()
     for p in Path(".").glob("tmp.*"):
         p.unlink()
 
