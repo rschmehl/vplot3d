@@ -89,7 +89,7 @@ ax.annotate3D(r'$\zw$', xyz=Pz, xytext=(0.6,-0.9))
 ax.annotate3D(r'$\vvk$', xyz=PO+Pk+Vk, xytext=(-1,-1.8))
 ax.annotate3D(r'$\vvw$', xyz=PO+Pk+Vw, xytext=(0,-1.6))
 
-save_svg_tex('kite_kinematics_3d')
+save_svg_tex('kite_kinematics_3d', macro_file_path=dat_path / 'macros.tex')
 
 ###############################################################################
 # Second plot
@@ -117,7 +117,7 @@ am2  = ArcMeasure(PO, Px,  Pxy, radius=r, linewidth=3, zorder=31, color='k')
 ax.annotate3D(r'$\beta$', xyz=PO+Pk, xytext=(0.1,-3))
 ax.annotate3D(r'$\phi$', xyz=PO+Pxy, xytext=(-1.4,1))
 
-save_svg_tex('kite_kinematics_3d_a')
+save_svg_tex('kite_kinematics_3d_a', macro_file_path=dat_path / 'macros.tex')
 
 ###############################################################################
 plt.close()

@@ -900,7 +900,7 @@ def is_tool(name):
     from shutil import which
     return which(name) is not None
 
-def save_svg_tex(file='unnamed', fontsize=FONTSIZE, baselineskip=BASELINESKIP, fontfamily=FONTFAMILY):
+def save_svg_tex(file='unnamed', macro_file_path=None, fontsize=FONTSIZE, baselineskip=BASELINESKIP, fontfamily=FONTFAMILY):
     '''Wrapper for save_svg to add post-processing with inkscape, latex, scour
     and display PNG-file generated from the SVG-file.
     '''
@@ -921,8 +921,12 @@ def save_svg_tex(file='unnamed', fontsize=FONTSIZE, baselineskip=BASELINESKIP, f
     else:
         sys.exit('Inkscape executable not found.')
 
-    # Write temporary Latex file to file system 
-    macro_file_path = dat_path / 'macros.tex'  
+    # Write temporary Latex file to file system
+    if macro_file_path is None:
+        macros = r"""% no tex macros"""
+    else:
+        macros = r"""\input{""" + str(macro_file_path) + r"""}"""
+ 
     with open("tmp.tex","w") as f:
         f.writelines(r"""\documentclass{standalone}
 \usepackage{xcolor}
@@ -932,7 +936,9 @@ def save_svg_tex(file='unnamed', fontsize=FONTSIZE, baselineskip=BASELINESKIP, f
 \usepackage{""" + str(fontfamily) + r"""}
 \usepackage{transparent}
 \usepackage{amsmath}
-\input{""" + str(macro_file_path) + r"""}
+""" +
+macros + 
+r"""
 \begin{document}
 \fosfamily
 \fontsize{""" + str(fontsize) + r"px}{" + str(baselineskip) + r"""px}\selectfont
