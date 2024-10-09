@@ -9,14 +9,8 @@ Created on Thu Aug 11 11:03:50 2022
 
 import matplotlib.pyplot as plt
 import numpy as np
-import sys
 from pathlib import Path
-import vplot3d.vplot3d as vplot3d_file
 from vplot3d.vplot3d import init_view, Line, Vector, Point, Arc, ArcMeasure, Polygon, save_svg_tex
-
-# Set this with environment variable PYTHONPATH
-#lib_path = Path(vplot3d_file.__file__).parent
-#sys.path.append(str(lib_path))
 
 # Folder with shared data
 dat_path = Path.cwd().parent / 'data'
