@@ -66,11 +66,11 @@ class KiteV3(Object3D):
         self.gid = 'kiteV3_' + str(len(kiteV3)+1)
 
         # Read all meshes from obj-files
-        mesh1 = trimesh.load(lib_path / 'data' / 'kite_V3_canopy.obj')
-        mesh2 = trimesh.load(lib_path / 'data' / 'kite_V3_LE.obj')
-        mesh3 = trimesh.load(lib_path / 'data' / 'kite_V3_struts.obj')
-        mesh4 = trimesh.load(lib_path / 'data' / 'kite_V3_KCU.obj')
-        mesh5 = LineSystem.load(lib_path / 'data' / 'kite_V3_bridle.obj')
+        mesh1 = trimesh.load(dat_path / 'kite_V3_canopy.obj')
+        mesh2 = trimesh.load(dat_path / 'kite_V3_LE.obj')
+        mesh3 = trimesh.load(dat_path / 'kite_V3_struts.obj')
+        mesh4 = trimesh.load(dat_path / 'kite_V3_KCU.obj')
+        mesh5 = LineSystem.load(dat_path / 'kite_V3_bridle.obj')
 
         #######################################################################
         # Bridle line system (line segments)

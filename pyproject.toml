@@ -84,6 +84,7 @@ dependencies = [
   "numpy", 
   "matplotlib>=3.3.0",
   "transforms3d",
+  "trimesh",
   "matplotlib-inline",
   "IPython",
 ]
