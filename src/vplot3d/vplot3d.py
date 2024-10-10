@@ -42,7 +42,6 @@ import io
 import xml.etree.ElementTree as ET
 import textwrap
 
-
 # Constants
 ORIGIN       = np.array([0, 0, 0])
 EX           = np.array([1, 0, 0])
