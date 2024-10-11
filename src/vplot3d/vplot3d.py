@@ -31,6 +31,7 @@ from abc import ABC, abstractmethod
 from mpl_toolkits.mplot3d import Axes3D, art3d, proj3d
 from matplotlib.text import Annotation
 from matplotlib.colors import is_color_like
+from vplot3d.config import Config
 from pathlib import Path
 from sys import exit
 import matplotlib as mpl
@@ -41,6 +42,11 @@ import copy
 import io
 import xml.etree.ElementTree as ET
 import textwrap
+import yaml
+
+lib_path = Path(__file__).parent
+dat_path = Path.cwd().parent / 'data'
+config   = Config(yaml.safe_load(open(lib_path / 'config' / 'vplot3d.yaml', 'r')))
 
 # Constants
 ORIGIN       = np.array([0, 0, 0])
@@ -56,8 +62,8 @@ SIN          = np.sin(np.radians(DEGREES))
 _FSCALE      = 7.547                  # Scaling factor for line shortening
 
 # Default values (can be changed)
-LINEWIDTH    = 3                      # Linewidth of line objects
-FONTSIZE_RAW = 20                     # Fontsize before post-processing
+LINEWIDTH    = config.defaults.linewidth
+FONTSIZE_RAW = config.defaults.fontsize_raw
 FONTFAMILY   = 'opensans'             # Fontfamily for Latex post-processing
 FONTSIZE     = 26                     # Fontsize (px) for Latex post-processing
 BASELINESKIP = 28                     # Baseline skip (px) for Latex post-processing
@@ -76,11 +82,8 @@ points      = []
 markers     = []
 meshes      = []
 
-lib_path = Path(__file__).parent
-dat_path = Path.cwd().parent / 'data'
-
 # Open file with marker definitions
-mtree = ET.parse(lib_path / 'data' / 'markers.svg')
+mtree = ET.parse(lib_path / 'config' / 'markers.svg')
 mroot = mtree.getroot()
 
 # Raw Latex math - see https://github.com/matplotlib/matplotlib/issues/4938#issuecomment-783252908

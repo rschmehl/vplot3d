@@ -1,0 +1,3 @@
+defaults:
+    linewidth: 3         # Linewidth of line objects
+    fontsize_raw: 20     # Fontsize before post-processing
