@@ -14,4 +14,5 @@ defaults:
     plot_radius: 1.            # Data radius
     eps: 1.e-5                 # Small number
     xyoff: 0 0                 # xy-offset of text objects
+    fscale: 7.547              # Scaling factor for line shortening
     ddegrees: 1.               # Angular discretization stepsize 

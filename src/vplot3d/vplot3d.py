@@ -64,15 +64,13 @@ EZ            = config.defaults.ez
 EXYZ          = config.defaults.exyz
 EPS           = config.defaults.eps
 XYOFF         = config.defaults.xyoff
+_FSCALE       = config.defaults.fscale
 DDEGREES      = config.defaults.ddegrees
 
 # Discretization of circular objects
 DEGREES      = np.arange(0, 362, DDEGREES)
 COS          = np.cos(np.radians(DEGREES))
 SIN          = np.sin(np.radians(DEGREES))
-
-# Scaling factor for line shortening
-_FSCALE      = 7.547
 
 # Lists for geometrical objects -> private
 lines       = []
@@ -103,7 +101,7 @@ def set_defaults(linewidth=LINEWIDTH):
 
 def init_view(width, height,
               xmin,  xmax, ymin,  ymax, zmin,  zmax,
-              zoom=1, elev=30, azim=-60):
+              zoom=1, elev=30, azim=-60, conf_path=Path.cwd()):
     '''Boilerplate code to initialize the 3D vector diagram and set all
     required properties. This is a convenience function to bundle the entire
     setup of the diagram. The code below can also directly included in the
@@ -121,6 +119,7 @@ def init_view(width, height,
       zoom:   viewing distance to diagram
       elev:   elevation angle of perspective
       azim:   azimuth angle of perspective
+      conf_path: path to configuration file
     '''
 
     matplotlib_inline.backend_inline.set_matplotlib_formats('svg')
@@ -144,6 +143,11 @@ def init_view(width, height,
     # Diagram perspective
     ax.view_init(elev, azim)
     proj3d.persp_transformation = orthogonal_proj
+    
+    # Read user-defined configuration
+    conf_file = conf_path/'vplot3d.yaml'
+    if conf_file.exists():
+        
 
 def figsize(figure_width_px, figure_height_px):
     ''' Sets figure size in inches, given a desired width and height in pixels.
