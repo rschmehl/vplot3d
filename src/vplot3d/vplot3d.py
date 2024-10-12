@@ -48,20 +48,7 @@ lib_path = Path(__file__).parent
 dat_path = Path.cwd().parent / 'data'
 config   = Config(yaml.safe_load(open(lib_path / 'config' / 'vplot3d.yaml', 'r')))
 
-# Constants
-ORIGIN       = np.array([0, 0, 0])
-EX           = np.array([1, 0, 0])
-EY           = np.array([0, 1, 0])
-EZ           = np.array([0, 0, 1])
-EXYZ         = np.array([1, 1, 1])
-EPS          = 1e-5                   # Small number
-XYOFF        = (0,0)                  # xy-offset of text objects
-DEGREES      = np.arange(0, 362, 1)   # Discretization of circular objects
-COS          = np.cos(np.radians(DEGREES))
-SIN          = np.sin(np.radians(DEGREES))
-_FSCALE      = 7.547                  # Scaling factor for line shortening
-
-# Default values (can be changed)
+# Default values
 LINEWIDTH     = config.defaults.linewidth
 FONTSIZE_RAW  = config.defaults.fontsize_raw
 FONTFAMILY    = config.defaults.fontfamily
@@ -70,6 +57,22 @@ BASELINESKIP  = config.defaults.baselineskip
 plot_zoom     = config.defaults.plot_zoom
 plot_radius   = config.defaults.plot_radius
 rasterize_dpi = config.defaults.rasterize_dpi
+ORIGIN        = config.defaults.origin
+EX            = config.defaults.ex
+EY            = config.defaults.ey
+EZ            = config.defaults.ez
+EXYZ          = config.defaults.exyz
+EPS           = config.defaults.eps
+XYOFF         = config.defaults.xyoff
+DDEGREES      = config.defaults.ddegrees
+
+# Discretization of circular objects
+DEGREES      = np.arange(0, 362, DDEGREES)
+COS          = np.cos(np.radians(DEGREES))
+SIN          = np.sin(np.radians(DEGREES))
+
+# Scaling factor for line shortening
+_FSCALE      = 7.547
 
 # Lists for geometrical objects -> private
 lines       = []

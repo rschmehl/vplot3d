@@ -4,6 +4,14 @@ defaults:
     fontfamily: 'opensans'     # Fontfamily for Latex post-processing
     fontsize: 26               # Fontsize (px) for Latex post-processing
     baselineskip: 28           # Baseline skip (px) for Latex post-processing
-    plot_zoom: 1               # Scales drawing
-    plot_radius: 1             # Data radius
     rasterize_dpi: 600         # Rasterization dpi (mesh objects)
+    origin: 0 0 0              # Origin of coordinate system
+    ex: 1 0 0                  # Unit vector in x-direction
+    ey: 0 1 0                  # Unit vector in y-direction
+    ez: 0 0 1                  # Unit vector in z-direction
+    exyz: 1 1 1                # Diagonal vector
+    plot_zoom: 1.              # Scales drawing
+    plot_radius: 1.            # Data radius
+    eps: 1.e-5                 # Small number
+    xyoff: 0 0                 # xy-offset of text objects
+    ddegrees: 1.               # Angular discretization stepsize 
