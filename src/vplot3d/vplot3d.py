@@ -62,15 +62,14 @@ SIN          = np.sin(np.radians(DEGREES))
 _FSCALE      = 7.547                  # Scaling factor for line shortening
 
 # Default values (can be changed)
-LINEWIDTH    = config.defaults.linewidth
-FONTSIZE_RAW = config.defaults.fontsize_raw
-FONTFAMILY   = 'opensans'             # Fontfamily for Latex post-processing
-FONTSIZE     = 26                     # Fontsize (px) for Latex post-processing
-BASELINESKIP = 28                     # Baseline skip (px) for Latex post-processing
-#
-plot_zoom    = 1                      # Scales drawing
-plot_radius  = 1                      # Data radius
-rasterize_dpi = 600                   # Rasterization dpi (mesh objects)
+LINEWIDTH     = config.defaults.linewidth
+FONTSIZE_RAW  = config.defaults.fontsize_raw
+FONTFAMILY    = config.defaults.fontfamily
+FONTSIZE      = config.defaults.fontsize
+BASELINESKIP  = config.defaults.baselineskip
+plot_zoom     = config.defaults.plot_zoom
+plot_radius   = config.defaults.plot_radius
+rasterize_dpi = config.defaults.rasterize_dpi
 
 # Lists for geometrical objects -> private
 lines       = []

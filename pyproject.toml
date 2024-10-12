@@ -87,6 +87,7 @@ dependencies = [
   "trimesh",
   "PyYAML",
   "matplotlib-inline",
+  "scour",
   "IPython",
 ]
 
@@ -99,7 +100,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
   "pytest"
-  ]
+]
 
 [project.urls]
 "Homepage" = "https://github.com/awegroup"
