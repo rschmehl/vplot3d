@@ -33,20 +33,55 @@ from matplotlib.text import Annotation
 from matplotlib.colors import is_color_like
 from vplot3d.config import Config
 from pathlib import Path
-from sys import exit
+import sys
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib_inline
 import numpy as np
 import copy
 import io
+import os
 import xml.etree.ElementTree as ET
 import textwrap
 import yaml
+import collections.abc
+
+# Deep update of a nested dictionary, from https://stackoverflow.com/a/3233356
+def update(d, u):
+    for k, v in u.items():
+        if isinstance(v, collections.abc.Mapping):
+            d[k] = update(d.get(k, {}), v)
+        else:
+            d[k] = v
+    return d
 
 lib_path = Path(__file__).parent
 dat_path = Path.cwd().parent / 'data'
-config   = Config(yaml.safe_load(open(lib_path / 'config' / 'vplot3d.yaml', 'r')))
+
+# Read base configuration from package
+conf_path = lib_path / 'config' / 'vplot3d.yaml'
+print('> Reading package configuration file ', str(conf_path))
+dict_config    = yaml.safe_load(open(conf_path, 'r'))
+
+# Read configuration file from user-defined path
+env = os.getenv('CONF_PATH')
+if env is not None:
+    del os.environ['CONF_PATH']               # Remove for next call
+    conf_path = Path(env) / 'vplot3d.yaml'
+    if not Path.is_file(conf_path):
+        sys.exit('user-defined configuration file ' + str(conf_path) + ' does not exist')
+else:
+    conf_path = Path.cwd() / 'vplot3d.yaml'
+
+if Path.is_file(conf_path):
+    print('> Reading user configuration file ', str(conf_path))
+    user_dict_config   = yaml.safe_load(open(conf_path, 'r'))
+    
+    # Deep update package standard configuration with user-defined configuration
+    dict_config = update(dict_config, user_dict_config)
+
+# Convert updated dictionary into configuration
+config = Config(dict_config)
 
 # Default values
 LINEWIDTH     = config.defaults.linewidth
@@ -145,8 +180,8 @@ def init_view(width, height,
     proj3d.persp_transformation = orthogonal_proj
     
     # Read user-defined configuration
-    conf_file = conf_path/'vplot3d.yaml'
-    if conf_file.exists():
+#pring globals()    conf_file = conf_path/'vplot3d.yaml'
+#    if conf_file.exists():
         
 
 def figsize(figure_width_px, figure_height_px):
@@ -690,8 +725,7 @@ class Polygon(Object3D):
         '''
         # Check if at least two base vectors are specified
         if [e1 is None, e2 is None, e3 is None].count(True) > 1:
-            print('*** Error in Polygon.rotated: need 2 or 3 base vectors')
-            exit(1)
+            sys.exit('in Polygon.rotated: need 2 or 3 base vectors')
 
         # Complete the vector base
         if e1 is None:
@@ -898,7 +932,7 @@ def save_svg(file='unnamed'):
         style = pelement.find('.//{'+ns+'}path').attrib['style'].replace('stroke-opacity', 'opacity')
         pelement.find('.//{'+ns+'}path').attrib['style'] = style
 
-    print(f"Saving '{file}_tex.svg'")
+    print(f"> Saving '{file}_tex.svg'")
     ET.ElementTree(tree).write(file+'_tex.svg', encoding="utf-8")
 
 def is_tool(name):
@@ -912,7 +946,7 @@ def save_svg_tex(file='unnamed', macro_file_path=None, fontsize=FONTSIZE, baseli
     '''Wrapper for save_svg to add post-processing with inkscape, latex, scour
     and display PNG-file generated from the SVG-file.
     '''
-    import subprocess, sys
+    import subprocess
     from IPython.display import display, Image
 
     # Generate, customize and save the figure's SVG code.
