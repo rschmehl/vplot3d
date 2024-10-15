@@ -23,7 +23,7 @@ class DefaultsClass:
         if raw.get('plot_zoom'):     self.plot_zoom:   float = raw['plot_zoom']
         if raw.get('plot_radius'):   self.plot_radius: float = raw['plot_radius']
         if raw.get('eps'):           self.eps:         float = raw['eps']
-        if raw.get('xyoff'):         self.xyoff:       float = raw['xyoff'].split()
+        if raw.get('xyoff'):         self.xyoff:       tuple[float, float] = tuple(float(n) for n in raw['xyoff'].split())
         if raw.get('fscale'):        self.fscale:      float = raw['fscale']
         if raw.get('ddegrees'):      self.ddegrees:    float = raw['ddegrees']
         
