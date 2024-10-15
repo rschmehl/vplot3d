@@ -87,7 +87,7 @@ The `elev` and `azim` parameters specify the elevation and azimuth angles of the
 > [!CAUTION]
 > The library has only been tested for orthographic projection so far. A different projection method could affect the shortening of arrowheads.
 
-## Postprocessing
+## Output
 
 Because Spyder's SVG renderer does not support markers, these are not drawn in the IPython console window. They do show in a webbrowser or in Inkscape. The included postprocessing with Inkscape, or Inscape-Latex-Inkscape generates a PNG file for output in the IDE's renderer.
 
