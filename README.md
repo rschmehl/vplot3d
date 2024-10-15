@@ -42,10 +42,11 @@ For using  `save_svg_tex`, the following two executables need to be installed an
    # Windows (PowerShell)
    .\.venv\Scripts\Activate
    ```
-5. Install dependencies.
+5. Locally install the package and its dependencies.
    ```bash
    pip install -e .
    ```
+   The option `-e` ensures editable mode.
 6. Now you are ready to use the library. Open your favorite development environment and start coding. The `examples` folder contains several Python files with implemented examples demonstrating the features of `vplot3d`.
 6. Once you are finished you can deactivate the virtual environment.
    ```bash
@@ -57,41 +58,17 @@ For using  `save_svg_tex`, the following two executables need to be installed an
 
 ## Diagram layout and 3D perspective
 
-To setup the vector drawing `vplot3d` provides an `init` method.
+To setup the vector drawing `vplot3d` provides the `init_view` function.
+```
+init_view(width=600, height=600,
+          xmin=0, xmax=1, ymin=0, ymax=1, zmin=-0.3, zmax=1.5,
+          zoom=1.5, elev=30, azim=-60)
+```
 
-    v3d.plot_zoom, v3d.plot_radius = v3d.init(width, height,
-                                              xmin,  xmax,
-                                              ymin,  ymax,
-                                              zmin,  zmax,
-                                              zoom,  elev,  azim )
-
-### Low-level setup
-The diagram will be generated as an SVG file. You have to specify the width and height of this SVG diagram in pixels using the `figsize` function of `vplot3d`:
-
-    rcParams['figure.figsize'] = figsize(width_in_pixels, height_in_pixels)
-
-When displaying the SVG file in a web browser or including it in html without explicit dimensions, these dimensions are used. But as a native vector format, SVG is also scalable to any dimensions without quality loss.
-
-At the start of your drawing you also need to define the anticipated 3D data range:
-
-    set_xlim3d([xmin, xmax])
-    set_ylim3d([ymin, ymax])
-    set_zlim3d([zmin, zmax])
-
-The limiting values define the position of the 3D-diagram in the 2D SVG canvas. For the convenience of the user, the distance of the viewer to the object can be modified by
-
-    ZOOM = value
-
-where the default value of 1 depicts the original data range, a value > 1 zooms out and a value < 1 zooms in.
-
-> [!TIP]
-> Using constant size parameters of graphical objects (line width, arrowhead size, etc) across all diagrams of a document, while adjusting only the data range, zoom value and figure size per diagram leads to a uniform graphical representation.
-
-The perspective of the 3D-diagram can be set in the usual way by calling `view_init` with desired elevation and azimuth angle values:
-
-    elev =  30
-    azim = -60
-    view_init(elev, azim)
+The `width` and `height` parameters specify the size of the SVG-file in terms of pixels. 
+The `xmin`, `xmax`, `ymin`, `ymax`, `zmin` and `zmax` parameters define the expected value ranges in the model space.
+The `zoom` parameter specifies the viewing distance to the model.
+The `elev` and `azim` parameters specify the elevation and azimuth angles of the applied perspective of the model.
 
 > [!CAUTION]
 > The library has only been tested for orthographic projection so far. A different projection method could affect the shortening of arrowheads.
