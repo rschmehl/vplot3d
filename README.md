@@ -13,28 +13,47 @@ Points and arrowheads (for vectors and arc measures) are generated as native SVG
 
 ## System requirements
 
-- Matplotlib 3.3.0
+The library can be used with two options to generate SVG files: a call to `save_svg` generates plain SVG output, while a call to `save_svg_tex` generates plain SVG output and pipes this through Inkscape, using its PDF+Latex output option, and then pdflatex to compile into PDF, with a final conversion back to SVG. This post-processing is useful to render Latex code of mathematical symbols and expressions, using pdflatex.
 
-Optional post-processing toolchain
+For using  `save_svg_tex`, the following two executables need to be installed and in the search path:
 
-- [Inkscape](https://inkscape.org/) (render generated SVG in the IDE and for Latex postprocessing)
-- [Scour](https://github.com/scour-project/scour) (optimize SVG output)
-- [pdflatex](https://www.tug.org/texlive/) (for Latex postprocessing, to include annotations and automatically render the Latex code)
+- [Inkscape](https://inkscape.org/) (free and open-source vector graphics editor)
+- [pdflatex](https://www.tug.org/texlive/) (Latex typesetting program)
 
 ## Installation
 
-I have not created a package yet to install `vplot3d` via git. For the time being, set the variable `lib_path` to the directory where `vplot3d.py` resides:
-
-    lib_path = Path('/home/user/projects/vplot3d')
-    sys.path.append(str(lib_path))
-
-Following this, we can import the library:
-
-    import vplot3d
-
+1. Locally clone the repository of download it as zip-file.
+2. Go to the root-folder (where the file `pyproject.toml` resides.)
+3. Create a virtual environment. 
+   ```bash
+   python -m venv .venv
+   ```
+4. Activate the virtual environment.
+     
+   ```bash
+   # linux
+   source .venv/bin/activate
+   ```
+   ```bash
+   # Windows (Command Prompt)
+   .venv\Scripts\activate
+   ```
+   ```bash
+   # Windows (PowerShell)
+   .\.venv\Scripts\Activate
+   ```
+5. Install dependencies.
+   ```bash
+   pip install -e .
+   ```
+6. Now you are ready to use the library. Open your favorite development environment and start coding. The `examples` folder contains several Python files with implemented examples demonstrating the features of `vplot3d`.
+6. Once you are finished you can deactivate the virtual environment.
+   ```bash
+   deactivate
+   ```
 
 > [!TIP]
-> The installation path `lib_path` is also needed for the later postprocessing and display of the diagram.
+> The example `kite.py` shows the definition of a more complex composite object in a separate, user-specified Python file, `kiteV3.py`. 
 
 ## Diagram layout and 3D perspective
 
