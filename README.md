@@ -22,13 +22,13 @@ For using  `save_svg_tex`, the following two executables need to be installed an
 
 ## Installation
 
-1. Locally clone the repository of download it as zip-file.
+1. Locally clone the repository or download it as zip-file and unpack it.
 2. Go to the root-folder (where the file `pyproject.toml` resides.)
-3. Create a virtual environment. 
+3. Create a virtual environment (in this case `.venv`):
    ```bash
    python -m venv .venv
    ```
-4. Activate the virtual environment.
+4. Activate the virtual environment:
      
    ```bash
    # linux
@@ -42,7 +42,7 @@ For using  `save_svg_tex`, the following two executables need to be installed an
    # Windows (PowerShell)
    .\.venv\Scripts\Activate
    ```
-5. Locally install the package and its dependencies.
+5. Locally install the package and its dependencies:
    ```bash
    pip install -e .
    ```
@@ -56,9 +56,23 @@ For using  `save_svg_tex`, the following two executables need to be installed an
 > [!TIP]
 > The example `kite.py` shows the definition of a more complex composite object in a separate, user-specified Python file, `kiteV3.py`. 
 
-## Diagram layout and 3D perspective
+## Use
 
-To setup the vector drawing `vplot3d` provides the `init_view` function.
+Once configured and imported, `vplot3d` provides the following interface:
+
+ - an `init_view` function, to initialize the 3D scenario and a certain perspective, programatically generated 3D vector diagrams 
+ - various constructors and utility functions to generate and manipulate 3D objects, and 
+ - diffenent `save_svg` and `save_svg_tex` 
+
+### Configuration
+
+A set of baseline default parameters is read initially from the package configuration file `config/vplot3d.yaml`. Via environment variable `CONF_PATH`, a user can control the path from where the file `vplot3d.yaml` with superseding definitions is read. If `CONF_PATH` is not set, a file `vplot3d.yaml` in the current working directory is searched. When not located the file is ignored.
+
+### Import
+
+### Initialization
+
+For initializing the 3D scene, `vplot3d` provides the `init_view` function:
 ```
 init_view(width=600, height=600,
           xmin=0, xmax=1, ymin=0, ymax=1, zmin=-0.3, zmax=1.5,
