@@ -11,12 +11,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 from pathlib import Path
-from vplot3d.vplot3d import init_view, Point, Line, Vector, save_svg_tex
 
-# Folder with shared data
+# Folder with configuration and shared data
 dat_path = Path.cwd().parent / 'data'
+#os.environ['CONF_PATH'] = str(dat_path)
 sys.path.append(str(dat_path))
 
+from vplot3d.vplot3d import init_view, Point, Line, Vector, save_svg_tex
 from kiteV3 import KiteV3
 
 def spherical_vector_base(beta, phi):

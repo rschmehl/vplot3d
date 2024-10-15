@@ -11,10 +11,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 from pathlib import Path
 from itertools import product, combinations
-from vplot3d.vplot3d import init_view, Polygon, save_svg_tex
 
-# Folder with shared data
+# Folder with configuration and shared data
 dat_path = Path.cwd().parent / 'data'
+#os.environ['CONF_PATH'] = str(dat_path)
+
+from vplot3d.vplot3d import init_view, Polygon, save_svg_tex
 
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d', proj_type='ortho')
