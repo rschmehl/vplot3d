@@ -101,13 +101,13 @@ Once initialized, the following geometrical primitives and objects can be added 
 
 ### Points
 
-Uses an [SVG marker](https://jenkov.com/tutorials/svg/marker-element.html) to depict the arrowhead.
+Uses [SVG markers](https://jenkov.com/tutorials/svg/marker-element.html) as symbols to depict the points.
 
 ### Lines and circular arcs
 
 ### Vectors and arc measures
 
-Uses [SVG markers](https://jenkov.com/tutorials/svg/marker-element.html) to depict the point. To precisely meet the target point with the tip of the arrowhead, the line part of vectors or arc measures are shortened,
+Uses [SVG markers](https://jenkov.com/tutorials/svg/marker-element.html) as symbols to depict the arrowheads. To precisely meet the target point with the tip of the arrowhead, the line part of vectors or arc measures are shortened.
 
 ### Polygons
 
