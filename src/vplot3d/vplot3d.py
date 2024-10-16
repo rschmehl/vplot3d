@@ -136,7 +136,7 @@ def set_defaults(linewidth=LINEWIDTH):
 
 def init_view(width, height,
               xmin,  xmax, ymin,  ymax, zmin,  zmax,
-              zoom=1, elev=30, azim=-60, conf_path=Path.cwd()):
+              zoom=1, elev=30, azim=-60):
     '''Boilerplate code to initialize the 3D vector diagram and set all
     required properties. This is a convenience function to bundle the entire
     setup of the diagram. The code below can also directly included in the
@@ -151,10 +151,9 @@ def init_view(width, height,
       ymax:   maximum expected y-value of all 3D data in digram
       zmin:   minimum expected z-value of all 3D data in digram
       zmax:   maximum expected z-value of all 3D data in digram
-      zoom:   viewing distance to diagram
+      zoom:   viewing distance to model
       elev:   elevation angle of perspective
       azim:   azimuth angle of perspective
-      conf_path: path to configuration file
     '''
 
     matplotlib_inline.backend_inline.set_matplotlib_formats('svg')
@@ -178,11 +177,6 @@ def init_view(width, height,
     # Diagram perspective
     ax.view_init(elev, azim)
     proj3d.persp_transformation = orthogonal_proj
-    
-    # Read user-defined configuration
-#pring globals()    conf_file = conf_path/'vplot3d.yaml'
-#    if conf_file.exists():
-        
 
 def figsize(figure_width_px, figure_height_px):
     ''' Sets figure size in inches, given a desired width and height in pixels.
@@ -982,7 +976,6 @@ def save_svg_tex(file='unnamed', macro_file_path=None, fontsize=FONTSIZE, baseli
 macros + 
 r"""
 \begin{document}
-\fosfamily
 \fontsize{""" + str(fontsize) + r"px}{" + str(baselineskip) + r"""px}\selectfont
 \input{""" + file + r""".pdf_tex}
 \end{document}""")

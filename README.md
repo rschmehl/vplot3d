@@ -24,11 +24,12 @@ For using  `save_svg_tex`, the following two executables need to be installed an
 
 1. Locally clone the repository or download it as zip-file and unpack it.
 2. Go to the root-folder (where the file `pyproject.toml` resides.)
-3. Create a virtual environment (in this case `.venv`):
+3. Create a virtual environment:
    ```bash
    python -m venv .venv
    ```
-4. Activate the virtual environment: on Linux
+   This will install the virtual environment in the (hidden) folder `.venv` in the project's root directory.
+4. Activate the virtual environment. On Linux (terminal command line):
    ```bash
    source .venv/bin/activate
    ```
@@ -45,40 +46,36 @@ For using  `save_svg_tex`, the following two executables need to be installed an
    pip install -e .
    ```
    The option `-e` ensures editable mode.
-6. Now you are ready to use the library. Open your favorite development environment and start coding. The `examples` folder contains several Python files with implemented examples demonstrating the features of `vplot3d`.
-6. Once you are finished you can deactivate the virtual environment.
+6. When finished, the virtual environment is deactivated by:
    ```bash
    deactivate
    ```
 
-{% tabs %}
-
-{% tab title="Windows" %} Here are the instructions for Windows {% endtab %}
-
-{% tab title="OSX" %} Here are the instructions for macOS {% endtab %}
-
-{% tab title="Linux" %} Here are the instructions for Linux {% endtab %}
-
-{% endtabs %}
-
 > [!TIP]
 > The example `kite.py` shows the definition of a more complex composite object in a separate, user-specified Python file, `kiteV3.py`. 
 
-## Use
+## Usage
 
-Once configured and imported, `vplot3d` provides the following interface:
+After installation, `vplot3d` can be used from any location on the file system. The `examples` folder includes several Python files demonstrating the different features of `vplot3d`.
+
+### Configuration and import
+
+A set of baseline default parameters is read initially from the package configuration file `config/vplot3d.yaml`. Via environment variable `CONF_PATH`, a user can control the path from where the file `vplot3d.yaml` with superseding definitions is read. If `CONF_PATH` is not set, a file `vplot3d.yaml` in the current working directory is searched. When not located the file is ignored.
 
  - an `init_view` function, to initialize the 3D scenario and a certain perspective, programatically generated 3D vector diagrams 
  - various constructors and utility functions to generate and manipulate 3D objects, and 
  - diffenent `save_svg` and `save_svg_tex` 
 
-### Configuration
+```
+# Setting the folder location for shared data and local configuration file (vplot3d.yaml)
+dat_path = Path.cwd().parent / 'data'
+os.environ['CONF_PATH'] = str(dat_path)
+# Importing vplot3d
+from vplot3d.vplot3d import init_view, Point, Vector, save_svg_tex
+```
 
-A set of baseline default parameters is read initially from the package configuration file `config/vplot3d.yaml`. Via environment variable `CONF_PATH`, a user can control the path from where the file `vplot3d.yaml` with superseding definitions is read. If `CONF_PATH` is not set, a file `vplot3d.yaml` in the current working directory is searched. When not located the file is ignored.
 
-### Import
-
-### Initialization
+### Initializing the SVG canvas and the perspective
 
 For initializing the 3D scene, `vplot3d` provides the `init_view` function:
 ```
