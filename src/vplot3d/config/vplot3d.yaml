@@ -1,7 +1,7 @@
 defaults:
     linewidth: 3               # Linewidth of line objects
     fontsize_raw: 20           # Fontsize before post-processing
-    fontfamily: 'opensans'     # Fontfamily for Latex post-processing
+    fontfamily: 'Open Sans'    # Fontfamily for Latex post-processing
     fontsize: 26               # Fontsize (px) for Latex post-processing
     baselineskip: 28           # Baseline skip (px) for Latex post-processing
     rasterize_dpi: 600         # Rasterization dpi (mesh objects)

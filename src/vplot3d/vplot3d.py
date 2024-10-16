@@ -967,27 +967,27 @@ def save_svg_tex(file='unnamed', macro_file_path=None, fontsize=FONTSIZE, baseli
         f.writelines(r"""\documentclass{standalone}
 \usepackage{xcolor}
 \usepackage{graphicx}
+\usepackage{fontspec}
 \usepackage{lmodern}
-\usepackage[T1]{fontenc}
-\usepackage{""" + str(fontfamily) + r"""}
+\setmainfont{""" + str(fontfamily) + r"""}
 \usepackage{transparent}
 \usepackage{amsmath}
 """ +
 macros + 
 r"""
 \begin{document}
-\fontsize{""" + str(fontsize) + r"px}{" + str(baselineskip) + r"""px}\selectfont
+\fontsize{""" + str(fontsize) + r"pt}{" + str(baselineskip) + r"""pt}\selectfont
 \input{""" + file + r""".pdf_tex}
 \end{document}""")
 
-    # Compile generated file with pdflatex
-    if is_tool('pdflatex'):
-        run = subprocess.run(['pdflatex', 'tmp.tex', '--interaction=batchmode'], 
+    # Compile generated file with xelatex
+    if is_tool('xelatex'):
+        run = subprocess.run(['xelatex', 'tmp.tex', '--interaction=batchmode'], 
                              capture_output=True, text=True)
         if run.returncode > 0:
             sys.exit(run.stdout)
     else:
-        sys.exit('Pdflatex executable not found.')
+        sys.exit('xelatex executable not found.')
         
     # Convert generated pdf back to svg-file
     run = subprocess.run(['inkscape', 'tmp.pdf', '--pdf-poppler',

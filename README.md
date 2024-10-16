@@ -13,12 +13,12 @@ Points and arrowheads (for vectors and arc measures) are generated as native SVG
 
 ## System requirements
 
-The library can be used with two options to generate SVG files: a call to `save_svg` generates plain SVG output, while a call to `save_svg_tex` generates plain SVG output and pipes this through Inkscape, using its PDF+Latex output option, and then pdflatex to compile into PDF, with a final conversion back to SVG. This post-processing is useful to render Latex code of mathematical symbols and expressions, using pdflatex.
+The library can be used with two options to generate SVG files: a call to `save_svg` generates plain SVG output, while a call to `save_svg_tex` generates plain SVG output and pipes this through Inkscape, using its PDF+Latex output option, and then xelatex to compile into PDF, with a final conversion back to SVG. This post-processing is useful to render Latex code of mathematical symbols and expressions, using xelatex.
 
 For using  `save_svg_tex`, the following two executables need to be installed and in the search path:
 
 - [Inkscape](https://inkscape.org/) (free and open-source vector graphics editor)
-- [pdflatex](https://www.tug.org/texlive/) (Latex typesetting program)
+- [xelatex](https://www.tug.org/texlive/) (Latex typesetting program)
 
 ## Installation
 
@@ -60,17 +60,12 @@ After installation, `vplot3d` can be used from any location on the file system. 
 
 ### Configuration and import
 
-A set of baseline default parameters is read initially from the package configuration file `config/vplot3d.yaml`. Via environment variable `CONF_PATH`, a user can control the path from where the file `vplot3d.yaml` with superseding definitions is read. If `CONF_PATH` is not set, a file `vplot3d.yaml` in the current working directory is searched. When not located the file is ignored.
-
- - an `init_view` function, to initialize the 3D scenario and a certain perspective, programatically generated 3D vector diagrams 
- - various constructors and utility functions to generate and manipulate 3D objects, and 
- - diffenent `save_svg` and `save_svg_tex` 
+As a first step, the folders for optional input data and user-specific configuration parameters are set. An example for input data are point sequences describing discretized 2D-shapes. If the environment variable `CONF_PATH` is set, `vplot3d` will read the file `vplot3d.yaml` from that folder, overruling the respective parameters set in the package configuration file `config/vplot3d.yaml`. If `CONF_PATH` is not set, `vplot3d` will try to read `vplot3d.yaml` from the current working directory.
 
 ```
 # Setting the folder location for shared data and local configuration file (vplot3d.yaml)
 dat_path = Path.cwd().parent / 'data'
 os.environ['CONF_PATH'] = str(dat_path)
-# Importing vplot3d
 from vplot3d.vplot3d import init_view, Point, Vector, save_svg_tex
 ```
 
