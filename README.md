@@ -28,18 +28,16 @@ For using  `save_svg_tex`, the following two executables need to be installed an
    ```bash
    python -m venv .venv
    ```
-4. Activate the virtual environment:
-     
+4. Activate the virtual environment: on Linux
    ```bash
-   # linux
    source .venv/bin/activate
    ```
+   On Windows (Command Prompt)
    ```bash
-   # Windows (Command Prompt)
    .venv\Scripts\activate
    ```
+   On Windows (PowerShell)
    ```bash
-   # Windows (PowerShell)
    .\.venv\Scripts\Activate
    ```
 5. Locally install the package and its dependencies:
@@ -52,6 +50,16 @@ For using  `save_svg_tex`, the following two executables need to be installed an
    ```bash
    deactivate
    ```
+
+{% tabs %}
+
+{% tab title="Windows" %} Here are the instructions for Windows {% endtab %}
+
+{% tab title="OSX" %} Here are the instructions for macOS {% endtab %}
+
+{% tab title="Linux" %} Here are the instructions for Linux {% endtab %}
+
+{% endtabs %}
 
 > [!TIP]
 > The example `kite.py` shows the definition of a more complex composite object in a separate, user-specified Python file, `kiteV3.py`. 
