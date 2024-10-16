@@ -1,8 +1,8 @@
 defaults:
-    linewidth: 3               # Linewidth of line objects
-    fontsize_raw: 20           # Fontsize before post-processing
-    fontfamily: 'Open Sans'    # Fontfamily for Latex post-processing
-    fontsize: 26               # Fontsize (px) for Latex post-processing
+    linewidth: 3               # Line width of line objects
+    fontsize_raw: 20           # Font size before Latex post-processing
+    fontfamily: 'Open Sans'    # Font family to be used for Latex post-processing
+    fontsize: 26               # Font size (pt) for Latex post-processing
     baselineskip: 28           # Baseline skip (px) for Latex post-processing
     rasterize_dpi: 600         # Rasterization dpi (mesh objects)
     origin: 0 0 0              # Origin of coordinate system
@@ -11,8 +11,6 @@ defaults:
     ez: 0 0 1                  # Unit vector in z-direction
     exyz: 1 1 1                # Diagonal vector
     plot_zoom: 1.              # Scales drawing
-    plot_radius: 1.            # Data radius
     eps: 1.e-5                 # Small number
     xyoff: 0 0                 # xy-offset of text objects
-    fscale: 7.547              # Scaling factor for line shortening
     ddegrees: 1.               # Angular discretization stepsize 

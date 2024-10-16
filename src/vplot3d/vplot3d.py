@@ -89,8 +89,7 @@ FONTSIZE_RAW  = config.defaults.fontsize_raw
 FONTFAMILY    = config.defaults.fontfamily
 FONTSIZE      = config.defaults.fontsize
 BASELINESKIP  = config.defaults.baselineskip
-plot_zoom     = config.defaults.plot_zoom
-plot_radius   = config.defaults.plot_radius
+PLOT_ZOOM     = config.defaults.plot_zoom
 rasterize_dpi = config.defaults.rasterize_dpi
 ORIGIN        = config.defaults.origin
 EX            = config.defaults.ex
@@ -100,6 +99,7 @@ EXYZ          = config.defaults.exyz
 EPS           = config.defaults.eps
 XYOFF         = config.defaults.xyoff
 DDEGREES      = config.defaults.ddegrees
+plot_radius   = 1
 
 # Discretization of circular objects
 DEGREES      = np.arange(0, 362, DDEGREES)
@@ -172,9 +172,9 @@ def init_view(width, height,
     ax.set_ylim3d([ymin, ymax])
     ax.set_zlim3d([zmin, zmax])
 
-    global plot_zoom, plot_radius
-    plot_zoom = zoom
-    plot_radius = set_axes_equal(ax)
+    global PLOT_ZOOM, PLOT_RADIUS
+    PLOT_ZOOM = zoom
+    PLOT_RADIUS = set_axes_equal(ax)
 
     # Diagram perspective
     ax.view_init(elev, azim)
@@ -216,7 +216,7 @@ def set_axes_equal(ax):
     Input
       ax: a matplotlib axis, e.g., as output from plt.gca().
     Output
-      plot_radius: radius of data in data space
+      PLOT_RADIUS: radius of data in data space
     '''
     # get current Axes instance
     x_limits = ax.get_xlim3d()
@@ -232,13 +232,13 @@ def set_axes_equal(ax):
     #
     # The plot bounding box is a sphere in the sense of the infinity
     # norm, hence I call half the max range the plot radius.
-    plot_radius = 0.5*max([x_range, y_range, z_range])
+    PLOT_RADIUS = 0.5*max([x_range, y_range, z_range])
     #
-    ax.set_xlim3d([x_middle - plot_radius, x_middle + plot_radius])
-    ax.set_ylim3d([y_middle - plot_radius, y_middle + plot_radius])
-    ax.set_zlim3d([z_middle - plot_radius, z_middle + plot_radius])
+    ax.set_xlim3d([x_middle - PLOT_RADIUS, x_middle + PLOT_RADIUS])
+    ax.set_ylim3d([y_middle - PLOT_RADIUS, y_middle + PLOT_RADIUS])
+    ax.set_zlim3d([z_middle - PLOT_RADIUS, z_middle + PLOT_RADIUS])
 
-    return plot_radius
+    return PLOT_RADIUS
 
 def projected_length(beta_deg, phi_deg, vec):
     '''Project a vector from 3D data space into the viewing plane and
@@ -460,7 +460,7 @@ class Vector(Line):
         lines.pop()
         # Shorten vector to fit arrowhead
         ax = plt.gca()
-        self.adjust_length(plot_radius, ax.elev, ax.azim)
+        self.adjust_length(PLOT_RADIUS, ax.elev, ax.azim)
         # Add new vector to the list of vectors
         vectors.append(self)
 
@@ -468,7 +468,7 @@ class Vector(Line):
         self.line.remove()
         vectors.remove(self)
 
-    def adjust_length(self, plot_radius, elev, azim):
+    def adjust_length(self, PLOT_RADIUS, elev, azim):
         '''Shorten the line to which the arrowhead is attached such that the tip of the arrowhead
         coincides with the intended vector end point. Arrowhead markers are defined in such a way
         that the base of the arrowhead (the local origin of the marker path) coincides with the end
@@ -488,7 +488,7 @@ class Vector(Line):
         # offset for the used marker
         delta = Marker.deltas[self.shape]*self.linewidth
         # correction with the minimum of figure width and height
-        delta = delta/(min(mpl.rcParams['figure.figsize'])/_FSCALE)/plot_zoom
+        delta = delta/(min(mpl.rcParams['figure.figsize'])/_FSCALE)/PLOT_ZOOM
         # length of unit vector projected into display
         l = projected_length(elev, azim, e)
         # corrected endpoint
@@ -602,7 +602,7 @@ class ArcMeasure(Arc):
         self.arc.remove()
         arcmeasures.remove(self)
 
-    def adjust_length(self, plot_radius, elev, azim):
+    def adjust_length(self, PLOT_RADIUS, elev, azim):
         '''Shorten the arc to which the arrowhead is attached such that the tip of the arrowhead
         coincides with the intended end point. Arrowhead markers are defined in such a way that the
         base of the arrowhead (the local origin of the marker path) coincides with the end point of
@@ -624,7 +624,7 @@ class ArcMeasure(Arc):
         # offset for the used marker
         delta = Marker.deltas[self.shape]*self.linewidth
         # correction with the minimum of figure width and height
-        delta = delta/(min(mpl.rcParams['figure.figsize'])/_FSCALE)/plot_zoom
+        delta = delta/(min(mpl.rcParams['figure.figsize'])/_FSCALE)/PLOT_ZOOM
         # start at tip of arrowhead and walk back on arc
         for i, alpha in enumerate(DEGREES):
             if i == 0: continue                # i = 1, 2, 3, ...
@@ -869,7 +869,7 @@ def save_svg(file='unnamed'):
     '''
     # Get current Axes instance and prepare axes for plotting
     ax = plt.gca()
-    ax.set_box_aspect([1,1,1], zoom=plot_zoom) # requires matplotlib 3.3.0
+    ax.set_box_aspect([1,1,1], zoom=PLOT_ZOOM) # requires matplotlib 3.3.0
 
     # Remove margins
     plt.subplots_adjust(left=0, right=1, top=1, bottom=0)

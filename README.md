@@ -70,13 +70,13 @@ from vplot3d.vplot3d import init_view, Point, Vector, save_svg_tex
 ```
 
 > [!IMPORTANT]  
-> Import `vplot3d` after setting the environment variable `CONF_PATH`.
+> Import `vplot3d` always after setting the environment variable `CONF_PATH`.
 
-If the environment variable `CONF_PATH` is set, `vplot3d` will read configuration setting from a mandatory file `vplot3d.yaml` in this folder. These user settings will override settings defined in the package configuration file `config/vplot3d.yaml`. If `CONF_PATH` is not set, `vplot3d` will try to read `vplot3d.yaml` from the current working directory.
+When `CONF_PATH` is set by the user, `vplot3d` will read configuration settings from the required file `vplot3d.yaml` in this folder. These settings will override the package defaults defined in the package configuration file `config/vplot3d.yaml`. When `CONF_PATH` is not set, the current working directory is searched for an optional file `vplot3d.yaml`.
 
 ### Initializing the SVG canvas and the perspective
 
-For initializing the 3D scene, `vplot3d` provides the `init_view` function:
+To initialize a 3D scene, `vplot3d` provides the `init_view` function:
 ```
 init_view(width=600, height=600,
           xmin=0, xmax=1, ymin=0, ymax=1, zmin=-0.3, zmax=1.5,
@@ -91,9 +91,27 @@ The `elev` and `azim` parameters specify the elevation and azimuth angles of the
 > [!CAUTION]
 > The library has only been tested for orthographic projection so far. A different projection method could affect the shortening of arrowheads.
 
+## Adding geometry objects
+
+### Points
+
+### Lines and circular arcs
+
+### Vectors and arc measures
+
+### Polygons
+
+### Surface meshes
+
+### Annotations
+
 ## Output
 
 Because Spyder's SVG renderer does not support markers, these are not drawn in the IPython console window. They do show in a webbrowser or in Inkscape. The included postprocessing with Inkscape, or Inscape-Latex-Inkscape generates a PNG file for output in the IDE's renderer.
+
+## Configuration settings
+
+The configuration default parameter `fontfamily` specifies the font family to be use in the Latex post-processing step. The value needs to list the name of the system font family, according to font specifications for `xelatex`.
 
 ## Stepwise diagram buildup or animation
 
