@@ -56,11 +56,11 @@ For using  `save_svg_tex`, the following two executables need to be installed an
 
 ## Usage
 
-After installation, `vplot3d` can be used from any location on the file system. The `examples` folder includes several Python files demonstrating the different features of `vplot3d`.
+Once installed, `vplot3d` can be used from any location on the file system. The `examples` folder includes several Python files demonstrating the different features of `vplot3d`. The general process of programmatically generating a vector graphics is described in the following.
 
 ### Configuration and import
 
-As a first step, the folders for optional input data and user-specific configuration parameters are set. An example for input data are point sequences describing discretized 2D-shapes. If the environment variable `CONF_PATH` is set, `vplot3d` will read the file `vplot3d.yaml` from that folder, overruling the respective parameters set in the package configuration file `config/vplot3d.yaml`. If `CONF_PATH` is not set, `vplot3d` will try to read `vplot3d.yaml` from the current working directory.
+In a first optional step, folders for additional user data and user overrides of configuration settings are defined. Examples for user data are files with point coordinates of discretized 2D-shapes, or surface meshes.
 
 ```
 # Setting the folder location for shared data and local configuration file (vplot3d.yaml)
@@ -69,6 +69,10 @@ os.environ['CONF_PATH'] = str(dat_path)
 from vplot3d.vplot3d import init_view, Point, Vector, save_svg_tex
 ```
 
+If the environment variable `CONF_PATH` is set, `vplot3d` will read configuration setting from a mandatory file `vplot3d.yaml` in this folder. These user settings will override settings defined in the package configuration file `config/vplot3d.yaml`. If `CONF_PATH` is not set, `vplot3d` will try to read `vplot3d.yaml` from the current working directory.
+
+> [!IMPORTANT]  
+> Import `vplot3d` after setting the environment variable `CONF_PATH`.
 
 ### Initializing the SVG canvas and the perspective
 

@@ -99,13 +99,15 @@ EZ            = config.defaults.ez
 EXYZ          = config.defaults.exyz
 EPS           = config.defaults.eps
 XYOFF         = config.defaults.xyoff
-_FSCALE       = config.defaults.fscale
 DDEGREES      = config.defaults.ddegrees
 
 # Discretization of circular objects
 DEGREES      = np.arange(0, 362, DDEGREES)
 COS          = np.cos(np.radians(DEGREES))
 SIN          = np.sin(np.radians(DEGREES))
+
+# Constants
+_FSCALE       = 7.547
 
 # Lists for geometrical objects -> private
 lines       = []
