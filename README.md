@@ -60,19 +60,19 @@ Once installed, `vplot3d` can be used from any location on the file system. The 
 
 ### Configuration and import
 
-In a first optional step, folders for additional user data and user overrides of configuration settings are defined. Examples for user data are files with point coordinates of discretized 2D-shapes, or surface meshes.
+In a first optional step, folders for additional user data and user overrides of configuration settings are defined. Examples for user data are nodal coordinate listings of polygons or surface meshes. Configuration settings are specified in a `vplot3d.yaml` file.
 
 ```
-# Setting the folder location for shared data and local configuration file (vplot3d.yaml)
+# Locations of additional user data and user overrides of configuration setting
 dat_path = Path.cwd().parent / 'data'
 os.environ['CONF_PATH'] = str(dat_path)
 from vplot3d.vplot3d import init_view, Point, Vector, save_svg_tex
 ```
 
-If the environment variable `CONF_PATH` is set, `vplot3d` will read configuration setting from a mandatory file `vplot3d.yaml` in this folder. These user settings will override settings defined in the package configuration file `config/vplot3d.yaml`. If `CONF_PATH` is not set, `vplot3d` will try to read `vplot3d.yaml` from the current working directory.
-
 > [!IMPORTANT]  
 > Import `vplot3d` after setting the environment variable `CONF_PATH`.
+
+If the environment variable `CONF_PATH` is set, `vplot3d` will read configuration setting from a mandatory file `vplot3d.yaml` in this folder. These user settings will override settings defined in the package configuration file `config/vplot3d.yaml`. If `CONF_PATH` is not set, `vplot3d` will try to read `vplot3d.yaml` from the current working directory.
 
 ### Initializing the SVG canvas and the perspective
 
