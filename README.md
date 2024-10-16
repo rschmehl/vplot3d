@@ -9,7 +9,7 @@ The library extends the Python toolkit `mplot3d` to programmatically generate 3D
 - Surface meshes,
 - Annotations.
 
-Points and arrowheads (for vectors and arc measures) are generated as native SVG markers to facilitate later postprocessing of the diagram in vector drawing tools, like Illustrator and Inkscape. For the precise positioning of arrowheads, the underlying line or polyline is shortened. This algorithm is one of the key contributions of `vplot3d`.
+Points and arrowheads (for vectors and arc measures) are generated as native [SVG markers](https://jenkov.com/tutorials/svg/marker-element.html) to facilitate later post-processing of the diagram in vector drawing tools, like Illustrator and Inkscape. For the precise positioning of arrowheads, the underlying line or polyline is shortened. This algorithm is one of the key contributions of `vplot3d`.
 
 ## System requirements
 
@@ -58,7 +58,7 @@ For using  `save_svg_tex`, the following two executables need to be installed an
 
 Once installed, `vplot3d` can be used from any location on the file system. The `examples` folder includes several Python files demonstrating the different features of `vplot3d`. The general process of programmatically generating a vector graphics is described in the following.
 
-### Configuration and import
+### Configuration and module import
 
 In a first optional step, folders for additional user data and user overrides of configuration settings are defined. Examples for user data are nodal coordinate listings of polygons or surface meshes. Configuration settings are specified in a `vplot3d.yaml` file.
 
@@ -78,6 +78,10 @@ When `CONF_PATH` is set by the user, `vplot3d` will read configuration settings 
 
 To initialize a 3D scene, `vplot3d` provides the `init_view` function:
 ```
+fig = plt.figure()
+ax = fig.add_subplot(projection='3d', proj_type='ortho')
+ax.set_axis_off()
+
 init_view(width=600, height=600,
           xmin=0, xmax=1, ymin=0, ymax=1, zmin=-0.3, zmax=1.5,
           zoom=1.5, elev=30, azim=-60)
@@ -93,13 +97,17 @@ The `elev` and `azim` parameters specify the elevation and azimuth angles of the
 
 ## Adding geometry objects
 
-Several geometrical primitives and objects can be generated.
+Once initialized, the following geometrical primitives and objects can be added to the SVG canvas. Please refer to the examples to see how to do this.
 
 ### Points
+
+Uses an [SVG marker](https://jenkov.com/tutorials/svg/marker-element.html) to depict the arrowhead.
 
 ### Lines and circular arcs
 
 ### Vectors and arc measures
+
+Uses [SVG markers](https://jenkov.com/tutorials/svg/marker-element.html) to depict the point. To precisely meet the target point with the tip of the arrowhead, the line part of vectors or arc measures are shortened,
 
 ### Polygons
 
@@ -107,9 +115,16 @@ Several geometrical primitives and objects can be generated.
 
 ### Annotations
 
+
 ## Output
 
 Because Spyder's SVG renderer does not support markers, these are not drawn in the IPython console window. They do show in a webbrowser or in Inkscape. The included postprocessing with Inkscape, or Inscape-Latex-Inkscape generates a PNG file for output in the IDE's renderer.
+
+## SBG markers
+
+The SVG markers used for points, vectors and arc measures are read from an external file.
+
+SVG markers that are used as arrowheads require the definition of an additional shortening value. These values are stored in a dictionary `deltas` using the name of the markers as keys.
 
 ## Configuration settings
 

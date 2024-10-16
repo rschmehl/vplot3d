@@ -86,5 +86,5 @@ pg3 = Polygon.rotated(p, file=dat_path / 'clark_y_airfoil.dat', e1=ex, e3=ez, vo
 # add some text | does not work anymore (error message in renderer)
 ax.annotate3D(r'$\beta$', xyz=np.array([0.7, 0.7, 1.5]), xytext=(0,0))
 
-save_svg_tex('many_objects', fontsize=20)
+save_svg_tex('many_objects', fontsize=20, scour=False)
 plt.close()

@@ -938,7 +938,7 @@ def is_tool(name):
     from shutil import which
     return which(name) is not None
 
-def save_svg_tex(file='unnamed', macro_file_path=None, fontsize=FONTSIZE, baselineskip=BASELINESKIP, fontfamily=FONTFAMILY):
+def save_svg_tex(file='unnamed', macro_file_path=None, fontsize=FONTSIZE, baselineskip=BASELINESKIP, fontfamily=FONTFAMILY, scour=True):
     '''Wrapper for save_svg to add post-processing with inkscape, latex, scour
     and display PNG-file generated from the SVG-file.
     '''
@@ -999,16 +999,19 @@ r"""
         sys.exit(run.stdout)
         
     # Optimize the svg-file
-    if is_tool('scour'):
-        run = subprocess.run(['scour', 'tmp.svg', file+'.svg', '-q', 
-                              '--enable-viewboxing', '--enable-id-stripping',
-                              '--enable-comment-stripping', '--shorten-ids',
-                              '--indent=none'],
-                             capture_output=True, text=True)
-        if run.returncode > 0:
-            sys.exit(run.stdout)
+    if scour:
+        if is_tool('scour'):
+            run = subprocess.run(['scour', 'tmp.svg', file+'.svg', '-q', 
+                                  '--enable-viewboxing', '--enable-id-stripping',
+                                  '--enable-comment-stripping', '--shorten-ids',
+                                  '--indent=none'],
+                                 capture_output=True, text=True)
+            if run.returncode > 0:
+                sys.exit(run.stdout)
+        else:
+            sys.exit('Scour executable not found.')
     else:
-        sys.exit('Scour executable not found.')
+        Path('tmp.svg').rename(file+'.svg')
 
     # Generate png-file for display purposes
     run = subprocess.run(['inkscape', file+'.svg', '--export-type=png', 

@@ -71,5 +71,5 @@ ax.annotate3D(r'$\xw$', xyz=Px, xytext=(-0.4,-1.2))
 ax.annotate3D(r'$\yw$', xyz=Py, xytext=(-0.8,-1.5))
 ax.annotate3D(r'$\zw$', xyz=Pz, xytext=(0.6,-0.9))
 
-save_svg_tex('kite', macro_file_path=dat_path / 'macros.tex')   # Save svg, post-process and display
+save_svg_tex('kite', macro_file_path=dat_path / 'macros.tex', scour=True)   # Save svg, post-process and display
 plt.close()
