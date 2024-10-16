@@ -93,6 +93,8 @@ The `elev` and `azim` parameters specify the elevation and azimuth angles of the
 
 ## Adding geometry objects
 
+Several geometrical primitives and objects can be generated.
+
 ### Points
 
 ### Lines and circular arcs
