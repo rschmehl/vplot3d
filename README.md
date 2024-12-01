@@ -120,7 +120,7 @@ Uses [SVG markers](https://jenkov.com/tutorials/svg/marker-element.html) as symb
 
 Because Spyder's SVG renderer does not support markers, these are not drawn in the IPython console window. They do show in a webbrowser or in Inkscape. The included postprocessing with Inkscape, or Inscape-Latex-Inkscape generates a PNG file for output in the IDE's renderer.
 
-## SBG markers
+## SVG markers
 
 The SVG markers used for points, vectors and arc measures are read from an external file.
 
