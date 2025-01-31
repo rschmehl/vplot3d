@@ -99,7 +99,7 @@ EXYZ          = config.defaults.exyz
 EPS           = config.defaults.eps
 XYOFF         = config.defaults.xyoff
 DDEGREES      = config.defaults.ddegrees
-plot_radius   = 1
+# plot_radius   = 1
 
 # Discretization of circular objects
 DEGREES      = np.arange(0, 362, DDEGREES)
@@ -468,7 +468,7 @@ class Vector(Line):
         self.line.remove()
         vectors.remove(self)
 
-    def adjust_length(self, PLOT_RADIUS, elev, azim):
+    def adjust_length(self, plot_radius, elev, azim):
         '''Shorten the line to which the arrowhead is attached such that the tip of the arrowhead
         coincides with the intended vector end point. Arrowhead markers are defined in such a way
         that the base of the arrowhead (the local origin of the marker path) coincides with the end
@@ -529,6 +529,8 @@ class Arc(Object3D):
         if angle < EPS: angle = 360
         # scaled radius
         self.radius = radius = radius*scale
+
+        self.arc_length = angle/180*np.pi*radius
         # normal vector
         n    = np.cross(e1,v2)
         nabs = np.sqrt(np.dot(n,n))
@@ -594,7 +596,7 @@ class ArcMeasure(Arc):
         arcs.pop()
         # Shorten arc to fit arrowhead
         ax = plt.gca()
-        self.adjust_length(plot_radius, ax.elev, ax.azim)
+        self.adjust_length(PLOT_RADIUS, ax.elev, ax.azim)
         # Add new arc to the list of arcs
         arcmeasures.append(self)
 
@@ -602,7 +604,7 @@ class ArcMeasure(Arc):
         self.arc.remove()
         arcmeasures.remove(self)
 
-    def adjust_length(self, PLOT_RADIUS, elev, azim):
+    def adjust_length(self, plot_radius, elev, azim):
         '''Shorten the arc to which the arrowhead is attached such that the tip of the arrowhead
         coincides with the intended end point. Arrowhead markers are defined in such a way that the
         base of the arrowhead (the local origin of the marker path) coincides with the end point of
