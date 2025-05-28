@@ -1,23 +1,49 @@
 \documentclass[]{article}
+\usepackage[margin=0in, paperwidth=500px, paperheight=400px]{geometry} % Only load geometry once
+
 \usepackage{graphicx}
 \usepackage{color}
 \usepackage{import}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
-\usepackage{geometry}
 \usepackage{tabularx}
+\usepackage{caption}
+\usepackage{subcaption}
 
-% Set the page size here, replace 'width' and 'height' with your graphic's dimensions
-\geometry{paperwidth=1200px, paperheight=800px, margin=0in}
 \input{macros}
+
+%\begin{document}
+%\Large
+%
+%\begin{figure}[h]
+%    \centering
+%    \begin{subfigure}[b]{0.4\textwidth}
+%        \centering
+%        \def\svgwidth{\textwidth}
+%        \import{}{2d_symmetric_stability.pdf_tex}
+%        \caption*{(a)}
+%    \end{subfigure}
+%    \begin{subfigure}[b]{0.4\textwidth}
+%        \centering
+%        \def\svgwidth{\textwidth}
+%        \import{}{2d_symmetric_actuation_b.pdf_tex}
+%        \caption*{(b)}
+%    \end{subfigure}
+%\end{figure}
+%
+%\end{document}
+
 \begin{document}
-
+%\Huge
 \Large
-% Remove any additional spacing or margin adjustments if not needed
 
-\def\svgwidth{0.9\textwidth} % Set the SVG to fit the column width, which is now the page width
+\begin{figure}[h]
+        \centering
+        \def\svgwidth{\textwidth}
+        \import{}{reference_frame.pdf_tex}
+        %\caption*{}
 
-\import{}{reference_frame.pdf_tex}
+\end{figure}
 
 \end{document}

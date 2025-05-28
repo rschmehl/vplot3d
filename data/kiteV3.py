@@ -65,6 +65,7 @@ class KiteV3(Object3D):
         # set unique gid
         self.gid = 'kiteV3_' + str(len(kiteV3)+1)
 
+        print("data path: ", dat_path)
         # Read all meshes from obj-files
         mesh1 = trimesh.load(dat_path / 'kite_V3_canopy.obj')
         mesh2 = trimesh.load(dat_path / 'kite_V3_LE.obj')

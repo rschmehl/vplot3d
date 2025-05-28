@@ -55,15 +55,24 @@
     \setlength\tabcolsep{0pt}%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{reference_frame.pdf}}%
     \put(0.56505717,0.18079844){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{O}$\end{tabular}}}}%
-    \put(0.52413391,0.17235291){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{e}_x$\end{tabular}}}}%
-    \put(0.6054362,0.17240031){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{e}_y$\end{tabular}}}}%
-    \put(0.55172384,0.27394628){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{e}_z$\end{tabular}}}}%
-    \put(0.53172384,0.22579844){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{e}_r$\end{tabular}}}}%
-    \put(0.6533905,0.18913177){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{e}_\phi$\end{tabular}}}}%
-    \put(0.60172384,0.26746511){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{e}_\beta$\end{tabular}}}}%
-    \put(0.6533905,0.20579844){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{e}_\chi$\end{tabular}}}}%
-    \put(0.58005717,0.27746511){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{e}_n$\end{tabular}}}}%
-    \put(0.60672384,0.23246511){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\chi$\end{tabular}}}}%
+    \put(0.48580058,0.20068624){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{e}_x$\end{tabular}}}}%
+    \put(0.6054362,0.17906698){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{e}_y$\end{tabular}}}}%
+    \put(0.55505717,0.28894628){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{e}_z$\end{tabular}}}}%
+    \put(0.53172384,0.23913177){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{e}_r$\end{tabular}}}}%
+    \put(0.65505717,0.18913177){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{e}_\phi$\end{tabular}}}}%
+    \put(0.60672384,0.27746511){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{e}_\beta$\end{tabular}}}}%
+    \put(0.65672384,0.20579844){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{e}_\chi$\end{tabular}}}}%
+    \put(0.58005717,0.29079844){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{e}_n$\end{tabular}}}}%
+    \put(0.61005717,0.23246511){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\chi$\end{tabular}}}}%
+    \put(0.47466034,0.34922249){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{e}_D$\end{tabular}}}}%
+    \put(0.34299367,0.34088916){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{e}_L$\end{tabular}}}}%
+    \put(0.45132701,0.36755582){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}chord line\end{tabular}}}}%
+    \put(0.4711024,0.32662033){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{v}_{\mr{k}}$\end{tabular}}}}%
+    \put(0.41776909,0.30662033){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{r}_{\mr{k}}$\end{tabular}}}}%
+    \put(0.40672381,0.18079844){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\phi$\end{tabular}}}}%
+    \put(0.45672384,0.22579844){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\beta$\end{tabular}}}}%
+    \put(0.45299367,0.35255582){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\alpha$\end{tabular}}}}%
+    \put(0.32632701,0.36088916){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\phi_a$\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{reference_frame.pdf}}%
   \end{picture}%
 \endgroup%

@@ -10,6 +10,7 @@ Created on Thu Aug 11 11:03:50 2022
 import matplotlib.pyplot as plt
 import numpy as np
 import sys
+import os
 from pathlib import Path
 
 # Folder with configuration and shared data
@@ -18,7 +19,11 @@ dat_path = Path.cwd().parent / 'data'
 sys.path.append(str(dat_path))
 
 from vplot3d.vplot3d import init_view, Point, Line, Vector, save_svg_tex
-from kiteV3 import KiteV3
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from data.kiteV3 import KiteV3
+
 
 def spherical_vector_base(beta, phi):
     '''Spherical vector base.
@@ -71,5 +76,5 @@ ax.annotate3D(r'$\xw$', xyz=Px, xytext=(-0.4,-1.2))
 ax.annotate3D(r'$\yw$', xyz=Py, xytext=(-0.8,-1.5))
 ax.annotate3D(r'$\zw$', xyz=Pz, xytext=(0.6,-0.9))
 
-save_svg_tex('kite', macro_file_path=dat_path / 'macros.tex', scour=True)   # Save svg, post-process and display
+save_svg_tex('../figures/kite', macro_file_path=dat_path / 'macros.tex', scour=True)   # Save svg, post-process and display
 plt.close()
