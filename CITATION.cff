@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you are using this software, please cite it as shown below."
+authors:
+  - given-names: "Roland"
+    family-names: "Schmehl"
+    orcid: "https://orcid.org/0000-0002-4112-841X"
+title: "vplot3d"
+keywords:
+  - "mplot3d"
+  - "vector"
+  - "SVG"
+  - "marker"
+version: "0.1.0"
+doi: "10.1111/11111"
+date-released: "2025-10-04"
+license: "MIT"
+url: "https://github.com/rschmehl/vplot3d"
