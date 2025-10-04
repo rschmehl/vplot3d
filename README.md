@@ -146,3 +146,13 @@ New markers are added in the markers library `data/markers.svg` in the defs sect
 ![](examples/kite_kinematics_3d.svg)
 ![](examples/kite_kinematics_3d_a.svg)
 ![](examples/kite.svg)
+
+## Citation
+If you use this project in your research, please consider citing it. 
+Citation details can be found in the [CITATION.cff](CITATION.cff) file included in this repository.
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+### Copyright
+Copyright (c) 2025 Roland Schmehl
