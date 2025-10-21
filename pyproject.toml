@@ -114,6 +114,6 @@ dev = [
 where = ["src"]
 
 [tool.setuptools.package-data]
-vplot3d = ["config/*.yaml", "config/*.svg"]
+vplot3d = ["vplot3d/config/*.yaml", "vplot3d/config/*.svg"]
 
 # This [project] example was adopted from https://github.com/pypa/sampleproject/blob/main/pyproject.toml
