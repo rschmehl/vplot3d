@@ -268,7 +268,7 @@ def projected_length(beta_deg, phi_deg, vec):
 def _annotate3D(ax, text, xyz, *args, **kwargs):
     '''Add annotation `text` to an `Axes3d` instance.'''
     annotation = Annotation3D(text, xyz, *args, **kwargs)
-    ax.add_artist(annotation)
+#    ax.add_artist(annotation)
 
 setattr(Axes3D, 'annotate3D', _annotate3D)
 
@@ -278,12 +278,15 @@ class Annotation3D(Annotation):
     Inspired by https://stackoverflow.com/a/42915422
     '''
     def __init__(self, s, xyz, xytext=None, fontsize=None, *args, **kwargs):
+        # get current Axes instance
+        self.ax = plt.gca()
         if xytext is None:
             xytext = XYOFF
         if fontsize is None:
             fontsize = FONTSIZE_RAW
         super().__init__(_m(s), xy=(0,0), xytext=xytext, fontsize=fontsize, textcoords='offset fontsize', annotation_clip=False, *args, **kwargs)
         self._verts3d = xyz
+        self.ax.add_artist(self)
 
     def draw(self, renderer):
         xs3d, ys3d, zs3d = self._verts3d
@@ -703,7 +706,7 @@ class Polygon(Object3D):
     @classmethod
     def rotated(cls, p=ORIGIN, v=None, file=None, e1=None, e2=None, e3=None, voff=ORIGIN, linewidth=LINEWIDTH, scale=1, zorder=0, edgecolor='k', facecolor='w', alpha=1, edgecoloralpha=None):
         '''Simulated constructor.
-        The polygon is plotted in a vector base (e1, e2, e3), of which at least two axis-diections must be specified.
+        The polygon is plotted in a vector base (e1, e2, e3), of which at least two axis-directions must be specified.
         The vectors e1, e2 and e3 do not need to be normalized.
 
         Input

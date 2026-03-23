@@ -13,11 +13,11 @@
   <rdf:RDF>
    <ns2:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-    <dc:date>2025-06-04T13:58:34.820308</dc:date>
+    <dc:date>2026-03-22T17:26:35.789651</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <ns2:Agent>
-      <dc:title>Matplotlib v3.9.4, https://matplotlib.org/</dc:title>
+      <dc:title>Matplotlib v3.10.8, https://matplotlib.org/</dc:title>
      </ns2:Agent>
     </dc:creator>
    </ns2:Work>
@@ -42,47 +42,47 @@
    </g>
    <g id="text_1">
     <g>
-     <text style="font: 20px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="477.807982" y="551.236086" transform="rotate(-0 477.807982 551.236086)">$\vec{O}$</text>
+     <text style="font-size: 20px; font-family: 'Open Sans'; text-anchor: start" x="477.807982" y="551.236086" transform="rotate(-0 477.807982 551.236086)">$\vec{O}$</text>
     </g>
    </g>
    <g id="text_2">
     <g>
-     <text style="font: 20px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="403.308008" y="422.130684" transform="rotate(-0 403.308008 422.130684)">$\vec{K}$</text>
+     <text style="font-size: 20px; font-family: 'Open Sans'; text-anchor: start" x="403.308008" y="422.130684" transform="rotate(-0 403.308008 422.130684)">$\vec{K}$</text>
     </g>
    </g>
    <g id="text_3">
     <g>
-     <text style="font: 20px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="210.728642" y="698.637682" transform="rotate(-0 210.728642 698.637682)">$\xw$</text>
+     <text style="font-size: 20px; font-family: 'Open Sans'; text-anchor: start" x="210.728642" y="698.637682" transform="rotate(-0 210.728642 698.637682)">$\xw$</text>
     </g>
    </g>
    <g id="text_4">
     <g>
-     <text style="font: 20px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="937.86707" y="637.26664" transform="rotate(-0 937.86707 637.26664)">$\yw$</text>
+     <text style="font-size: 20px; font-family: 'Open Sans'; text-anchor: start" x="937.86707" y="637.26664" transform="rotate(-0 937.86707 637.26664)">$\yw$</text>
     </g>
    </g>
    <g id="text_5">
     <g>
-     <text style="font: 20px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="499.807982" y="27.532346" transform="rotate(-0 499.807982 27.532346)">$\zw$</text>
+     <text style="font-size: 20px; font-family: 'Open Sans'; text-anchor: start" x="499.807982" y="27.532346" transform="rotate(-0 499.807982 27.532346)">$\zw$</text>
     </g>
    </g>
    <g id="text_6">
     <g>
-     <text style="font: 20px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="787.415033" y="399.856481" transform="rotate(-0 787.415033 399.856481)">$\vvk$</text>
+     <text style="font-size: 20px; font-family: 'Open Sans'; text-anchor: start" x="787.415033" y="399.856481" transform="rotate(-0 787.415033 399.856481)">$\vvk$</text>
     </g>
    </g>
    <g id="text_7">
     <g>
-     <text style="font: 20px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="256.768338" y="547.831482" transform="rotate(-0 256.768338 547.831482)">$\vvw$</text>
+     <text style="font-size: 20px; font-family: 'Open Sans'; text-anchor: start" x="256.768338" y="547.831482" transform="rotate(-0 256.768338 547.831482)">$\vvw$</text>
     </g>
    </g>
    <g id="text_8">
     <g>
-     <text style="font: 20px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="393.308008" y="496.130684" transform="rotate(-0 393.308008 496.130684)">$\beta$</text>
+     <text style="font-size: 20px; font-family: 'Open Sans'; text-anchor: start" x="393.308008" y="496.130684" transform="rotate(-0 393.308008 496.130684)">$\beta$</text>
     </g>
    </g>
    <g id="text_9">
     <g>
-     <text style="font: 20px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="348.37941" y="637.467589" transform="rotate(-0 348.37941 637.467589)">$\phi$</text>
+     <text style="font-size: 20px; font-family: 'Open Sans'; text-anchor: start" x="348.37941" y="637.467589" transform="rotate(-0 348.37941 637.467589)">$\phi$</text>
     </g>
    </g>
    <g id="arc_1">
@@ -95,25 +95,25 @@
     <path d="M 301.384347 423.391255  L 312.766792 425.549194  L 324.362497 427.569954  L 336.157335 429.451073  L 348.136936 431.190259  L 360.286705 432.785392  L 372.591839 434.234531  L 385.037347 435.535908  L 397.608064 436.68794  L 410.288676 437.689221  L 423.063733 438.538532  L 435.917671 439.234838  L 448.83483 439.777292  L 461.799471 440.165231  L 474.7958 440.398184  L 487.807982 440.475866  L 500.820164 440.398184  L 513.816493 440.165231  L 526.781134 439.777292  L 539.698293 439.234838  L 552.552231 438.538532  L 565.327289 437.689221  L 578.007901 436.68794  L 590.578618 435.535908  L 603.024125 434.234531  L 615.329259 432.785392  L 627.479028 431.190259  L 639.458629 429.451073  L 651.253468 427.569954  L 662.849173 425.549194  L 674.231617 423.391255  L 685.386933 421.098766  L 696.30153 418.674519  L 706.962109 416.12147  L 717.355683 413.442727  L 727.469588 410.641555  L 737.291502 407.721367  L 746.809459 404.685719  L 756.011863 401.538312  L 764.887502 398.282979  L 773.425562 394.923686  L 781.615641 391.464527  L 789.44776 387.909716  L 796.912378 384.263583  L 804.0004 380.530571  L 810.70319 376.715228  L 817.012582 372.822203  L 822.920889 368.856238  L 828.420912 364.822166  L 833.505951 360.724901  L 838.169811 356.569435  L 842.406808 352.360831  L 846.211782 348.104217  L 849.580095 343.804779  L 852.507645 339.467754  L 854.990865 335.098427  L 857.026729 330.702121  L 858.612756 326.284193  L 859.747015 321.850024  L 860.144278 319.628538  L 860.428124 317.405018  L 860.598466 315.180143  L 860.655253 312.95459  L 860.598466 310.729037  L 860.428124 308.504161  L 860.144278 306.280642  L 859.747015 304.059155  L 858.612756 299.624987  L 857.026729 295.207058  L 854.990865 290.810752  L 852.507645 286.441425  L 849.580095 282.104401  L 846.211782 277.804962  L 842.406808 273.548348  L 838.169811 269.339744  L 833.505951 265.184279  L 828.420912 261.087014  L 822.920889 257.052941  L 817.012582 253.086977  L 810.70319 249.193951  L 804.0004 245.378608  L 796.912378 241.645597  L 789.44776 237.999464  L 781.615641 234.444652  L 773.425562 230.985493  L 764.887502 227.6262  L 756.011863 224.370867  L 746.809459 221.22346  L 737.291502 218.187813  L 727.469588 215.267624  L 717.355683 212.466452  L 706.962109 209.78771  L 696.30153 207.23466  L 685.386933 204.810414  L 674.231617 202.517924  L 662.849173 200.359985  L 651.253468 198.339225  L 639.458629 196.458106  L 627.479028 194.718921  L 615.329259 193.123787  L 603.024125 191.674648  L 590.578618 190.373271  L 578.007901 189.22124  L 565.327289 188.219959  L 552.552231 187.370648  L 539.698293 186.674341  L 526.781134 186.131888  L 513.816493 185.743948  L 500.820164 185.510995  L 487.807982 185.433313  L 474.7958 185.510995  L 461.799471 185.743948  L 448.83483 186.131888  L 435.917671 186.674341  L 423.063733 187.370648  L 410.288676 188.219959  L 397.608064 189.22124  L 385.037347 190.373271  L 372.591839 191.674648  L 360.286705 193.123787  L 348.136936 194.718921  L 336.157335 196.458106  L 324.362497 198.339225  L 312.766792 200.359985  L 301.384347 202.517924  L 290.229031 204.810414  L 279.314435 207.23466  L 268.653855 209.78771  L 258.260282 212.466452  L 248.146377 215.267624  L 238.324462 218.187813  L 228.806505 221.22346  L 219.604101 224.370867  L 210.728463 227.6262  L 202.190403 230.985493  L 194.000324 234.444652  L 186.168204 237.999464  L 178.703586 241.645597  L 171.615565 245.378608  L 164.912774 249.193951  L 158.603382 253.086977  L 152.695076 257.052941  L 147.195052 261.087014  L 142.110013 265.184279  L 137.446154 269.339744  L 133.209156 273.548348  L 129.404183 277.804962  L 126.035869 282.104401  L 123.108319 286.441425  L 120.6251 290.810752  L 118.589236 295.207058  L 117.003208 299.624987  L 115.868949 304.059155  L 115.471686 306.280642  L 115.18784 308.504161  L 115.017498 310.729037  L 114.960712 312.95459  L 115.017498 315.180143  L 115.18784 317.405018  L 115.471686 319.628538  L 115.868949 321.850024  L 117.003208 326.284193  L 118.589236 330.702121  L 120.6251 335.098427  L 123.108319 339.467754  L 126.035869 343.804779  L 129.404183 348.104217  L 133.209156 352.360831  L 137.446154 356.569435  L 142.110013 360.724901  L 147.195052 364.822166  L 152.695076 368.856238  L 158.603382 372.822203  L 164.912774 376.715228  L 171.615565 380.530571  L 178.703586 384.263583  L 186.168204 387.909716  L 194.000324 391.464527  L 202.190403 394.923686  L 210.728463 398.282979  L 219.604101 401.538312  L 228.806505 404.685719  L 238.324462 407.721367  L 248.146377 410.641555  L 258.260282 413.442727  L 268.653855 416.12147  L 279.314435 418.674519  L 290.229031 421.098766  L 301.384347 423.391255  L 301.384347 423.391255  " style="fill: none; stroke-dasharray: 12,12; stroke-dashoffset: 0; stroke: #000000; stroke-opacity: 0.3; stroke-width: 2" />
    </g>
    <g id="arcmeasure_1" marker-end="url(#Arrow1Mend-k:k)">
-    <path d="M 376.37941 657.467589  L 376.396381 650.385328  L 376.447289 643.2619  L 376.532119 636.099474  L 376.650844 628.900232  L 376.803429 621.666367  L 376.989827 614.400082  L 377.209981 607.10359  L 377.463825 599.779115  L 377.75128 592.428887  L 378.07226 585.055146  L 378.426667 577.660137  L 378.814391 570.246113  L 379.235317 562.815333  L 379.689315 555.370059  L 380.176246 547.91256  L 380.695964 540.445108  L 381.248308 532.969977  L 381.833112 525.489443  L 382.450197 518.005787  L 383.099375 510.521287  L 383.780448 503.038223  L 384.493209 495.558874  L 385.237441 488.08552  L 386.012916 480.620436  L 386.819399 473.165896  L 387.656645 465.724171  L 388.524397 458.297528  L 388.903856 455.275764  " style="fill: none; stroke: #000000; stroke-width: 3" />
+    <path d="M 376.37941 657.467589  L 376.396381 650.385328  L 376.447289 643.2619  L 376.532119 636.099474  L 376.650844 628.900232  L 376.803429 621.666367  L 376.989827 614.400082  L 377.209981 607.10359  L 377.463825 599.779115  L 377.75128 592.428887  L 378.07226 585.055146  L 378.426667 577.660137  L 378.814391 570.246113  L 379.235317 562.815333  L 379.689315 555.370059  L 380.176246 547.91256  L 380.695964 540.445108  L 381.248308 532.969977  L 381.833112 525.489443  L 382.450197 518.005787  L 383.099375 510.521287  L 383.780448 503.038223  L 384.493209 495.558874  L 385.237441 488.08552  L 386.012916 480.620436  L 386.819399 473.165896  L 387.656645 465.724171  L 388.524397 458.297528  L 388.843753 455.754391  " style="fill: none; stroke: #000000; stroke-width: 3" />
    </g>
    <g id="arcmeasure_2" marker-end="url(#Arrow1Mend-k:k)">
-    <path d="M 272.54451 642.757363  L 279.084378 644.022864  L 285.687825 645.249136  L 292.35284 646.435805  L 299.077392 647.582509  L 305.859434 648.688899  L 312.696898 649.754638  L 319.587704 650.779401  L 326.529751 651.762876  L 333.520924 652.704764  L 340.559095 653.604778  L 347.64212 654.462644  L 354.76784 655.278099  L 357.182237 655.522704  " style="fill: none; stroke: #000000; stroke-width: 3" />
+    <path d="M 272.54451 642.757363  L 279.084378 644.022864  L 285.687825 645.249136  L 292.35284 646.435805  L 299.077392 647.582509  L 305.859434 648.688899  L 312.696898 649.754638  L 319.587704 650.779401  L 326.529751 651.762876  L 333.520924 652.704764  L 340.559095 653.604778  L 347.64212 654.462644  L 354.76784 655.278099  L 356.702307 655.474082  " style="fill: none; stroke: #000000; stroke-width: 3" />
    </g>
    <g id="vector_1" marker-end="url(#Arrow1Mend-k:k)">
-    <path d="M 487.807982 515.236086  L 246.397198 658.246933  " style="fill: none; stroke: #000000; stroke-width: 5" />
+    <path d="M 487.807982 515.236086  L 247.088912 657.837164  " style="fill: none; stroke: #000000; stroke-width: 5" />
    </g>
    <g id="vector_2" marker-end="url(#Arrow1Mend-k:k)">
-    <path d="M 487.807982 515.236086  L 922.317226 601.036637  " style="fill: none; stroke: #000000; stroke-width: 5" />
+    <path d="M 487.807982 515.236086  L 921.528479 600.880887  " style="fill: none; stroke: #000000; stroke-width: 5" />
    </g>
    <g id="vector_3" marker-end="url(#Arrow1Mend-k:k)">
-    <path d="M 487.807982 515.236086  L 487.807982 41.691413  " style="fill: none; stroke: #000000; stroke-width: 5" />
+    <path d="M 487.807982 515.236086  L 487.807982 42.49539  " style="fill: none; stroke: #000000; stroke-width: 5" />
    </g>
    <g id="vector_4" marker-end="url(#Arrow1Mend-r:r)">
-    <path d="M 391.308008 436.130684  L 284.436894 499.440733  " style="fill: none; stroke: #ff0000; stroke-width: 5" />
+    <path d="M 391.308008 436.130684  L 285.128608 499.030965  " style="fill: none; stroke: #ff0000; stroke-width: 5" />
    </g>
    <g id="vector_5" marker-end="url(#Arrow1Mend-r:r)">
-    <path d="M 391.308008 436.130684  L 775.730357 369.359836  " style="fill: none; stroke: #ff0000; stroke-width: 5" />
+    <path d="M 391.308008 436.130684  L 774.93824 369.49742  " style="fill: none; stroke: #ff0000; stroke-width: 5" />
    </g>
    <g id="point_1" marker-start="url(#Point1M-k:k:w)">
     <path d="M 487.807982 515.236086  L 487.807982 515.236086  " style="fill: none; stroke: #000000; stroke-width: 3" />
