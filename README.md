@@ -91,6 +91,7 @@ The `width` and `height` parameters specify the size of the SVG-file in terms of
 The `xmin`, `xmax`, `ymin`, `ymax`, `zmin` and `zmax` parameters define the expected value ranges in the model space.
 The `zoom` parameter specifies the viewing distance to the model.
 The `elev` and `azim` parameters specify the elevation and azimuth angles of the applied perspective of the model.
+More information on the view parameters is available [here](https://matplotlib.org/stable/api/toolkits/mplot3d/view_angles.html).
 
 > [!CAUTION]
 > The library has only been tested for orthographic projection so far. A different projection method could affect the shortening of arrowheads.
