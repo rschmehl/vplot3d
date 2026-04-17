@@ -13,7 +13,7 @@
   <rdf:RDF>
    <ns2:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-    <dc:date>2026-03-22T17:26:35.789651</dc:date>
+    <dc:date>2026-04-05T20:29:13.225597</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <ns2:Agent>
@@ -42,47 +42,47 @@
    </g>
    <g id="text_1">
     <g>
-     <text style="font-size: 20px; font-family: 'Open Sans'; text-anchor: start" x="477.807982" y="551.236086" transform="rotate(-0 477.807982 551.236086)">$\vec{O}$</text>
+     <text style="font-size: 20px; font-family: 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="477.807982" y="551.236086" transform="rotate(-0 477.807982 551.236086)">$\vec{O}$</text>
     </g>
    </g>
    <g id="text_2">
     <g>
-     <text style="font-size: 20px; font-family: 'Open Sans'; text-anchor: start" x="403.308008" y="422.130684" transform="rotate(-0 403.308008 422.130684)">$\vec{K}$</text>
+     <text style="font-size: 20px; font-family: 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="403.308008" y="422.130684" transform="rotate(-0 403.308008 422.130684)">$\vec{K}$</text>
     </g>
    </g>
    <g id="text_3">
     <g>
-     <text style="font-size: 20px; font-family: 'Open Sans'; text-anchor: start" x="210.728642" y="698.637682" transform="rotate(-0 210.728642 698.637682)">$\xw$</text>
+     <text style="font-size: 20px; font-family: 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="210.728642" y="698.637682" transform="rotate(-0 210.728642 698.637682)">$\xw$</text>
     </g>
    </g>
    <g id="text_4">
     <g>
-     <text style="font-size: 20px; font-family: 'Open Sans'; text-anchor: start" x="937.86707" y="637.26664" transform="rotate(-0 937.86707 637.26664)">$\yw$</text>
+     <text style="font-size: 20px; font-family: 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="937.86707" y="637.26664" transform="rotate(-0 937.86707 637.26664)">$\yw$</text>
     </g>
    </g>
    <g id="text_5">
     <g>
-     <text style="font-size: 20px; font-family: 'Open Sans'; text-anchor: start" x="499.807982" y="27.532346" transform="rotate(-0 499.807982 27.532346)">$\zw$</text>
+     <text style="font-size: 20px; font-family: 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="499.807982" y="27.532346" transform="rotate(-0 499.807982 27.532346)">$\zw$</text>
     </g>
    </g>
    <g id="text_6">
     <g>
-     <text style="font-size: 20px; font-family: 'Open Sans'; text-anchor: start" x="787.415033" y="399.856481" transform="rotate(-0 787.415033 399.856481)">$\vvk$</text>
+     <text style="font-size: 20px; font-family: 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="787.415033" y="399.856481" transform="rotate(-0 787.415033 399.856481)">$\vvk$</text>
     </g>
    </g>
    <g id="text_7">
     <g>
-     <text style="font-size: 20px; font-family: 'Open Sans'; text-anchor: start" x="256.768338" y="547.831482" transform="rotate(-0 256.768338 547.831482)">$\vvw$</text>
+     <text style="font-size: 20px; font-family: 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="256.768338" y="547.831482" transform="rotate(-0 256.768338 547.831482)">$\vvw$</text>
     </g>
    </g>
    <g id="text_8">
     <g>
-     <text style="font-size: 20px; font-family: 'Open Sans'; text-anchor: start" x="393.308008" y="496.130684" transform="rotate(-0 393.308008 496.130684)">$\beta$</text>
+     <text style="font-size: 20px; font-family: 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="393.308008" y="496.130684" transform="rotate(-0 393.308008 496.130684)">$\beta$</text>
     </g>
    </g>
    <g id="text_9">
     <g>
-     <text style="font-size: 20px; font-family: 'Open Sans'; text-anchor: start" x="348.37941" y="637.467589" transform="rotate(-0 348.37941 637.467589)">$\phi$</text>
+     <text style="font-size: 20px; font-family: 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="348.37941" y="637.467589" transform="rotate(-0 348.37941 637.467589)">$\phi$</text>
     </g>
    </g>
    <g id="arc_1">
