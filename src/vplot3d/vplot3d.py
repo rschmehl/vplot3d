@@ -180,25 +180,15 @@ def init_view(width, height,
     ax.view_init(elev, azim)
     proj3d.persp_transformation = orthogonal_proj
     
-def update_lengths():
-    ''' Updates all lengths of shortened line elements to account for new
-    elev and azim values, e.g. after a changed view.
+    # update lengths if init_view() was called after creation of vector objects
+    if vectors: 
+        for v in vectors:
+            v.adjust_length(PLOT_RADIUS, ax.elev, ax.azim)
 
-    Input
-
-    Output
-      figsize:          figure width and height in inches
-    '''
-    # Get current Axes instance
-    ax = plt.gca()
-    
-    # process all vectors
-    for v in vectors:
-        v.adjust_length(PLOT_RADIUS, ax.elev, ax.azim)
-
-    # process all arcmeasures
-    for a in arcmeasures:
-        a.adjust_length(PLOT_RADIUS, ax.elev, ax.azim)
+    # update lengths if init_view() was called after creation of arcmeasure objects
+    if arcmeasures:
+        for a in arcmeasures:
+            a.adjust_length(PLOT_RADIUS, ax.elev, ax.azim)
     
 def figsize(figure_width_px, figure_height_px):
     ''' Sets figure size in inches, given a desired width and height in pixels.
