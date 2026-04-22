@@ -56,7 +56,7 @@ For using  `save_svg_tex`, the following two executables need to be installed an
 
 ## Usage
 
-Once installed, `vplot3d` can be used from any location on the file system. The `examples` folder includes several Python files demonstrating the different features of `vplot3d`. The general process of programmatically generating a vector graphics is described in the following.
+Once installed, `vplot3d` can be used from any location on the file system. The `examples` folder includes several Python files demonstrating the different features of `vplot3d`. The general process of programmatically generating vector graphics is described in the following.
 
 ### Configuration and module import
 
@@ -88,9 +88,9 @@ init_view(width=600, height=600,
 ```
 
 The `width` and `height` parameters specify the size of the SVG-file in terms of pixels. 
-The `xmin`, `xmax`, `ymin`, `ymax`, `zmin` and `zmax` parameters define the expected value ranges in the model space.
+The `xmin`, `xmax`, `ymin`, `ymax`, `zmin`, and `zmax` parameters define the expected value ranges in the model space.
 The `zoom` parameter specifies the viewing distance to the model.
-The `elev` and `azim` parameters specify the elevation and azimuth angles of the applied perspective of the model.
+The `elev` and `azim` parameters specify the elevation and azimuth angles of the model's perspective.
 More information on the view parameters is available [here](https://matplotlib.org/stable/api/toolkits/mplot3d/view_angles.html).
 
 > [!CAUTION]
@@ -108,7 +108,7 @@ Uses [SVG markers](https://jenkov.com/tutorials/svg/marker-element.html) as symb
 
 ### Vectors and arc measures
 
-Uses [SVG markers](https://jenkov.com/tutorials/svg/marker-element.html) as symbols to depict the arrowheads. To precisely meet the target point with the tip of the arrowhead, the line part of vectors or arc measures are shortened.
+Uses [SVG markers](https://jenkov.com/tutorials/svg/marker-element.html) as symbols to depict the arrowheads. To precisely meet the target point with the tip of the arrowhead, the line part of the vectors or arc measures is shortened.
 
 ### Polygons
 
@@ -119,23 +119,27 @@ Uses [SVG markers](https://jenkov.com/tutorials/svg/marker-element.html) as symb
 
 ## Output
 
-Because Spyder's SVG renderer does not support markers, these are not drawn in the IPython console window. They do show in a webbrowser or in Inkscape. The included postprocessing with Inkscape, or Inscape-Latex-Inkscape generates a PNG file for output in the IDE's renderer.
+Because Spyder's SVG renderer does not support markers, these are not drawn in the IPython console window. They do show in a web browser or in Inkscape. The included postprocessing with Inkscape, or Inscape-Latex-Inkscape generates a PNG file for output in the IDE's renderer.
+
+> [!CAUTION]
+> Using the output option `save_svg` will not show the markers in the Spyder plot window.
+> Do not forget to `close()` your program, because this will trigger another graphical output.
 
 ## SVG markers
 
-The SVG markers used for points, vectors and arc measures are read from an external file.
+The SVG markers used for points, vectors, and arc measures are read from an external file.
 
-SVG markers that are used as arrowheads require the definition of an additional shortening value. These values are stored in a dictionary `deltas` using the name of the markers as keys.
+SVG markers that are used as arrowheads require the definition of an additional shortening value. These values are stored in a dictionary `deltas` with the marker names as keys.
 
 ## Configuration settings
 
-The configuration default parameter `fontfamily` specifies the font family to be use in the Latex post-processing step. The value needs to list the name of the system font family, according to font specifications for `xelatex`.
+The default configuration parameter `fontfamily` specifies the font family to use in the LaTeX post-processing step. The value needs to list the name of the system font family, as specified by the `xelatex` font specifications.
 
 ## Stepwise diagram buildup or animation
 
-To buildup a diagram in several steps, objects can be added, removed or updated and the current state of the diagram saved with a separate filename.
+To build a diagram in several steps, objects can be added, removed, or updated, and the current state of the diagram can be saved with a separate filename.
 
-In this way , it should also be possible to create animations by updating the diagram in an animation look, updating, for example, the position of an object. The generated PNG files could then be easily converted to a video file, using ffmpeg.
+In this way, it should also be possible to create animations by updating the diagram in an animation look, for example, by updating the position of an object. The generated PNG files could then be easily converted to a video file using ffmpeg.
 
 ## Adding new markers
 
