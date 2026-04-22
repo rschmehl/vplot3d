@@ -440,7 +440,7 @@ class Line(Object3D):
         line, = self.ax.plot([p[0], q[0]], [p[1], q[1]], [p[2], q[2]], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.edgecolor, alpha=self.alpha, *args, **kwargs)
         line.set_gid(self.gid)
         self.line = line
-        # add new vector to the list of vectors
+        # add new line to the list of lines
         lines.append(self)
 
     def remove(self):
