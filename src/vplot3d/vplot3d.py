@@ -120,6 +120,7 @@ markers     = []
 meshes      = []
 
 # Open file with marker definitions
+print('> Reading marker definitions from file ', str(lib_path / 'config' / 'markers.svg'))
 mtree = ET.parse(lib_path / 'config' / 'markers.svg')
 mroot = mtree.getroot()
 
@@ -401,7 +402,8 @@ class Point(Object3D):
         super().add_marker(shape, edgecolor, facecolor, bgcolor)
 
         # set unique gid
-        self.gid = 'point_' + str(len(points)+1)
+        index = '1' if not points else str(int(points[-1].gid[len('point_'):])+1)
+        self.gid = 'point_' + str(index)
         # plot a point where the marker is placed later
         line, = self.ax.plot([p[0], p[0]], [p[1], p[1]], [p[2], p[2]], zorder=self.zorder, linewidth=self.linewidth, solid_capstyle='butt', color=self.edgecolor, alpha=self.alpha, *args, **kwargs)
         line.set_gid(self.gid)
@@ -430,7 +432,8 @@ class Line(Object3D):
         super().__init__(p, linewidth, scale, zorder, color, None, None, alpha)
 
         # set unique gid
-        self.gid = 'line_' + str(len(lines)+1)
+        index = '1' if not lines else str(int(lines[-1].gid[len('line_'):])+1)
+        self.gid = 'line_' + str(index)
         # line segment coordinates
         self.v = v*scale
         # calculate line end point
@@ -467,7 +470,8 @@ class Vector(Line):
         super().add_marker(shape, color, color, None)
 
         # Set unique gid
-        self.gid = 'vector_' + str(len(vectors)+1)
+        index = '1' if not vectors else str(int(vectors[-1].gid[len('vector_'):])+1)
+        self.gid = 'vector_' + str(index)
         self.line.set_gid(self.gid)
         # Remove line from the list of lines
         lines.pop()
@@ -532,7 +536,8 @@ class Arc(Object3D):
         super().__init__(p, linewidth, 1, zorder, color, None, None, alpha)
 
         # set unique gid
-        self.gid = 'arc_' + str(len(arcs)+1)
+        index = '1' if not arcs else str(int(arcs[-1].gid[len('arc_'):])+1)
+        self.gid = 'arc_' + str(index)
         # normalized starting vector spanning the arc
         self.e1 = e1 = v1 = v1/np.sqrt(np.dot(v1,v1))
         # normalized end vector spanning the arc
@@ -603,7 +608,8 @@ class ArcMeasure(Arc):
         super().add_marker(shape, color, color, None)
 
         # Set unique gid
-        self.gid = 'arcmeasure_' + str(len(arcmeasures)+1)
+        index = '1' if not arcmeasures else str(int(arcmeasures[-1].gid[len('arcmeasure_'):])+1)
+        self.gid = 'arcmeasure_' + str(index)
         self.arc.set_gid(self.gid)
         # Remove line from the list of lines
         arcs.pop()
@@ -685,7 +691,8 @@ class Polygon(Object3D):
         super().__init__(p, linewidth, scale, zorder, edgecolor, facecolor, None, alpha)
 
         # set unique gid
-        self.gid = 'polygon_' + str(len(polygons)+1)
+        index = '1' if not polygons else str(int(polygons[-1].gid[len('polygon_'):])+1)
+        self.gid = 'polygon_' + str(index)
         # colors
         self.facecolor = facecolor
         # alpha seems to not be applied to edgecolor and we do it here explicitly
@@ -891,6 +898,7 @@ def save_svg(file='unnamed'):
 
     # Save the figure as a byte string in SVG format
     f = io.BytesIO()
+    plt.savefig(file+'raw.svg', format="svg", dpi=rasterize_dpi)
     plt.savefig(f, format="svg", dpi=rasterize_dpi)
 
     # Read in the saved SVG and define the SVG namespace
