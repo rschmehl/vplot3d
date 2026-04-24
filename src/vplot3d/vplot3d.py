@@ -709,7 +709,9 @@ class Polygon(Object3D):
         self.r = r
 
         # plot the polygon
-        pg = art3d.Poly3DCollection(r, edgecolors=self.edgecolor, facecolors=self.facecolor, linewidths=self.linewidth, alpha=self.alpha, closed=False, *args, **kwargs)
+        # for zorder to have an effect one needs to disable the inherent z-sorting 
+        # algorithm by setting computed_zorder=False when creating the axes3d object 
+        pg = art3d.Poly3DCollection(r, zorder=self.zorder, edgecolors=self.edgecolor, facecolors=self.facecolor, linewidths=self.linewidth, alpha=self.alpha, closed=False, *args, **kwargs)
         polygon = self.ax.add_collection3d(pg)
         polygon.set_gid(self.gid)
         self.polygon = polygon

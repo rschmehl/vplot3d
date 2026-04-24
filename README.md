@@ -112,6 +112,8 @@ Uses [SVG markers](https://jenkov.com/tutorials/svg/marker-element.html) as symb
 
 ### Polygons
 
+Polygons are created as `Poly3DCollection` objects, which, by default, use their own z-sorting algorithm. As a consequence, the `zorder` parameter when creating a `Polygon` object is ignored. To overrule this behavior and enforce a specified `zorder` parameterm, the z-sorting has to be disabled, setting `computed_zorder=False` when creating the `Axes3d` object.
+
 ### Surface meshes
 
 ### Annotations
