@@ -19,9 +19,6 @@ from pathlib import Path
 # Folder with configuration and shared data
 dat_path = Path.cwd().parent / "data"
 # os.environ['CONF_PATH'] = str(dat_path)
-sys.path.append(str(dat_path))
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from data.kiteV3 import KiteV3
 
@@ -349,7 +346,7 @@ init_view(
     ymax=radius,
     zmin=0,
     zmax=radius,
-    zoom=1.5,
+    zoom=2.5,
     elev=5,
     azim=60,
 )
@@ -483,5 +480,6 @@ Vector(pos, velocity_kite_W, shape="Arrow1Mend", zorder=11, scale = 2,color=colo
 Vector(pos, -dcm_C[1, :], shape="Arrow1Mend", zorder=11, scale = 30,color=colors[0], linestyle=':', linewidth=1)
 
 save_svg_tex(
-    "../figures/reference_frame", macro_file_path=dat_path / "macros.tex", scour=True
+    "reference_frame", macro_file_path=dat_path / "macros.tex"
 )
+plt.close()

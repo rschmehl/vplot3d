@@ -900,7 +900,6 @@ def save_svg(file='unnamed'):
 
     # Save the figure as a byte string in SVG format
     f = io.BytesIO()
-    plt.savefig(file+'raw.svg', format="svg", dpi=rasterize_dpi)
     plt.savefig(f, format="svg", dpi=rasterize_dpi)
 
     # Read in the saved SVG and define the SVG namespace
