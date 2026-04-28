@@ -20,6 +20,15 @@ For using  `save_svg_tex`, the following two executables need to be installed an
 - [Inkscape](https://inkscape.org/) (free and open-source vector graphics editor)
 - [xelatex](https://www.tug.org/texlive/) (Latex typesetting program)
 
+> [!WARNING]
+> For  `save_svg_tex` to work, your Python script has to reside in the same folder where the output files are generated (i.e. you can not pass a path in the call to `save_svg_tex`).
+
+To generate SVG frame-by-frame animations, the following tool needs to be installed
+
+- [svg2fbf](https://github.com/Emasoft/svg2fbf#installation) (converts a collection of SVG files into a single FBF.SVG file)
+
+This tool is not called via `vplot3d` but used in a separate post-processing step.
+
 ## Installation
 
 1. Locally clone the repository or download it as zip-file and unpack it.
@@ -69,7 +78,7 @@ os.environ['CONF_PATH'] = str(dat_path)
 from vplot3d.vplot3d import init_view, Point, Vector, save_svg_tex
 ```
 
-> [!IMPORTANT]  
+> [!CAUTION]
 > Import `vplot3d` always after setting the environment variable `CONF_PATH`.
 
 When `CONF_PATH` is set by the user, `vplot3d` will read configuration settings from the required file `vplot3d.yaml` in this folder. These settings will override the package defaults defined in the package configuration file `config/vplot3d.yaml`. When `CONF_PATH` is not set, the current working directory is searched for an optional file `vplot3d.yaml`.
@@ -137,15 +146,18 @@ SVG markers that are used as arrowheads require the definition of an additional 
 
 The default configuration parameter `fontfamily` specifies the font family to use in the LaTeX post-processing step. The value needs to list the name of the system font family, as specified by the `xelatex` font specifications.
 
-## Stepwise diagram buildup or animation
-
-To build a diagram in several steps, objects can be added, removed, or updated, and the current state of the diagram can be saved with a separate filename.
-
-In this way, it should also be possible to create animations by updating the diagram in an animation look, for example, by updating the position of an object. The generated PNG files could then be easily converted to a video file using ffmpeg.
-
 ## Adding new markers
 
 New markers are added in the markers library `data/markers.svg` in the defs section, using a unique `id`. Only for arrowhead markers, the Marker class dictionary `deltas` needs to be expanded by the line-shortening value matching the new marker path.
+
+## Stepwise diagram buildup and animation
+
+To build a diagram in several steps, objects can be added, removed, or updated, and the current state of the diagram can be saved with a separate filename. 
+
+In this way, animations can be created by updating the diagram in an animation loop, for example, by updating the position of an object. The generated SVG files can then be concatenated by `svg2fbf` into a single SVG file which internally uses [SMIL](https://en.wikipedia.org/wiki/Synchronized_Multimedia_Integration_Language) for animation. More information about `svg2fbf` is available [here](https://github.com/Emasoft/svg2fbf#quick-start).
+
+> [!CAUTION]
+> When used in another document, the size of the generated FBF.SVG file needs to be controlled by explicitly setting the `width` or `height` attribute in that document (copy one of the respective values from the `init_view()` call), because the FBF.SVG file is internally coded to `width=100%` and `height=100%`.
 
 ## Gallery
 
@@ -153,6 +165,7 @@ New markers are added in the markers library `data/markers.svg` in the defs sect
 ![](examples/kite_kinematics_3d.svg)
 ![](examples/kite_kinematics_3d_a.svg)
 ![](examples/kite.svg)
+![](examples/flight_path.fbf.svg)
 
 ## Citation
 If you use this project in your research, please consider citing it. 
