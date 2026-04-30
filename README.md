@@ -158,6 +158,7 @@ In this way, animations can be created by updating the diagram in an animation l
 
 > [!CAUTION]
 > When used in another document, the size of the generated FBF.SVG file needs to be controlled by explicitly setting the `width` or `height` attribute in that document (copy one of the respective values from the `init_view()` call), because the FBF.SVG file is internally coded to `width=100%` and `height=100%`.
+> For single-pass animantion that should stop with the last frame, the attribute `fill="freeze"` needs to be set manually in the `<animate>` tag of the FBF.SVG-file.
 
 ## Gallery
 
