@@ -176,4 +176,4 @@ Citation details can be found in the [CITATION.cff](CITATION.cff) file included 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ### Copyright
-Copyright (c) 2025 Roland Schmehl
+Copyright (c) 2026 Roland Schmehl
