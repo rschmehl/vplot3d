@@ -6,3 +6,4 @@ PyYAML
 matplotlib-inline
 scour
 IPython
+lxml

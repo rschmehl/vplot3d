@@ -89,6 +89,7 @@ dependencies = [
   "matplotlib-inline",
   "scour",
   "IPython",
+  "lxml",
 ]
 
 # You can define additional groups of dependencies here (e.g., development dependencies).

@@ -1054,6 +1054,44 @@ r"""
     for p in Path(".").glob("tmp.*"):
         p.unlink()
 
-
-
+def save_svg2fbf(file='unnamed.fbf.svg', path='.', width=100, height=100, atype='once', fps=30):
+    ''' Concatenate SVG-frames into an animated SVG. Uses svg2fb.
+    
+    Input
+      file:   result file fbf.svg name
+      path:   input folder, where the individual frames are stored as SVG files
+      width:  width of 2D drawing canvas in points
+      height: height of 2D drawing canvas in points
+      atype:  animation type, see https://github.com/Emasoft/svg2fbf#animation-types
+      fps:    temporal resolution in frames per second
+    '''
+    import subprocess
+    from lxml import etree
+    
+    # Concatenate all SVG-file in directory
+    if is_tool('svg2fbf'):
+        run = subprocess.run(['svg2fbf', '-i'+path, '-f', 'tmp.fbf.svg', '-a', atype, '-s', str(fps), '--no-browser'],
+                             capture_output=True, text=True)
+        if run.returncode > 0:
+            sys.exit(run.stdout)
+    else:
+        sys.exit('svg2fbf executable not found.')
+    
+    tree = etree.parse('tmp.fbf.svg')
+    root = tree.getroot()
+    
+    # Setting width and height attributes of SVG file
+    root.attrib['width']  = str(width)
+    root.attrib['height'] = str(height)
+    
+    ns = 'http://www.w3.org/2000/svg'
+    elem = root.find('.//{'+ns+'}animate')
+    if (atype == 'once'):
+        elem.set('fill', 'freeze')
+    
+    print('> writing animation file '+file)
+    tree.write(file, encoding="utf-8", standalone=True)
+    
+    Path('tmp.fbf.svg').unlink()
+    print('> check animation and consider deleting the folder '+path)
 
