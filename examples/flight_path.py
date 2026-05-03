@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
+Programmatic creation of the frames for a frame-by-frame SVG animation. 
+
 Created on Sun Apr 05 14:33:04 2026
 
 Convention:
@@ -20,10 +22,19 @@ from pathlib import Path
 
 # Folder with configuration and shared data
 data_path   = Path.cwd().parent / 'data'
-macros_path = Path.cwd().parent / 'tools'
+macros_path = Path.cwd().parent / 'data'
 #os.environ['CONF_PATH'] = str(dat_path)
 
-from vplot3d.vplot3d import init_view, Line, Vector, Point, Arc, ArcMeasure, Polygon, Annotation3D, save_svg_tex
+# Create a directory to store generated SVG files
+path = 'flight_path'
+Path(path).mkdir(parents=False, exist_ok=True)
+
+# Animation file, width and height of generated SVF file
+afile  = 'flight_path.fbf.svg'
+width  = 980
+height = 720
+
+from vplot3d.vplot3d import init_view, Line, Vector, Point, Arc, ArcMeasure, Polygon, Annotation3D, save_svg_tex, save_svg2fbf
 
 ###############################################################################
 # Theory
@@ -42,6 +53,15 @@ def spherical_vector_base(phi, beta):
            
 def tangential_velocity_factor(phi, beta, chi, E, f):
     '''Tangential velocity factor for a massless kite.
+    
+    See Eqs. (2.20), (2.21) and (2.22) in: 
+    
+    Schmehl, R., Noom, M., Vlugt, R. van der: Traction Power Generation with Tethered Wings. 
+    In: Ahrens, U., Diehl, M., Schmehl, R. (eds.) Airborne Wind Energy, Green Energy and Technology, 
+    Chap. 2, pp. 23–45. Springer, Berlin Heidelberg (2013). doi: 10.1007/978-3-642-39965-7_2
+    
+    Other than in the book chapter, the formulation used here employs the elevation angle beta
+    and not the polar angle theta = 90° - beta.
     '''
     a = - np.sin(phi)*np.sin(chi) - np.cos(phi)*np.sin(beta)*np.cos(chi)
     b =   np.cos(phi)*np.cos(beta)
@@ -88,7 +108,7 @@ ax.set_axis_off()
 # Initialize vector diagram
 # See also https://matplotlib.org/stable/api/toolkits/mplot3d/view_angles.html
 # Dimetric projection
-init_view(width=980, height=720, 
+init_view(width=width, height=height, 
           xmin=-1.7, xmax=1.5, ymin=-1, ymax=0, zmin=-0.3, zmax=1.7,
           zoom=1, elev=26.565, azim=45)
 
@@ -101,32 +121,53 @@ z_obj   = Line(PO, r*vez, linewidth=2, color='k', alpha=0.3)
 PO_obj  = Point(PO, shape='Point1M', zorder=100, color='k')
 
 # Flight path loop
-n        = 81
-dphi     = np.deg2rad(0.5)
-dchi     = np.deg2rad(0.25)
-dr       = 0.005
-p_phi    = phi
-p_beta   = beta
-p_r      = r
-p_chi    = chi
+n          = 81
+p_betas    = np.zeros(n)
+p_xyz      = np.zeros((3,n))
+dphi       = np.deg2rad(0.5)
+dchi       = np.deg2rad(0.25)
+dr         = 0.005
+p_phi      = phi
+p_beta     = beta
+p_r        = r
+p_chi      = chi
 
+# Iterate downwards
+for i in range(n): # starts with i=0
+
+    # Store beta value
+    p_betas[n-1-i] = p_beta
+    
+    # Trigonometric coefficients
+    cb      = np.cos(p_beta)
+    tc      = np.tan(p_chi)
+    dbeta   = dphi*cb/tc
+
+    # Kite state
+    p_phi         = p_phi  - dphi
+    p_beta        = p_beta - dbeta
+    p_r           = p_r    - dr
+    p_chi         = p_chi  + dchi
+    beta          = beta - dbeta
+
+# Iterate back upwards
 for i in range(n):
-    i_frame = n - i
-
+    i_frame = i+1
+    
+    # Kite state
+    p_phi   = p_phi  + dphi
+    p_beta  = p_betas[i]
+    p_r     = p_r    + dr
+    p_chi   = p_chi  - dchi       
+    
     # Trigonometric coefficients
     sp      = np.sin(p_phi)
     cp      = np.cos(p_phi)
     sb      = np.sin(p_beta)
     cb      = np.cos(p_beta)
-    sc      = np.sin(chi)
-    cc      = np.cos(chi)
+    sc      = np.sin(p_chi)
+    cc      = np.cos(p_chi)
     tc      = np.tan(p_chi)
-    
-    # Kite state
-    p_phi   = p_phi  - dphi
-    p_beta  = p_beta - dphi*cb/tc
-    p_r     = p_r    - dr
-    p_chi   = p_chi  + dchi
 
     # Transformation spherical coordinates (r, phi, beta) to wind reference frame (x, y, z)
     rpb_to_xyz = np.array([
@@ -177,6 +218,10 @@ for i in range(n):
     vv       = np.cross(veax, vFa)
     veay     = -vv/np.linalg.norm(vv) # Pointing to right wing tip
     veaz     = np.cross(veax, veay)   # Pointing to origin
+    
+    # Kite trail
+    p_xyz[:,i] = Pk
+    p_obj,     = plt.plot(p_xyz[0, :i], p_xyz[1, :i], p_xyz[2, :i], linewidth=10, color="#3185cfff", alpha=0.25)
 
     # Tether
     t_obj   = Line(PO, Pk, linewidth=2, linestyle="solid")
@@ -190,21 +235,38 @@ for i in range(n):
                               e1=veay, e2=-veax, facecolor='k', edgecolor='k', zorder=70,
                               scale=1.5e-4, linewidth=4, alpha=0, edgecoloralpha=1)
 
-    # Kite point
-    K_obj   = Point(Pk, shape='Point1M', zorder=60, color='k')
+    # Kite attachment point
+    Kt_obj  = Point(Pk, scale=0.5, shape='Point1M', zorder=0, color='k', bgcolor='k')
 
-    save_svg_tex('frame_' + str(i_frame), macro_file_path=dat_path / 'macros.tex')
+    # Save SVG file
+    file    = 'frame_' + str(i_frame)
+    save_svg_tex(file, macro_file_path=macros_path / 'macros.tex')
     
-    K_obj.remove()
+    # Move generated file to folder
+    fn = Path(file+'_tex.svg')
+    fn.rename(Path(path) / fn)
+  
+    # Remove excess files
+    Path(file+'.svg').unlink()
+    Path(file+'.png').unlink()
+    
+    Kt_obj.remove()
     t_obj.remove()
     pg1_obj.remove()
-    pg2_obj.remove()
+    pg2_obj.remove()    
+    p_obj.remove()
+
+#print('End state:')
+#print('r    = '+str(p_r))
+#print('phi  = '+str(np.rad2deg(p_phi)))
+#print('beta = '+str(np.rad2deg(p_beta)))
 
 plt.close()
 
-# Next steps:
-# 1. move generated files frame_*_tex.svg to folder input_frames/
-# 2. svg2fbf -i input_frames/ -f flight_path.fbf.svg -s 30
-# 3. When including the file flight_path.fbf.svg in other document, set width attribute explicitly
-#
-# More info: https://github.com/Emasoft/svg2fbf#quick-start
+###############################################################################
+# Create fbf.svg animation
+###############################################################################
+# atype: animation type, see https://github.com/Emasoft/svg2fbf#animation-types
+save_svg2fbf(file=afile, path=path, width=width, height=height, atype='once', fps=30) 
+
+

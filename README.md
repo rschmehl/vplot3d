@@ -1,6 +1,6 @@
 # vplot3d - 3D vector diagrams in SVG format
 
-The library extends the Python toolkit `mplot3d` to programmatically generate 3D vector diagrams in SVG format with a minimum of drawing-related commands. The user can focus on the geometrical or physical problem instead of takling its visualization, delegating the bulk of drawing-related code to the library. The following 3D objects can be instantiated:
+The library extends the Python toolkit `mplot3d` to programmatically generate and animate 3D vector diagrams in SVG format with a minimum of drawing-related commands. The user can focus on the geometrical or physical problem instead of takling its visualization, delegating the bulk of drawing- and animation related code to the library. The following 3D objects can be instantiated:
 
 - Points,
 - Lines and circular arcs,
@@ -21,13 +21,11 @@ For using  `save_svg_tex`, the following two executables need to be installed an
 - [xelatex](https://www.tug.org/texlive/) (Latex typesetting program)
 
 > [!WARNING]
-> For  `save_svg_tex` to work, your Python script has to reside in the same folder where the output files are generated (i.e. you can not pass a path in the call to `save_svg_tex`).
+> For  `save_svg_tex` to work, your Python script has to reside in the same folder where the output files are generated, i.e. you can not prefix the file name with a path in the call to `save_svg_tex`.
 
-To generate SVG frame-by-frame animations, the following tool needs to be installed
+To generate frame-by-frame vector graphics animations, the following executable needs to be installed and in the search path:
 
 - [svg2fbf](https://github.com/Emasoft/svg2fbf#installation) (converts a collection of SVG files into a single FBF.SVG file)
-
-This tool is not called via `vplot3d` but used in a separate post-processing step.
 
 ## Installation
 
@@ -115,6 +113,8 @@ Uses [SVG markers](https://jenkov.com/tutorials/svg/marker-element.html) as symb
 
 ### Lines and circular arcs
 
+Uses `matplotlib`'s `plot` function to draw lines and arcs, the latter as discretized polylines.
+
 ### Vectors and arc measures
 
 Uses [SVG markers](https://jenkov.com/tutorials/svg/marker-element.html) as symbols to depict the arrowheads. To precisely meet the target point with the tip of the arrowhead, the line part of the vectors or arc measures is shortened.
@@ -125,8 +125,11 @@ Polygons are created as `Poly3DCollection` objects, which, by default, use their
 
 ### Surface meshes
 
+The file `data/kiteV3.py` constructs a mesh object, combining several triangulated surface meshes in the `data` folder to form a realistic 3D representation of the TU Delft V3 kite, including the inflatable wing, the bridle line system and the suspended kite control unit. A detailed definition of this specific leading edge inflatable kite is given [here](https://awegroup.github.io/TUDELFT_V3_KITE/).
+
 ### Annotations
 
+Annotations can be added as regular text or in Latex format. Note that macro-definitions of Latex symbols will be read from a separate file.
 
 ## Output
 
@@ -150,15 +153,12 @@ The default configuration parameter `fontfamily` specifies the font family to us
 
 New markers are added in the markers library `data/markers.svg` in the defs section, using a unique `id`. Only for arrowhead markers, the Marker class dictionary `deltas` needs to be expanded by the line-shortening value matching the new marker path.
 
-## Stepwise diagram buildup and animation
+## Stepwise diagram buildup and animations
 
-To build a diagram in several steps, objects can be added, removed, or updated, and the current state of the diagram can be saved with a separate filename. 
+To build a diagram in succesive steps, objects can be added, removed, or updated, saving the states of the scene with different filenames.
 
-In this way, animations can be created by updating the diagram in an animation loop, for example, by updating the position of an object. The generated SVG files can then be concatenated by `svg2fbf` into a single SVG file which internally uses [SMIL](https://en.wikipedia.org/wiki/Synchronized_Multimedia_Integration_Language) for animation. More information about `svg2fbf` is available [here](https://github.com/Emasoft/svg2fbf#quick-start).
+In the same way, animations can be created by updating the diagram in an animation loop. To use the tool `svg2fbf` for generating frame-by-frame animations, the SVG files need to be assembled with increasing time index in a folder. Once the folder is filled, the function `save_svg2fbf` is called, to concatenate the generated SVG files and produce a single SVG file. `svg2fbf` internally uses [SMIL](https://en.wikipedia.org/wiki/Synchronized_Multimedia_Integration_Language) for animation. More details about `svg2fbf` are available [here](https://github.com/Emasoft/svg2fbf#quick-start).
 
-> [!CAUTION]
-> When used in another document, the size of the generated FBF.SVG file needs to be controlled by explicitly setting the `width` or `height` attribute in that document (copy one of the respective values from the `init_view()` call), because the FBF.SVG file is internally coded to `width=100%` and `height=100%`.
-> For single-pass animantion that should stop with the last frame, the attribute `fill="freeze"` needs to be set manually in the `<animate>` tag of the FBF.SVG-file.
 
 ## Gallery
 
@@ -176,4 +176,4 @@ Citation details can be found in the [CITATION.cff](CITATION.cff) file included 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ### Copyright
-Copyright (c) 2026 Roland Schmehl
+Copyright (c) 2022-2026 Roland Schmehl
