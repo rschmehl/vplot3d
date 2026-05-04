@@ -167,6 +167,7 @@ In the same way, animations can be created by updating the diagram in an animati
 ![](examples/kite_kinematics_3d_a.svg)
 ![](examples/kite.svg)
 ![](examples/flight_path.fbf.svg)
+![](examples/view_rotation.fbf.svg)
 
 ## Citation
 If you use this project in your research, please consider citing it. 
