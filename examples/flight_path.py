@@ -267,6 +267,6 @@ plt.close()
 # Create fbf.svg animation
 ###############################################################################
 # atype: animation type, see https://github.com/Emasoft/svg2fbf#animation-types
-save_svg2fbf(file=afile, path=path, width=width, height=height, atype='once', fps=30) 
+save_svg2fbf(file=afile, path=path, width=width, height=height, atype='loop', fps=30) 
 
 
