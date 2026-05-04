@@ -68,17 +68,27 @@ def tangential_velocity_factor(phi, beta, chi, E, f):
     return a + np.sqrt( a*a + b*b - 1 + E*E*(b - f)**2)
            
 def pitch_rotation(ve1, ve2, ve3, alpha):
-    '''Rotate around object x-axis
+    '''Rotate around object y-axis (ve2 vector)
+    
+    Input
+      ve1:   base vector x-axis (array)
+      ve2:   base vector y-axis (array)
+      ve3:   base vector y-axis (array)
+      alpha: rotation angle
+      
+    Output
+      pitch_rotation: rotated vector base
     '''
     ca    = np.cos(alpha)
     sa    = np.sin(alpha)
-    return ca*ve1 - sa*ve3, ve2, sa*ve1 +ca*ve3
+    return ca*ve1 + sa*ve3, ve2, -sa*ve1 + ca*ve3
 
 # Problem parameters
 r       = 3              # Radial coordinate
 beta    = np.deg2rad(37) # Elevation angle
 phi     = np.deg2rad(20) # Azimuth angle
 chi     = np.deg2rad(40) # Course angle
+alpha   = np.deg2rad(7)  # Wing angle of attack
 f       = 0.4            # Reeling factor
 E       = 5              # Lift-to-drag ratio
 vw      = 1.8            # Velocity scaling factor
@@ -214,10 +224,13 @@ for i in range(n):
     D        = np.linalg.norm(vD)
 
     # Aerodynamic reference frame
-    veax     = vva/va                 # Pointing against apparent wind velocity
+    veax     = - vva/va               # Pointing against apparent wind velocity
     vv       = np.cross(veax, vFa)
     veay     = -vv/np.linalg.norm(vv) # Pointing to right wing tip
-    veaz     = np.cross(veax, veay)   # Pointing to origin
+    veaz     = np.cross(veax, veay)   # Orthogonal to both
+    
+    # Wing reference frame (rotation by alpha around veay)
+    vekx, veky, vekz = pitch_rotation(veax, veay, veaz, alpha)
     
     # Kite trail
     p_xyz[:,i] = Pk
@@ -229,10 +242,10 @@ for i in range(n):
     # Wing
     # Geometry from file: xy-data, with x-axis to right wing tip and y-axis to heading 
     pg1_obj = Polygon.rotated(Pk, file=data_path / 'kite_V3_planform.dat',
-                              e1=veay, e2=-veax, facecolor='w', edgecolor='k', zorder=70,
+                              e1=veky, e2=vekx, facecolor='w', edgecolor='k', zorder=70,
                               scale=1.5e-4, linewidth=1, alpha=0.8, edgecoloralpha=0.8)
     pg2_obj = Polygon.rotated(Pk, file=data_path / 'kite_V3_tubeframe.dat',
-                              e1=veay, e2=-veax, facecolor='k', edgecolor='k', zorder=70,
+                              e1=veky, e2=vekx, facecolor='k', edgecolor='k', zorder=70,
                               scale=1.5e-4, linewidth=4, alpha=0, edgecoloralpha=1)
 
     # Kite attachment point
