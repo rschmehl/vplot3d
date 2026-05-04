@@ -913,14 +913,15 @@ def save_svg(file='unnamed'):
 
     # Erase the matplotlib clipPath and all references to it from the SVG
     clipPath = tree.find('.//{'+ns+'}clipPath')
-    clip_path_id = clipPath.attrib['id']
-
-    for defs in tree.findall('{'+ns+'}defs'):
-        for cp in defs.findall('.//{'+ns+'}clipPath'):
-            defs.remove(cp)
-
-    for el in tree.findall(".//*[@clip-path=\"url(#" + clip_path_id + ")\"]"):
-        el.attrib.pop('clip-path')
+    if clipPath:
+        clip_path_id = clipPath.attrib['id']
+    
+        for defs in tree.findall('{'+ns+'}defs'):
+            for cp in defs.findall('.//{'+ns+'}clipPath'):
+                defs.remove(cp)
+    
+        for el in tree.findall(".//*[@clip-path=\"url(#" + clip_path_id + ")\"]"):
+            el.attrib.pop('clip-path')
 
     # create the defs section with previously generated marker elements
     defs = '<defs>' + '\n'
@@ -1094,4 +1095,22 @@ def save_svg2fbf(file='unnamed.fbf.svg', path='.', width=100, height=100, atype=
     
     Path('tmp.fbf.svg').unlink()
     print('> check animation and consider deleting the folder '+path)
-
+    
+def wipe_canvas():
+    ''' Clean entire canvas
+    '''
+    for e in list(points):
+        e.remove()
+    for e in list(lines):
+        e.remove()
+    for v in list(vectors):
+        v.remove()
+    for e in list(arcs):
+        e.remove()
+    for e in list(arcmeasures):
+        e.remove()
+    for e in list(polygons):
+       e.remove()
+    for e in list(meshes):
+        e.remove()
+    
