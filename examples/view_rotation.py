@@ -149,7 +149,7 @@ vw      = 1.8            # Velocity scaling factor
 Fa      = 3         # 6  # Force scaling factor
 elev    = 26.565         # Elevation angle perspective
 azim    = 45             # Azimuth angle perspective
-ngamma  = 81             # Angle discretization
+ngamma  = 161            # Angle discretization
 
 # Trigonometric coefficients
 sp      = np.sin(phi)
