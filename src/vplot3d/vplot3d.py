@@ -1045,8 +1045,9 @@ r"""
     if run.returncode > 0:
         sys.exit(run.stdout)
 
-    # Display the png-file generated from the svg-file
+    # Display the png-file generated from the svg-file. Remove it afterwards 
     display(Image(filename=file+'.png'))
+    Path(file+'.png').unlink()
 
     # Remove temporary files
     Path(file+'.pdf').unlink()
