@@ -13,7 +13,7 @@
   <rdf:RDF>
    <ns2:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-    <dc:date>2026-04-05T20:29:13.225597</dc:date>
+    <dc:date>2026-10-09T07:04:40.862254</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <ns2:Agent>
