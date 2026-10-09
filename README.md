@@ -1,6 +1,6 @@
 # vplot3d - 3D vector diagrams in SVG format
 
-The library extends the Python toolkit `mplot3d` to programmatically generate and animate 3D vector diagrams in SVG format with a minimum of drawing-related commands. The user can focus on the geometrical or physical problem instead of takling its visualization, delegating the bulk of drawing- and animation related code to the library. The following 3D objects can be instantiated:
+The library extends the Python toolkit `mplot3d` to programmatically generate and animate 3D vector diagrams in SVG format with a minimum of drawing-related commands. The user can focus on the geometrical or physical problem instead of tackling its visualization, delegating the bulk of drawing- and animation-related code to the library. The following 3D objects can be instantiated:
 
 - Points,
 - Lines and circular arcs,
@@ -9,11 +9,11 @@ The library extends the Python toolkit `mplot3d` to programmatically generate an
 - Surface meshes,
 - Annotations.
 
-Points and arrowheads (for vectors and arc measures) are generated as native [SVG markers](https://jenkov.com/tutorials/svg/marker-element.html) to facilitate later post-processing of the diagram in vector drawing tools, like Illustrator and Inkscape. For the precise positioning of arrowheads, the underlying line or polyline is shortened. This algorithm is one of the key contributions of `vplot3d`.
+Points and arrowheads (for vectors and arc measures) are generated as native [SVG markers](https://jenkov.com/tutorials/svg/marker-element.html) to facilitate later post-processing of the diagram in vector drawing tools such as Illustrator and Inkscape. To precisely position arrowheads, the underlying line or polyline is shortened. This algorithm is one of the key contributions of `vplot3d`.
 
 ## System requirements
 
-The library can be used with two options to generate SVG files: a call to `save_svg` generates plain SVG output, while a call to `save_svg_tex` generates plain SVG output and pipes this through Inkscape, using its PDF+Latex output option, and then xelatex to compile into PDF, with a final conversion back to SVG. This post-processing is useful to render Latex code of mathematical symbols and expressions, using xelatex.
+The library can be used with two options to generate SVG files: a call to `save_svg` generates plain SVG output, while a call to `save_svg_tex` generates plain SVG output and pipes this through Inkscape, using its PDF+Latex output option, and then xelatex to compile into PDF, with a final conversion back to SVG. This post-processing is useful for rendering LaTeX code for mathematical symbols and expressions using xelatex.
 
 For using  `save_svg_tex`, the following two executables need to be installed and in the search path:
 
@@ -29,8 +29,8 @@ To generate frame-by-frame vector graphics animations, the following executable 
 
 ## Installation
 
-1. Locally clone the repository or download it as zip-file and unpack it.
-2. Go to the root-folder (where the file `pyproject.toml` resides.)
+1. Locally clone the repository or download it as a zip file and unpack it.
+2. Go to the root folder (where the file `pyproject.toml` resides.)
 3. Create a virtual environment:
    ```bash
    python -m venv .venv
@@ -63,7 +63,7 @@ To generate frame-by-frame vector graphics animations, the following executable 
 
 ## Usage
 
-Once installed, `vplot3d` can be used from any location on the file system. The `examples` folder includes several Python files demonstrating the different features of `vplot3d`. The general process of programmatically generating vector graphics is described in the following.
+Once installed, `vplot3d` can be used from any location on the file system. The `examples` folder includes several Python files demonstrating the different features of `vplot3d`. The general process for programmatically generating vector graphics is described below.
 
 ### Configuration and module import
 
@@ -94,8 +94,8 @@ init_view(width=600, height=600,
           zoom=1.5, elev=30, azim=-60)
 ```
 
-The `width` and `height` parameters specify the size of the SVG-file in terms of pixels. 
-The `xmin`, `xmax`, `ymin`, `ymax`, `zmin`, and `zmax` parameters define the expected value ranges in the model space.
+The `width` and `height` parameters specify the size of the SVG file in terms of pixels. 
+The `xmin`, `xmax`, `ymin`, `ymax`, `zmin`, and `zmax` parameters define the expected ranges of values in the model space.
 The `zoom` parameter specifies the viewing distance to the model.
 The `elev` and `azim` parameters specify the elevation and azimuth angles of the model's perspective.
 More information on the view parameters is available [here](https://matplotlib.org/stable/api/toolkits/mplot3d/view_angles.html).
@@ -121,19 +121,19 @@ Uses [SVG markers](https://jenkov.com/tutorials/svg/marker-element.html) as symb
 
 ### Polygons
 
-Polygons are created as `Poly3DCollection` objects, which, by default, use their own z-sorting algorithm. As a consequence, the `zorder` parameter when creating a `Polygon` object is ignored. To overrule this behavior and enforce a specified `zorder` parameterm, the z-sorting has to be disabled, setting `computed_zorder=False` when creating the `Axes3d` object.
+Polygons are created as `Poly3DCollection` objects, which, by default, use their own z-sorting algorithm. As a consequence, the `zorder` parameter when creating a `Polygon` object is ignored. To overrule this behavior and enforce a specified `zorder` parameter, the z-sorting has to be disabled, setting `computed_zorder=False` when creating the `Axes3d` object.
 
 ### Surface meshes
 
-The file `data/kiteV3.py` constructs a mesh object, combining several triangulated surface meshes in the `data` folder to form a realistic 3D representation of the TU Delft V3 kite, including the inflatable wing, the bridle line system and the suspended kite control unit. A detailed definition of this specific leading edge inflatable kite is given [here](https://awegroup.github.io/TUDELFT_V3_KITE/).
+The file `data/kiteV3.py` constructs a mesh object, combining several triangulated surface meshes in the `data` folder to form a realistic 3D representation of the TU Delft V3 kite, including the inflatable wing, the bridle line system and the suspended kite control unit. A detailed definition of this specific leading-edge inflatable kite is given [here](https://awegroup.github.io/TUDELFT_V3_KITE/).
 
 ### Annotations
 
-Annotations can be added as regular text or in Latex format. Note that macro-definitions of Latex symbols will be read from a separate file.
+Annotations can be added as regular text or in LaTeX format. Note that macro definitions of LaTeX symbols will be read from a separate file.
 
 ## Output
 
-Because Spyder's SVG renderer does not support markers, these are not drawn in the IPython console window. They do show in a web browser or in Inkscape. The included postprocessing with Inkscape, or Inscape-Latex-Inkscape generates a PNG file for output in the IDE's renderer.
+Because Spyder's SVG renderer does not support markers, these are not drawn in the IPython console window. They do show in a web browser or in Inkscape. The included postprocessing with Inkscape, or Inkscape-Latex-Inkscape, generates a PNG file for output in the IDE's renderer.
 
 > [!CAUTION]
 > Using the output option `save_svg` will not show the markers in the Spyder plot window.
@@ -155,9 +155,9 @@ New markers are added in the markers library `data/markers.svg` in the defs sect
 
 ## Stepwise diagram buildup and animations
 
-To build a diagram in succesive steps, objects can be added, removed, or updated, saving the states of the scene with different filenames.
+To build a diagram in successive steps, objects can be added, removed, or updated, and the scene's state can be saved under different filenames.
 
-In the same way, animations can be created by updating the diagram in an animation loop. To use the tool `svg2fbf` for generating frame-by-frame animations, the SVG files need to be assembled with increasing time index in a folder. Once the folder is filled, the function `save_svg2fbf` is called, to concatenate the generated SVG files and produce a single SVG file. `svg2fbf` internally uses [SMIL](https://en.wikipedia.org/wiki/Synchronized_Multimedia_Integration_Language) for animation. More details about `svg2fbf` are available [here](https://github.com/Emasoft/svg2fbf#quick-start).
+Similarly, animations can be created by updating the diagram in an animation loop. To use the `svg2fbf` tool to generate frame-by-frame animations, the SVG files need to be assembled into a folder with increasing time indices. Once the folder is filled, the function `save_svg2fbf` is called to concatenate the generated SVG files and produce a single SVG file. `svg2fbf` internally uses [SMIL](https://en.wikipedia.org/wiki/Synchronized_Multimedia_Integration_Language) for animation. More details about `svg2fbf` are available [here](https://github.com/Emasoft/svg2fbf#quick-start).
 
 
 ## Gallery
