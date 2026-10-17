@@ -305,6 +305,29 @@ class Annotation3D(Annotation):
         self.xy = (xs,ys)
         super().draw(renderer)
 
+def _annotate2D(ax, text, xy, *args, **kwargs):
+    '''Add 2D annotation `text` to an `Axes` instance.'''
+    return Annotation2D(text, xy, *args, **kwargs)
+
+setattr(Axes3D, 'annotate2D', _annotate2D)
+
+class Annotation2D(Annotation):
+    '''Annotate the 2D point xy with text s.
+
+    Coordinates xy are interpreted according to xycoords, which defaults to 'axes fraction'.
+    '''
+    def __init__(self, s, xy, xytext=None, fontsize=None, xycoords='axes fraction', *args, **kwargs):
+        # get current Axes instance
+        self.ax = plt.gca()
+        if xytext is None:
+            xytext = XYOFF
+        if fontsize is None:
+            fontsize = FONTSIZE_RAW
+        kwargs.setdefault('textcoords', 'offset fontsize')
+        kwargs.setdefault('annotation_clip', False)
+        super().__init__(_m(s), xy=xy, xytext=xytext, fontsize=fontsize, xycoords=xycoords, *args, **kwargs)
+        self.ax.add_artist(self)
+
 class Object3D(ABC):
     '''Abstract class for 3D objects.
     The three colors edgecolor, facecolor, bgcolor can be used to control the coloring of a specific Object3D.
