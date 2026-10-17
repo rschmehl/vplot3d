@@ -109,9 +109,11 @@ Z    = Point(Pz, shape='Point1M', zorder=100, color='k')
 l2   = Line(PO, Pxy, linewidth=2, linestyle="solid")
 am1  = ArcMeasure(PO, Pxy, Pk, radius=r, linewidth=3, zorder=31, color='k')
 am2  = ArcMeasure(PO, Px,  Pxy, radius=r, linewidth=3, zorder=31, color='k')
+am3  = ArcMeasure(PO, Px,  Pk, radius=r, linewidth=3, zorder=31, color='k')
 
 ax.annotate3D(r'$\beta$', xyz=PO+Pk, xytext=(0.1,-3))
 ax.annotate3D(r'$\phi$', xyz=PO+Pxy, xytext=(-1.4,1))
+ax.annotate3D(r'$\gamma$', xyz=PO+Pk, xytext=(-1.8,-4))
 
 save_svg_tex('kite_kinematics_3d_a', macro_file_path=dat_path / 'macros.tex')
 
